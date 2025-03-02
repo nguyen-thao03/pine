@@ -1,0 +1,53 @@
+import 'package:flutter/material.dart';
+import 'package:iconsax/iconsax.dart';
+import 'package:pine_admin_panel/common/widgets/images/p_circular_image.dart';
+import 'package:pine_admin_panel/common/widgets/images/p_rounded_image.dart';
+import 'package:pine_admin_panel/utils/constants/enums.dart';
+import 'package:pine_admin_panel/utils/constants/image_strings.dart';
+
+import '../../../../routes/routes.dart';
+import '../../../../utils/constants/colors.dart';
+import '../../../../utils/constants/sizes.dart';
+import 'menu/menu_item.dart';
+
+class PSidebar extends StatelessWidget {
+  const PSidebar({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Drawer(
+      shape: const BeveledRectangleBorder(),
+      child: Container(
+        decoration: const BoxDecoration(
+          color: PColors.white,
+          border: Border(right: BorderSide(color: PColors.grey, width: 1))
+        ),
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              // Image
+              const PRoundedImage(width: 100, height: 100, image: PImages.lightAppLogo, backgroundColor: Colors.transparent, imageType: ImageType.asset),
+              const SizedBox(height: PSizes.spaceBtwSections),
+              Padding(
+                padding: const EdgeInsets.all(PSizes.md),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text('Danh mục', style: Theme.of(context).textTheme.bodySmall!.apply(letterSpacingDelta: 1.2)),
+
+                    // Menu Items
+                    const PMenuItem(route: PRoutes.dashboard, icon: Iconsax.status, itemName: 'Bảng điều khiển'),
+                    const PMenuItem(route: PRoutes.media, icon: Iconsax.image, itemName: 'Hình ảnh'),
+                    const PMenuItem(route: PRoutes.banners, icon: Iconsax.picture_frame, itemName: 'Banner'),
+                  ],
+                ),
+              )
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
