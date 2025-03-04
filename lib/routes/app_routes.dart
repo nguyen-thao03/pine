@@ -2,7 +2,7 @@ import 'package:get/get.dart';
 import 'package:pine_admin_panel/routes/routes.dart';
 import 'package:pine_admin_panel/routes/routes_middleware.dart';
 
-import '../features/authentication/screens/dashboard/dashboard.dart';
+import '../features/shop/screens/dashboard/dashboard.dart';
 import '../features/authentication/screens/forgot_password/forgot_password.dart';
 import '../features/authentication/screens/login/login.dart';
 import '../features/authentication/screens/reset_password/reset_password.dart';

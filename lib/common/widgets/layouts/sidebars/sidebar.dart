@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:pine_admin_panel/common/widgets/images/p_circular_image.dart';
 import 'package:pine_admin_panel/common/widgets/images/p_rounded_image.dart';
 import 'package:pine_admin_panel/utils/constants/enums.dart';
 import 'package:pine_admin_panel/utils/constants/image_strings.dart';

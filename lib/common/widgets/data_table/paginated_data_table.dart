@@ -65,23 +65,31 @@ class PPaginatedDataTable extends StatelessWidget {
           dividerThickness: 0,
           horizontalMargin: 12,
           rowsPerPage: rowsPerPage,
-          showFirstLastButtons: true,
-          showCheckboxColumn: true,
-          sortAscending: sortAscending,
-          onPageChanged: onPageChanged,
           dataRowHeight: dataRowHeight,
+
+          /// CHECKBOX
+          showCheckboxColumn: true,
+
+          /// PAGINATION
+          showFirstLastButtons: true,
+          onPageChanged: onPageChanged,
           renderEmptyRowsInTheEnd: false,
           onRowsPerPageChanged: (noOfRows) {},
-          sortColumnIndex: sortColumnIndex,
+
+          /// HEADER DESIGN
           headingTextStyle: Theme.of(context).textTheme.titleMedium,
           headingRowColor: WidgetStateProperty.resolveWith((states) => PColors.primaryBackground),
-          empty: PAnimationLoaderWidget(animation: PImages.packageAnimation, text: 'Nothing Found', height: 200, width: 200),
           headingRowDecoration: const BoxDecoration(
             borderRadius: BorderRadius.only(
               topLeft: Radius.circular(PSizes.borderRadiusMd),
               topRight: Radius.circular(PSizes.borderRadiusMd),
             ),
           ),
+          empty: PAnimationLoaderWidget(animation: PImages.packageAnimation, text: 'Không tìm thấy kết quả', height: 200, width: 200),
+
+          /// SORTING
+          sortAscending: sortAscending,
+          sortColumnIndex: sortColumnIndex,
           sortArrowBuilder: (bool ascending, bool sorted) {
             if (sorted) {
               return Icon(ascending ? Iconsax.arrow_up_3 : Iconsax.arrow_down, size: PSizes.iconSm);

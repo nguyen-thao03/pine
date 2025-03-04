@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:pine_admin_panel/common/widgets/containers/rounded_container.dart';
 import 'package:pine_admin_panel/common/widgets/layouts/headers/header.dart';
 import 'package:pine_admin_panel/common/widgets/layouts/sidebars/sidebar.dart';
 
