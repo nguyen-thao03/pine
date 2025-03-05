@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 import 'package:pine_admin_panel/routes/routes.dart';
 import 'package:pine_admin_panel/routes/routes_middleware.dart';
 
+import '../features/media/screens/media/media.dart';
 import '../features/shop/screens/dashboard/dashboard.dart';
 import '../features/authentication/screens/forgot_password/forgot_password.dart';
 import '../features/authentication/screens/login/login.dart';
@@ -14,7 +15,7 @@ class PAppRoute {
      GetPage(name: PRoutes.forgotPassword, page: () => const ForgotPasswordScreen()),
      GetPage(name: PRoutes.resetPassword, page: () => const ResetPasswordScreen()),
      GetPage(name: PRoutes.dashboard, page: () => const DashboardScreen(), middlewares: [PRouteMiddleware()]),
-     // GetPage(name: PRoutes.media, page: () => const MediaScreen(), middlewares: [PRouteMiddleware()]),
+     GetPage(name: PRoutes.media, page: () => const MediaScreen(), middlewares: [PRouteMiddleware()]),
      //
      // //Banners
      // GetPage(name: PRoutes.banners, page: () => const BannersScreen(), middlewares: [PRouteMiddleware()]),

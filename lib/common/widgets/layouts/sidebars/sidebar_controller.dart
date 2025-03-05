@@ -3,7 +3,7 @@ import 'package:pine_admin_panel/routes/routes.dart';
 import 'package:pine_admin_panel/utils/device/device_utility.dart';
 
 class SidebarController extends GetxController {
-  final activeItem = PRoutes.login.obs;
+  final activeItem = PRoutes.dashboard.obs;
   final hoverItem = ''.obs;
 
   void changeActiveItem(String route) => activeItem.value = route;
