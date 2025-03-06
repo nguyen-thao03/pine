@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:pine_admin_panel/data/repositories/authentication/authentication_repository.dart';
-import 'package:pine_admin_panel/data/repositories/user/user_repository.dart';
+import 'package:pine_admin_panel/data/repositories/authentication_repository.dart';
+import 'package:pine_admin_panel/data/repositories/user_repository.dart';
 import 'package:pine_admin_panel/features/authentication/controllers/user_controller.dart';
 import 'package:pine_admin_panel/features/authentication/models/user_model.dart';
 import 'package:pine_admin_panel/utils/constants/enums.dart';

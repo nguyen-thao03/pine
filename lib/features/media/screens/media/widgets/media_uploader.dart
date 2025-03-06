@@ -126,7 +126,7 @@ class MediaUploader extends StatelessWidget {
                                     : SizedBox(
                                         width: PSizes.buttonWidth,
                                         child: ElevatedButton(
-                                            onPressed: () {},
+                                            onPressed: () => controller.uploadImagesConfirmation(),
                                             child: const Text('Tải ảnh'))),
                               ],
                             ),
@@ -158,8 +158,10 @@ class MediaUploader extends StatelessWidget {
                             ? SizedBox(
                                 width: double.infinity,
                                 child: ElevatedButton(
-                                    onPressed: () {},
-                                    child: const Text('Tải ảnh')))
+                                    onPressed: () => controller.uploadImagesConfirmation(),
+                                    child: const Text('Tải ảnh'),
+                                ),
+                        )
                             : const SizedBox.shrink()
                       ],
                     ),

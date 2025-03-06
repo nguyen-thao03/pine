@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import 'package:pine_admin_panel/data/repositories/user/user_repository.dart';
+import 'package:pine_admin_panel/data/repositories/user_repository.dart';
 import 'package:pine_admin_panel/features/authentication/models/user_model.dart';
 import 'package:pine_admin_panel/utils/popups/loaders.dart';
 

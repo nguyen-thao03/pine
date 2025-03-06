@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:pine_admin_panel/common/widgets/containers/rounded_container.dart';
+import 'package:pine_admin_panel/common/widgets/loaders/animation_loader.dart';
+import 'package:pine_admin_panel/common/widgets/loaders/loader_animation.dart';
 import 'package:pine_admin_panel/features/media/controllers/media_controller.dart';
+import 'package:pine_admin_panel/features/media/models/image_model.dart';
+import 'package:pine_admin_panel/features/media/screens/media/widgets/view_image_details.dart';
 
 import '../../../../../common/widgets/images/p_rounded_image.dart';
 import '../../../../../utils/constants/colors.dart';
@@ -28,6 +33,7 @@ class MediaContent extends StatelessWidget {
               MediaFolderDropdown(onChanged: (MediaCategory? newValue) {
                 if (newValue != null) {
                   controller.selectedPath.value = newValue;
+                  controller.getMediaImages();
                 }
               }),
             ],
@@ -35,73 +41,113 @@ class MediaContent extends StatelessWidget {
           const SizedBox(height: PSizes.spaceBtwSections),
 
           /// Show Media
-          const Wrap(
-            alignment: WrapAlignment.start,
-            spacing: PSizes.spaceBtwItems / 2,
-            runSpacing: PSizes.spaceBtwItems / 2,
-            children: [
-              PRoundedImage(
-                width: 90,
-                height: 90,
-                padding: PSizes.sm,
-                imageType: ImageType.asset,
-                image: PImages.lightAppLogo,
-                backgroundColor: PColors.primaryBackground,
-              ),
-              PRoundedImage(
-                width: 90,
-                height: 90,
-                padding: PSizes.sm,
-                imageType: ImageType.asset,
-                image: PImages.lightAppLogo,
-                backgroundColor: PColors.primaryBackground,
-              ),
-              PRoundedImage(
-                width: 90,
-                height: 90,
-                padding: PSizes.sm,
-                imageType: ImageType.asset,
-                image: PImages.lightAppLogo,
-                backgroundColor: PColors.primaryBackground,
-              ),
-              PRoundedImage(
-                width: 90,
-                height: 90,
-                padding: PSizes.sm,
-                imageType: ImageType.asset,
-                image: PImages.lightAppLogo,
-                backgroundColor: PColors.primaryBackground,
-              ),
-              PRoundedImage(
-                width: 90,
-                height: 90,
-                padding: PSizes.sm,
-                imageType: ImageType.asset,
-                image: PImages.lightAppLogo,
-                backgroundColor: PColors.primaryBackground,
-              ),
-            ],
-          ),
+          Obx(
+            () {
+              // Get Selected Folder Images
+              List<ImageModel> images = _getSelectedFolderImages(controller);
 
-          /// Load More Media Button
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: PSizes.spaceBtwSections),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                SizedBox(
-                  width: PSizes.buttonWidth,
-                  child: ElevatedButton.icon(
-                      onPressed: () {}, 
-                      label: const Text('Tải thêm'),
-                      icon: const Icon(Iconsax.arrow_down),
+              // Loader
+              if (controller.loading.value && images.isEmpty) return const PLoaderAnimation();
+
+              // Empty Widget
+              if (images.isEmpty) return _buildEmptyAnimationWidget(context);
+              
+              return
+               Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Wrap(
+                    alignment: WrapAlignment.start,
+                    crossAxisAlignment: WrapCrossAlignment.start,
+                    children: images
+                      .map((image) => GestureDetector(
+                        onTap: () => Get.dialog(ImagePopup(image: image)),
+                        child: SizedBox(
+                          width: 140,
+                          height: 180,
+                          child: Column(
+                            children: [
+                              _buildSimpleList(image),
+                              Expanded(
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(horizontal: PSizes.sm),
+                                    child: Text(image.filename, maxLines: 1, overflow: TextOverflow.ellipsis),
+                                  ),
+                                ),
+                            ],
+                          ),
+                        ),
+                      )
+                    )
+                    .toList(),
                   ),
-                )
-              ],
-            ),
-          )
+
+                  /// Load More Media Button -> Show when all images loaded
+                  if (!controller.loading.value)
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: PSizes.spaceBtwSections),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          SizedBox(
+                            width: PSizes.buttonWidth,
+                            child: ElevatedButton.icon(
+                              onPressed: () => controller.loadMoreMediaImages(),
+                              label: const Text('Tải thêm'),
+                              icon: const Icon(Iconsax.arrow_down),
+                            ),
+                          )
+                        ],
+                      ),
+                    )
+                ],
+              );
+            },
+          ),
         ],
       ),
+    );
+  }
+
+  List<ImageModel> _getSelectedFolderImages(MediaController controller) {
+    List<ImageModel> images = [];
+    if (controller.selectedPath.value == MediaCategory.banners) {
+      images = controller.allBannerImages.where((image) => image.url.isNotEmpty).toList();
+    } else if (controller.selectedPath.value == MediaCategory.brands) {
+      images = controller.allBrandImages.where((image) => image.url.isNotEmpty).toList();
+    } else if (controller.selectedPath.value == MediaCategory.categories) {
+      images = controller.allCategoryImages.where((image) => image.url.isNotEmpty).toList();
+    } else if (controller.selectedPath.value == MediaCategory.products) {
+      images = controller.allProductImages.where((image) => image.url.isNotEmpty).toList();
+    } else if (controller.selectedPath.value == MediaCategory.users) {
+      images = controller.allUserImages.where((image) => image.url.isNotEmpty).toList();
+    }
+    return images;
+  }
+
+  Widget _buildEmptyAnimationWidget(BuildContext context) {
+    return Padding(
+        padding: const EdgeInsets.symmetric(vertical: PSizes.lg * 3),
+      child: PAnimationLoaderWidget(
+          width: 300,
+          height: 300,
+          text: 'Chọn thư mục mong muốn của bạn',
+          animation: PImages.packageAnimation,
+          style: Theme.of(context).textTheme.titleLarge,
+      ),
+    );
+  }
+
+  _buildSimpleList(ImageModel image) {
+    return PRoundedImage(
+      width: 140,
+      height: 140,
+      padding: PSizes.sm,
+      image: image.url,
+      imageType: ImageType.network,
+      margin: PSizes.spaceBtwItems / 2,
+      backgroundColor: PColors.primaryBackground,
     );
   }
 }

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:pine_admin_panel/data/repositories/authentication/authentication_repository.dart';
+import 'package:pine_admin_panel/data/repositories/authentication_repository.dart';
 import 'package:pine_admin_panel/routes/routes.dart';
 
 class PRouteMiddleware extends GetMiddleware {

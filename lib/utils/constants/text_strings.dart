@@ -7,11 +7,11 @@ class PTexts {
   static const String adminPassword = "Admin@123";
 
   // -- Storage Paths
-  static const String bannersStoragePath = "/Banner";
-  static const String brandsStoragePath = "/Thương hiệu";
-  static const String categoriesStoragePath = "/Danh mục";
-  static const String productsStoragePath = "/Sản phẩm";
-  static const String usersStoragePath = "/Người dùng";
+  static const String bannersStoragePath = "/Banners";
+  static const String brandsStoragePath = "/Brands";
+  static const String categoriesStoragePath = "/Categories";
+  static const String productsStoragePath = "/Products";
+  static const String usersStoragePath = "/Users";
 
   // -- GLOBAL Texts
   static const String and = "và";

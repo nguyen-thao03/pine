@@ -4,7 +4,7 @@ import 'package:get_storage/get_storage.dart';
 import 'package:url_strategy/url_strategy.dart';
 import 'package:get/get.dart';
 import 'app.dart';
-import 'data/repositories/authentication/authentication_repository.dart';
+import 'data/repositories/authentication_repository.dart';
 import 'firebase_options.dart';
 
 Future<void> main() async {
