@@ -45,6 +45,6 @@ class CategoriesMobileScreen extends StatelessWidget {
           ),
         ),
       ),
-    );;
+    );
   }
 }

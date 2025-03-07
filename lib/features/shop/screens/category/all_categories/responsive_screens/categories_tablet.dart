@@ -23,7 +23,7 @@ class CategoriesTabletScreen extends StatelessWidget {
               // Breadcrumbs
               const PBreadcrumbsWithHeading(heading: 'Danh mục', breadcrumbItems: ['Danh mục']),
               const SizedBox(height: PSizes.spaceBtwSections),
-        
+
               // Table Body
               // Show Loader
               PRoundedContainer(
@@ -32,7 +32,7 @@ class CategoriesTabletScreen extends StatelessWidget {
                     // Table Header
                     PTableHeader(buttonText: 'Tạo danh mục', onPressed: () => Get.toNamed(PRoutes.createCategory)),
                     const SizedBox(height: PSizes.spaceBtwItems),
-        
+
                     // Table
                     CategoryTable(),
                   ],
@@ -42,6 +42,6 @@ class CategoriesTabletScreen extends StatelessWidget {
           ),
         ),
       ),
-    );;
+    );
   }
 }

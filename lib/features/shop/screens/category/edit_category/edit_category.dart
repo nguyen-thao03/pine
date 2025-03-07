@@ -5,6 +5,8 @@ import 'package:pine_admin_panel/features/shop/screens/category/edit_category/re
 import 'package:pine_admin_panel/features/shop/screens/category/edit_category/responsive_screens/edit_category_mobile.dart';
 import 'package:pine_admin_panel/features/shop/screens/category/edit_category/responsive_screens/edit_category_tablet.dart';
 
+import '../../../models/category_model.dart';
+
 class EditCategoryScreen extends StatelessWidget {
   const EditCategoryScreen({super.key});
 
