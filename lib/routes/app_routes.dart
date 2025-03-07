@@ -3,6 +3,9 @@ import 'package:pine_admin_panel/routes/routes.dart';
 import 'package:pine_admin_panel/routes/routes_middleware.dart';
 
 import '../features/media/screens/media/media.dart';
+import '../features/shop/screens/banner/all_banners/banners.dart';
+import '../features/shop/screens/banner/create_banner/create_banner.dart';
+import '../features/shop/screens/banner/edit_banner/edit_banner.dart';
 import '../features/shop/screens/brand/all_brands/brands.dart';
 import '../features/shop/screens/brand/create_brand/create_brand.dart';
 import '../features/shop/screens/brand/edit_brand/edit_brand.dart';
@@ -23,10 +26,10 @@ class PAppRoute {
      GetPage(name: PRoutes.dashboard, page: () => const DashboardScreen(), middlewares: [PRouteMiddleware()]),
      GetPage(name: PRoutes.media, page: () => const MediaScreen(), middlewares: [PRouteMiddleware()]),
 
-      //Banners
-     // GetPage(name: PRoutes.banners, page: () => const BannersScreen(), middlewares: [PRouteMiddleware()]),
-     // GetPage(name: PRoutes.createBanner, page: () => const CreateBannerScreen(), middlewares: [PRouteMiddleware()]),
-     // GetPage(name: PRoutes.editBanner, page: () => const EditBannerScreen(), middlewares: [PRouteMiddleware()]),
+    //Banners
+      GetPage(name: PRoutes.banners, page: () => const BannersScreen(), middlewares: [PRouteMiddleware()]),
+      GetPage(name: PRoutes.createBanner, page: () => const CreateBannerScreen(), middlewares: [PRouteMiddleware()]),
+      GetPage(name: PRoutes.editBanner, page: () => const EditBannerScreen(), middlewares: [PRouteMiddleware()]),
 
       //Products
      // GetPage(name: PRoutes.products, page: () => const ProductsScreen(), middlewares: [PRouteMiddleware()]),

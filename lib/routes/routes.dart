@@ -5,7 +5,8 @@ class PRoutes {
     dashboard,
     media,
     categories,
-    brands
+    brands,
+    banners
   ];
 
   static const login = '/login';

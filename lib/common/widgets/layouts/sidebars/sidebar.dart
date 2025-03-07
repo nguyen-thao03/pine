@@ -40,6 +40,7 @@ class PSidebar extends StatelessWidget {
                     const PMenuItem(route: PRoutes.media, icon: Iconsax.image, itemName: 'Hình ảnh'),
                     const PMenuItem(route: PRoutes.categories, icon: Iconsax.category_2, itemName: 'Danh mục'),
                     const PMenuItem(route: PRoutes.brands, icon: Iconsax.dcube, itemName: 'Thương hiệu'),
+                    const PMenuItem(route: PRoutes.banners, icon: Iconsax.picture_frame, itemName: 'Banner'),
                     const PMenuItem(route: 'đăng xuất', icon: Iconsax.logout, itemName: 'Đăng xuất'),
                   ],
                 ),
