@@ -33,12 +33,14 @@ class PSidebar extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Text('Danh mục', style: Theme.of(context).textTheme.bodySmall!.apply(letterSpacingDelta: 1.2)),
+                    Text('Menu', style: Theme.of(context).textTheme.bodySmall!.apply(letterSpacingDelta: 1.2)),
 
                     // Menu Items
                     const PMenuItem(route: PRoutes.dashboard, icon: Iconsax.status, itemName: 'Bảng điều khiển'),
                     const PMenuItem(route: PRoutes.media, icon: Iconsax.image, itemName: 'Hình ảnh'),
-                    const PMenuItem(route: PRoutes.banners, icon: Iconsax.picture_frame, itemName: 'Banner'),
+                    const PMenuItem(route: PRoutes.categories, icon: Iconsax.category_2, itemName: 'Danh mục'),
+                    const PMenuItem(route: PRoutes.brands, icon: Iconsax.dcube, itemName: 'Thương hiệu'),
+                    const PMenuItem(route: 'đăng xuất', icon: Iconsax.logout, itemName: 'Đăng xuất'),
                   ],
                 ),
               )

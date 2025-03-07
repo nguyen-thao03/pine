@@ -3,7 +3,9 @@ class PRoutes {
 
   static List sidebarMenuItems = [
     dashboard,
-    media
+    media,
+    categories,
+    brands
   ];
 
   static const login = '/login';

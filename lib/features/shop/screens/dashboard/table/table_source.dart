@@ -2,7 +2,7 @@ import 'package:data_table_2/data_table_2.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pine_admin_panel/common/widgets/containers/rounded_container.dart';
-import 'package:pine_admin_panel/features/shop/controllers/dashboard/dashboard_controller.dart';
+import 'package:pine_admin_panel/features/shop/controllers/dashboard_controller.dart';
 import 'package:pine_admin_panel/utils/constants/colors.dart';
 import 'package:pine_admin_panel/utils/helpers/helper_functions.dart';
 

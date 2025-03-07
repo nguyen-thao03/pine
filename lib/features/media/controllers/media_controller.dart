@@ -1,6 +1,9 @@
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
+import 'package:pine_admin_panel/common/widgets/loaders/circular_loader.dart';
 import 'package:pine_admin_panel/data/repositories/media_repository.dart';
+import 'package:pine_admin_panel/features/media/screens/media/widgets/media_content.dart';
+import 'package:pine_admin_panel/features/media/screens/media/widgets/media_uploader.dart';
 import 'package:pine_admin_panel/utils/constants/image_strings.dart';
 import 'package:pine_admin_panel/utils/constants/text_strings.dart';
 import 'package:pine_admin_panel/utils/popups/dialogs.dart';
@@ -11,6 +14,7 @@ import 'package:flutter_dropzone/flutter_dropzone.dart';
 import 'package:get/get.dart';
 import 'package:pine_admin_panel/utils/constants/enums.dart';
 
+import '../../../utils/constants/colors.dart';
 import '../../../utils/constants/sizes.dart';
 import '../../../utils/popups/full_screen_loader.dart';
 import '../models/image_model.dart';
@@ -236,5 +240,101 @@ class MediaController extends GetxController {
     }
     return path;
   }
-}
 
+  /// Popup Confirmation to remove cloud image
+  void removeCloudImageConfirmation(ImageModel image) {
+    // Delete Confirmation
+    PDialogs.defaultDialog(
+      context: Get.context!,
+      content: 'Bạn có chắc muốn xóa ảnh này không?',
+      onConfirm: () {
+        // Close the previous Dialog Image Popup
+        Get.back();
+
+        removeCloudImage(image);
+      }
+    );
+  }
+
+  void removeCloudImage(ImageModel image) async {
+    try {
+      // Close the removeCloudImageConfirmation() Dialog
+      Get.back();
+
+      // Show Loader
+      Get.defaultDialog(
+        title: '',
+        barrierDismissible: false,
+        backgroundColor: Colors.transparent,
+        content: const PopScope(canPop: false, child: SizedBox(width: 150, height: 150, child: PCircularLoader())),
+      );
+
+      // Delete Image
+      await mediaRepository.deleteFileFromStorage(image);
+
+      // Get the corresponding list to update
+      RxList<ImageModel> targetList;
+
+      // Check the selected category and update the corresponding list
+      switch (selectedPath.value) {
+        case MediaCategory.banners:
+          targetList = allBannerImages;
+          break;
+        case MediaCategory.brands:
+          targetList = allBrandImages;
+          break;
+        case MediaCategory.categories:
+          targetList = allCategoryImages;
+          break;
+        case MediaCategory.products:
+          targetList = allProductImages;
+          break;
+        case MediaCategory.users:
+          targetList = allUserImages;
+          break;
+        default:
+          return;
+      }
+
+      // Remove from the list
+      targetList.remove(image);
+      update();
+
+      PFullScreenLoader.stopLoading();
+      PLoaders.successSnackBar(title: 'Đã xóa ảnh', message: 'Hình ảnh đã được xóa thành công khỏi bộ nhớ đám mây của bạn');
+    } catch (e) {
+      PFullScreenLoader.stopLoading();
+      PLoaders.errorSnackBar(title: 'Ôi không', message: e.toString());
+    }
+  }
+
+  // Images Selection Bottom Sheet
+  Future<List<ImageModel>?> selectImagesFromMedia({List<String>? selectedUrls, bool allowSelection = true, bool multipleSelection = false}) async {
+    showImagesUploaderSection.value = true;
+
+    List<ImageModel>? selectedImages = await Get.bottomSheet<List<ImageModel>>(
+      isScrollControlled: true,
+      backgroundColor: PColors.primaryBackground,
+      FractionallySizedBox(
+        heightFactor: 1,
+        child: SingleChildScrollView(
+          child: Padding(
+              padding: const EdgeInsets.all(PSizes.defaultSpace),
+            child: Column(
+              children: [
+                const MediaUploader(),
+                MediaContent(
+                    allowSelection: allowSelection,
+                    alreadySelectedUrls: selectedUrls ?? [],
+                    allowMultipleSelection: multipleSelection,
+                )
+              ],
+            ),
+          ),
+        ),
+      )
+    );
+
+    return selectedImages;
+  }
+}

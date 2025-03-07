@@ -1,7 +1,7 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:pine_admin_panel/features/shop/controllers/dashboard/dashboard_controller.dart';
+import 'package:pine_admin_panel/features/shop/controllers/dashboard_controller.dart';
 
 import '../../../../../common/widgets/containers/rounded_container.dart';
 import '../../../../../utils/constants/colors.dart';

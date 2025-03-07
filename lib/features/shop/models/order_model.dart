@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:pine_admin_panel/features/shop/controllers/dashboard/dashboard_controller.dart';
+import 'package:pine_admin_panel/features/shop/controllers/dashboard_controller.dart';
 import 'package:pine_admin_panel/utils/helpers/helper_functions.dart';
 
 import '../../../utils/constants/enums.dart';

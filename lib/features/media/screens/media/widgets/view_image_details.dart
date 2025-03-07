@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:pine_admin_panel/common/widgets/containers/rounded_container.dart';
 import 'package:pine_admin_panel/common/widgets/images/p_rounded_image.dart';
+import 'package:pine_admin_panel/features/media/controllers/media_controller.dart';
 import 'package:pine_admin_panel/features/media/models/image_model.dart';
 import 'package:pine_admin_panel/utils/constants/colors.dart';
 import 'package:pine_admin_panel/utils/constants/enums.dart';
@@ -93,7 +94,7 @@ class ImagePopup extends StatelessWidget {
                   SizedBox(
                     width: 300,
                     child: TextButton(
-                        onPressed: (){},
+                        onPressed: () => MediaController.instance.removeCloudImageConfirmation(image),
                         child: const Text('Xóa ảnh', style: TextStyle(color: Colors.red)),
                     ),
                   )
