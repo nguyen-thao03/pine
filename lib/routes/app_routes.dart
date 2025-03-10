@@ -12,10 +12,15 @@ import '../features/shop/screens/brand/edit_brand/edit_brand.dart';
 import '../features/shop/screens/category/all_categories/categories.dart';
 import '../features/shop/screens/category/create_category/create_category.dart';
 import '../features/shop/screens/category/edit_category/edit_category.dart';
+import '../features/shop/screens/customer/all_customers/customers.dart';
+import '../features/shop/screens/customer/customer_detail/customer.dart';
 import '../features/shop/screens/dashboard/dashboard.dart';
 import '../features/authentication/screens/forgot_password/forgot_password.dart';
 import '../features/authentication/screens/login/login.dart';
 import '../features/authentication/screens/reset_password/reset_password.dart';
+import '../features/shop/screens/product/all_products/products.dart';
+import '../features/shop/screens/product/create_product/create_product.dart';
+import '../features/shop/screens/product/edit_product/edit_product.dart';
 
 class PAppRoute {
   static final List<GetPage> pages = [
@@ -32,9 +37,9 @@ class PAppRoute {
       GetPage(name: PRoutes.editBanner, page: () => const EditBannerScreen(), middlewares: [PRouteMiddleware()]),
 
       //Products
-     // GetPage(name: PRoutes.products, page: () => const ProductsScreen(), middlewares: [PRouteMiddleware()]),
-     // GetPage(name: PRoutes.createProduct, page: () => const CreateProductScreen(), middlewares: [PRouteMiddleware()]),
-     // GetPage(name: PRoutes.editProduct, page: () => const EditProductScreen(), middlewares: [PRouteMiddleware()]),
+      GetPage(name: PRoutes.products, page: () => const ProductsScreen(), middlewares: [PRouteMiddleware()]),
+      GetPage(name: PRoutes.createProduct, page: () => const CreateProductScreen(), middlewares: [PRouteMiddleware()]),
+      GetPage(name: PRoutes.editProduct, page: () => const EditProductScreen(), middlewares: [PRouteMiddleware()]),
 
     //Categories
      GetPage(name: PRoutes.categories, page: () => const CategoriesScreen(), middlewares: [PRouteMiddleware()]),
@@ -45,11 +50,10 @@ class PAppRoute {
       GetPage(name: PRoutes.brands, page: () => const BrandsScreen(), middlewares: [PRouteMiddleware()]),
       GetPage(name: PRoutes.createBrand, page: () => const CreateBrandScreen(), middlewares: [PRouteMiddleware()]),
       GetPage(name: PRoutes.editBrand, page: () => const EditBrandScreen(), middlewares: [PRouteMiddleware()]),
-     //
-     // //Customers
-     // GetPage(name: PRoutes.customers, page: () => const CustomersScreen(), middlewares: [PRouteMiddleware()]),
-     // GetPage(name: PRoutes.createCustomer, page: () => const CreateCustomerScreen(), middlewares: [PRouteMiddleware()]),
-     // GetPage(name: PRoutes.customerDetails, page: () => const CustomerDetailsScreen(), middlewares: [PRouteMiddleware()]),
+
+     //Customers
+      GetPage(name: PRoutes.customers, page: () => const CustomersScreen(), middlewares: [PRouteMiddleware()]),
+      GetPage(name: PRoutes.customerDetails, page: () => const CustomerDetailScreen(), middlewares: [PRouteMiddleware()]),
      //
      // //Orders
      // GetPage(name: PRoutes.orders, page: () => const OrdersScreen(), middlewares: [PRouteMiddleware()]),

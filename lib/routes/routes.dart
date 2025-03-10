@@ -6,7 +6,9 @@ class PRoutes {
     media,
     categories,
     brands,
-    banners
+    banners,
+    products,
+    customers
   ];
 
   static const login = '/login';

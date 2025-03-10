@@ -8,14 +8,16 @@ class PTableHeader extends StatelessWidget {
   const PTableHeader({
     super.key,
     this.onPressed,
-    required this.buttonText,
+    this.buttonText = 'Thêm',
     this.searchController,
-    this.searchOnChanged
+    this.searchOnChanged,
+    this.showLeftWidget = true,
   });
 
   final Function()? onPressed;
   final String buttonText;
 
+  final bool showLeftWidget;
   final TextEditingController? searchController;
   final Function(String)? searchOnChanged;
 
@@ -25,14 +27,16 @@ class PTableHeader extends StatelessWidget {
       children: [
         Expanded(
           flex: PDeviceUtils.isDesktopScreen(context) ? 3 : 1,
-            child: Row(
+            child: showLeftWidget
+            ? Row(
               children: [
                 SizedBox(
                     width: 200,
                     child: ElevatedButton(onPressed: onPressed, child: Text(buttonText)),
                 ),
               ],
-            )),
+            )
+        : const SizedBox.shrink()),
 
         Expanded(
           flex: PDeviceUtils.isDesktopScreen(context) ? 2 : 1,
