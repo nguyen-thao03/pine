@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import 'package:pine_admin_panel/common/widgets/containers/rounded_container.dart';
 import 'package:pine_admin_panel/features/shop/controllers/dashboard_controller.dart';
 import 'package:pine_admin_panel/features/shop/controllers/product_images_controller.dart';
-import 'package:pine_admin_panel/features/shop/screens/dashboard/table/data_table.dart';
+import 'package:pine_admin_panel/features/shop/screens/dashboard/table/dashboard_table.dart';
 import 'package:pine_admin_panel/features/shop/screens/dashboard/widgets/dashboard_card.dart';
 import 'package:pine_admin_panel/features/shop/screens/dashboard/widgets/order_status_graph.dart';
 import 'package:pine_admin_panel/features/shop/screens/dashboard/widgets/weekly_sales.dart';

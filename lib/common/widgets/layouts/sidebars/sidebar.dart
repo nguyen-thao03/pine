@@ -44,6 +44,11 @@ class PSidebar extends StatelessWidget {
                     const PMenuItem(route: PRoutes.products, icon: Iconsax.shopping_bag, itemName: 'Sản phẩm'),
                     const PMenuItem(route: PRoutes.customers, icon: Iconsax.profile_2user, itemName: 'Người dùng'),
                     const PMenuItem(route: PRoutes.orders, icon: Iconsax.box, itemName: 'Đơn hàng'),
+
+                    // Other Menu Items
+                    Text('Khác', style: Theme.of(context).textTheme.bodySmall!.apply(letterSpacingDelta: 1.2)),
+                    const PMenuItem(route: PRoutes.profile, icon: Iconsax.user, itemName: 'Tài khoản'),
+                    const PMenuItem(route: PRoutes.settings, icon: Iconsax.setting_2, itemName: 'Cài đặt'),
                     const PMenuItem(route: PRoutes.login, icon: Iconsax.logout, itemName: 'Đăng xuất'),
                   ],
                 ),

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:pine_admin_panel/features/shop/screens/banner/all_banners/table/data_table.dart';
+import 'package:pine_admin_panel/features/shop/screens/banner/all_banners/table/banner_table.dart';
 
 import '../../../../../../common/widgets/breadcrumbs/breadcrumb_with_heading.dart';
 import '../../../../../../common/widgets/containers/rounded_container.dart';

@@ -5,7 +5,7 @@ import 'package:pine_admin_panel/common/widgets/containers/rounded_container.dar
 import 'package:pine_admin_panel/routes/routes.dart';
 import 'package:pine_admin_panel/utils/constants/sizes.dart';
 
-import '../table/data_table.dart';
+import '../table/category_table.dart';
 import '../../../../../../common/widgets/data_table/table_header.dart';
 
 class CategoriesDesktopScreen extends StatelessWidget {

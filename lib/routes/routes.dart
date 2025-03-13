@@ -35,5 +35,5 @@ class PRoutes {
   static const profile = '/profile';
 
   // Sidebar Menu Items List
-  static List sidebarMenuItems = [dashboard, media, categories, brands, banners, products, customers, orders];
+  static List sidebarMenuItems = [dashboard, media, categories, brands, banners, products, customers, orders, settings, profile];
 }

@@ -4,7 +4,7 @@ import 'package:pine_admin_panel/features/shop/screens/dashboard/widgets/order_s
 import 'package:pine_admin_panel/features/shop/screens/dashboard/widgets/weekly_sales.dart';
 
 import '../../../../../utils/constants/sizes.dart';
-import '../table/data_table.dart';
+import '../table/dashboard_table.dart';
 import '../widgets/dashboard_card.dart';
 
 class DashboardTabletScreen extends StatelessWidget {

@@ -4,7 +4,7 @@ import 'package:iconsax/iconsax.dart';
 import '../../../../../../common/widgets/containers/rounded_container.dart';
 import '../../../../../../utils/constants/colors.dart';
 import '../../../../../../utils/constants/sizes.dart';
-import '../table/data_table.dart';
+import '../table/customer_data_table.dart';
 
 class CustomerOrders extends StatelessWidget {
   const CustomerOrders({super.key});

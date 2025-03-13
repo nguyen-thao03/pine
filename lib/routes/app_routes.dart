@@ -3,6 +3,8 @@ import 'package:pine_admin_panel/routes/routes.dart';
 import 'package:pine_admin_panel/routes/routes_middleware.dart';
 
 import '../features/media/screens/media/media.dart';
+import '../features/personalization/screens/profile/profile.dart';
+import '../features/personalization/screens/settings/settings.dart';
 import '../features/shop/screens/banner/all_banners/banners.dart';
 import '../features/shop/screens/banner/create_banner/create_banner.dart';
 import '../features/shop/screens/banner/edit_banner/edit_banner.dart';
@@ -60,5 +62,8 @@ class PAppRoute {
       //Orders
       GetPage(name: PRoutes.orders, page: () => const OrdersScreen(), middlewares: [PRouteMiddleware()]),
       GetPage(name: PRoutes.orderDetails, page: () => const OrderDetailScreen(), middlewares: [PRouteMiddleware()]),
+
+    GetPage(name: PRoutes.settings, page: () => const SettingsScreen(), middlewares: [PRouteMiddleware()]),
+    GetPage(name: PRoutes.profile, page: () => const ProfileScreen(), middlewares: [PRouteMiddleware()]),
   ];
 }

@@ -4,7 +4,7 @@ import '../../../../../../common/widgets/breadcrumbs/breadcrumb_with_heading.dar
 import '../../../../../../common/widgets/containers/rounded_container.dart';
 import '../../../../../../common/widgets/data_table/table_header.dart';
 import '../../../../../../utils/constants/sizes.dart';
-import '../table/data_table.dart';
+import '../table/orders_table.dart';
 
 class OrdersTabletScreen extends StatelessWidget {
   const OrdersTabletScreen({super.key});
