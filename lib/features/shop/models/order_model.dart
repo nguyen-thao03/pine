@@ -3,29 +3,34 @@ import 'package:pine_admin_panel/features/shop/controllers/dashboard_controller.
 import 'package:pine_admin_panel/utils/helpers/helper_functions.dart';
 
 import '../../../utils/constants/enums.dart';
+import 'address_model.dart';
+import 'cart_item_model.dart';
 
 class OrderModel {
   final String id;
+  final String docId;
   final String userId;
-  final OrderStatus status;
+  OrderStatus status;
   final double totalAmount;
+  //final double shippingCost;
   final DateTime orderDate;
   final String paymentMethod;
-  //final AddressModel? address;
+  final AddressModel? shippingAddress;
   final DateTime? deliveryDate;
-  //final List<CartItemModel> items;
+  final List<CartItemModel> items;
 
   OrderModel({
   required this.id,
   this.userId = '',
+  this.docId = '',
   required this.status,
+  required this.items,
   required this.totalAmount,
+  //required this.shippingCost,
   required this.orderDate,
-  this.paymentMethod = 'Paypal',
-  //this.address,
+  this.paymentMethod = 'Thanh toán khi nhận hàng',
+  this.shippingAddress,
   this.deliveryDate,
-  //required this.items,
-
 });
   String get formattedOrderDate => PHelperFunctions.getFormattedDate(orderDate);
 
@@ -38,7 +43,14 @@ class OrderModel {
         : 'Đang xử lý';
 
   /// Static function to create an empty user model
-  static OrderModel empty() => OrderModel(id: '', status: OrderStatus.pending, totalAmount: 0, orderDate: DateTime.now());
+  static OrderModel empty() => OrderModel(
+      id: '',
+      items: [],
+      status: OrderStatus.pending,
+      totalAmount: 0,
+      //shippingCost: 0,
+      orderDate: DateTime.now()
+  );
 
   Map<String, dynamic> toJson() {
     return {
@@ -48,9 +60,10 @@ class OrderModel {
       'totalAmount': totalAmount,
       'orderDate': orderDate,
       'paymentMethod': paymentMethod,
-      //'address': address?.toJson(),
+      //'shippingCost': shippingCost,
+      'shippingAddress': shippingAddress?.toJson(),
       'deliveryDate': deliveryDate,
-      //'items': items.map((item) => item.toJson()).toList(),
+      'items': items.map((item) => item.toJson()).toList(),
     };
   }
 
@@ -61,12 +74,13 @@ class OrderModel {
       id: data['id'] as String,
       userId: data['userId'] as String,
       status: OrderStatus.values.firstWhere((e) => e.toString() == data['status']),
-      totalAmount: data['orderDate'] as double,
+      totalAmount: data['totalAmount'] as double,
       orderDate: (data['orderDate'] as Timestamp).toDate(),
       paymentMethod: data['paymentMethod'] as String,
-      //address: AddressModel.fromMap(data['address'] as Map<String, dynamic>),
+      shippingAddress: AddressModel.fromMap(data['address'] as Map<String, dynamic>),
       deliveryDate: data['deliveryDate'] == null ? null : (data['deliveryDate'] as Timestamp).toDate(),
-      //items: (data['items'] as List<dynamic>).map((itemData) => CartItemModel.fromJson(itemData as Map<String, dynamic>)).toList(),
+      items: (data['items'] as List<dynamic>).map((itemData) => CartItemModel.fromJson(itemData as Map<String, dynamic>)).toList(),
+      //shippingCost: data['shippingCost'] as double,
     );
   }
 }

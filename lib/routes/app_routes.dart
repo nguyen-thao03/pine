@@ -18,6 +18,8 @@ import '../features/shop/screens/dashboard/dashboard.dart';
 import '../features/authentication/screens/forgot_password/forgot_password.dart';
 import '../features/authentication/screens/login/login.dart';
 import '../features/authentication/screens/reset_password/reset_password.dart';
+import '../features/shop/screens/order/all_orders/orders.dart';
+import '../features/shop/screens/order/orders_detail/order_detail.dart';
 import '../features/shop/screens/product/all_products/products.dart';
 import '../features/shop/screens/product/create_product/create_product.dart';
 import '../features/shop/screens/product/edit_product/edit_product.dart';
@@ -54,10 +56,9 @@ class PAppRoute {
      //Customers
       GetPage(name: PRoutes.customers, page: () => const CustomersScreen(), middlewares: [PRouteMiddleware()]),
       GetPage(name: PRoutes.customerDetails, page: () => const CustomerDetailScreen(), middlewares: [PRouteMiddleware()]),
-     //
-     // //Orders
-     // GetPage(name: PRoutes.orders, page: () => const OrdersScreen(), middlewares: [PRouteMiddleware()]),
-     // GetPage(name: PRoutes.createOrder, page: () => const CreateOrderScreen(), middlewares: [PRouteMiddleware()]),
-     // GetPage(name: PRoutes.orderDetails, page: () => const OrderDetailsScreen(), middlewares: [PRouteMiddleware()]),
+
+      //Orders
+      GetPage(name: PRoutes.orders, page: () => const OrdersScreen(), middlewares: [PRouteMiddleware()]),
+      GetPage(name: PRoutes.orderDetails, page: () => const OrderDetailScreen(), middlewares: [PRouteMiddleware()]),
   ];
 }

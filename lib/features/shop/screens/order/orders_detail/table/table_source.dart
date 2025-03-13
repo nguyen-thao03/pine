@@ -10,7 +10,7 @@ import 'package:pine_admin_panel/utils/helpers/helper_functions.dart';
 
 import '../../../../../../utils/constants/sizes.dart';
 
-class CustomerOrdersRows extends DataTableSource {
+class OrderOrdersRows extends DataTableSource {
   @override
   DataRow? getRow(int index) {
     final order = OrderModel(id: 'id', status: OrderStatus.shipped, totalAmount: 250.000, orderDate: DateTime.now(), items: []);

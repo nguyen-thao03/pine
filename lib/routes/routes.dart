@@ -1,16 +1,6 @@
 
 class PRoutes {
 
-  static List sidebarMenuItems = [
-    dashboard,
-    media,
-    categories,
-    brands,
-    banners,
-    products,
-    customers
-  ];
-
   static const login = '/login';
   static const forgotPassword = '/forgot-password/';
   static const resetPassword = '/reset-password';
@@ -38,6 +28,12 @@ class PRoutes {
   static const customerDetails = '/customerDetails';
 
   static const orders = '/orders';
-  static const createOrder = '/createOrder';
   static const orderDetails = '/orderDetails';
+
+  static const coupons = '/coupons';
+  static const settings = '/settings';
+  static const profile = '/profile';
+
+  // Sidebar Menu Items List
+  static List sidebarMenuItems = [dashboard, media, categories, brands, banners, products, customers, orders];
 }

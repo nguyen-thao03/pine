@@ -23,9 +23,7 @@ class PMenuItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final menuController = Get.put(SidebarController());
-    return Link(
-      uri: route != 'đăng xuất' ? Uri.parse(route) : null,
-      builder: (_, __) => InkWell(
+    return InkWell(
         onTap: () => menuController.menuOnTap(route),
         onHover: (value) => value ? menuController.changeHoverItem(route) : menuController.changeHoverItem(''),
         child: Obx(() {
@@ -60,7 +58,6 @@ class PMenuItem extends StatelessWidget {
           );
         }
         ),
-      ),
-    );
+      );
   }
 }

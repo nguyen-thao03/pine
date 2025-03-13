@@ -17,7 +17,7 @@ class DashboardDesktopScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(ProductImagesController());
+    //final controller = Get.put(ProductImagesController());
     return Scaffold(
         body: SingleChildScrollView(
             child: Padding(
@@ -27,8 +27,8 @@ class DashboardDesktopScreen extends StatelessWidget {
                 children: [
                   // Heading
                   Text('Bảng điều khiển', style: Theme.of(context).textTheme.headlineLarge),
-                  ElevatedButton(onPressed: () => controller.selectThumbnailImage(), child: Text('Chọn hình ảnh')),
-                  ElevatedButton(onPressed: () => controller.selectMultipleProductImages(), child: Text('Chọn nhiều hình ảnh')),
+                  //ElevatedButton(onPressed: () => controller.selectThumbnailImage(), child: Text('Chọn hình ảnh')),
+                  //ElevatedButton(onPressed: () => controller.selectMultipleProductImages(), child: Text('Chọn nhiều hình ảnh')),
                   const SizedBox(height: PSizes.spaceBtwSections),
 
                   // Cards

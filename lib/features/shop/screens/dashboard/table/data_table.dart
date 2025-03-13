@@ -14,7 +14,7 @@ class DashboardOrderTable extends StatelessWidget {
       tableHeight: 500,
       dataRowHeight: PSizes.xl * 1.2,
       columns: const [
-        DataColumn2(label: Text('ID')),
+        DataColumn2(label: Text('ID Đơn hàng')),
         DataColumn2(label: Text('Ngày')),
         DataColumn2(label: Text('Sản phẩm')),
         DataColumn2(label: Text('Trạng thái')),
