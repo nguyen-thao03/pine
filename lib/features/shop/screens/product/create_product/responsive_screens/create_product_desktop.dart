@@ -33,7 +33,7 @@ class CreateProductDesktopScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // Breadcrumbs
-              const PBreadcrumbsWithHeading(returnToPreviousScreen: true, heading: 'Thêm sản phẩm', breadcrumbItems: [PRoutes.products, 'Thêm sản phẩm']),
+              const PBreadcrumbsWithHeading(returnToPreviousScreen: true, heading: 'Thêm sản phẩm', breadcrumbItems: [{ 'label': 'Danh sách sản phẩm', 'path': PRoutes.products }, 'Thêm sản phẩm']),
               const SizedBox(height: PSizes.spaceBtwSections),
 
               // Create Product

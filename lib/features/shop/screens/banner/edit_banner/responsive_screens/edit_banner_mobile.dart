@@ -21,7 +21,7 @@ class EditBannerMobileScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // Breadcrumbs
-              const PBreadcrumbsWithHeading(returnToPreviousScreen: true, heading: 'Cập nhật banner', breadcrumbItems: [PRoutes.banners, 'Cập nhật banner']),
+              const PBreadcrumbsWithHeading(returnToPreviousScreen: true, heading: 'Cập nhật banner', breadcrumbItems: [{ 'label': 'Banner', 'path': PRoutes.banners }, 'Cập nhật banner']),
               const SizedBox(height: PSizes.spaceBtwSections),
 
               // Form

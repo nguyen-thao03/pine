@@ -18,7 +18,7 @@ class CreateBannerMobileScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // Breadcrumbs
-              PBreadcrumbsWithHeading(returnToPreviousScreen: true, heading: 'Thêm banner', breadcrumbItems: [PRoutes.banners, 'Thêm banner']),
+              PBreadcrumbsWithHeading(returnToPreviousScreen: true, heading: 'Thêm banner', breadcrumbItems: [{ 'label': 'Banner', 'path': PRoutes.banners }, 'Thêm banner']),
               SizedBox(height: PSizes.spaceBtwSections),
 
               // Form

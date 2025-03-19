@@ -21,7 +21,7 @@ class EditCategoryTabletScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // Breadcrumbs
-              const PBreadcrumbsWithHeading(returnToPreviousScreen: true, heading: 'Cập nhật danh mục', breadcrumbItems: [PRoutes.categories, 'Cập nhật danh mục']),
+              const PBreadcrumbsWithHeading(returnToPreviousScreen: true, heading: 'Cập nhật danh mục', breadcrumbItems: [{ 'label': 'Danh mục', 'path': PRoutes.categories }, 'Cập nhật danh mục']),
               const SizedBox(height: PSizes.spaceBtwSections),
 
               // Form

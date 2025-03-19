@@ -28,7 +28,7 @@ class OrderDetailMobileScreen extends StatelessWidget {
               PBreadcrumbsWithHeading(
                   returnToPreviousScreen: true,
                   heading: order.id,
-                  breadcrumbItems: [PRoutes.orders, 'Chi tiết']
+                  breadcrumbItems: [{ 'label': 'Danh sách đơn hàng', 'path': PRoutes.orders }, 'Chi tiết']
               ),
               const SizedBox(height: PSizes.spaceBtwSections),
 

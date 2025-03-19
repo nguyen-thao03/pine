@@ -10,16 +10,11 @@ class PBreadcrumbsWithHeading extends StatelessWidget {
     super.key,
     required this.heading,
     required this.breadcrumbItems,
-    this.returnToPreviousScreen = false
+    this.returnToPreviousScreen = false,
   });
 
-  // The heading for the page
   final String heading;
-
-  // List of breadcrumb items representing the navigation path
-  final List<String> breadcrumbItems;
-
-  // Flag indicating whether to include a button to return to the previous screen
+  final List<dynamic> breadcrumbItems;
   final bool returnToPreviousScreen;
 
   @override
@@ -27,15 +22,15 @@ class PBreadcrumbsWithHeading extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        // Breadcrumb trail
         Row(
           children: [
-            // Dashboard link
             InkWell(
               onTap: () => Get.offAllNamed(PRoutes.dashboard),
               child: Padding(
                 padding: const EdgeInsets.all(PSizes.xs),
-                child: Text('Bảng điều khiển', style: Theme.of(context).textTheme.bodySmall!.apply(fontWeightDelta: -1),
+                child: Text(
+                  'Bảng điều khiển',
+                  style: Theme.of(context).textTheme.bodySmall!.apply(fontWeightDelta: -1),
                 ),
               ),
             ),
@@ -43,32 +38,21 @@ class PBreadcrumbsWithHeading extends StatelessWidget {
             for (int i = 0; i < breadcrumbItems.length; i++)
               Row(
                 children: [
-                  const Text('/'),
-                  InkWell(
-                    onTap: i == breadcrumbItems.length - 1 ? null : () => Get.toNamed(breadcrumbItems[i]),
-                    child: Padding(
-                      padding: const EdgeInsets.all(PSizes.xs),
-
-                      // Format breadcrumb item
-                      child: Text(
-                          i == breadcrumbItems.length - 1
-                              ? breadcrumbItems[i].capitalize.toString()
-                              : capitalize(breadcrumbItems[i].substring(1)),
-                          style: Theme.of(context).textTheme.bodySmall!.apply(fontWeightDelta: -1)),
-                    ),
-                  )
+                  const Text(' / '),
+                  _buildBreadcrumbItem(breadcrumbItems[i], i == breadcrumbItems.length - 1)
                 ],
-              )
+              ),
           ],
         ),
 
         const SizedBox(height: PSizes.sm),
 
-        // Heading of the page
         Row(
           children: [
-            if (returnToPreviousScreen) IconButton(onPressed: () => Get.back(), icon: const Icon(Iconsax.arrow_left)),
-            if (returnToPreviousScreen) const SizedBox(width: PSizes.spaceBtwItems),
+            if (returnToPreviousScreen) ...[
+              IconButton(onPressed: () => Get.back(), icon: const Icon(Iconsax.arrow_left)),
+              const SizedBox(width: PSizes.spaceBtwItems),
+            ],
             PPageHeading(heading: heading),
           ],
         )
@@ -76,9 +60,28 @@ class PBreadcrumbsWithHeading extends StatelessWidget {
     );
   }
 
-  // Function to capitalize the first letter of a string
+  Widget _buildBreadcrumbItem(dynamic item, bool isLast) {
+    if (item is String) {
+      return Text(
+        capitalize(item),
+        style: Get.textTheme.bodySmall!.apply(fontWeightDelta: -1),
+      );
+    } else if (item is Map<String, String> && item.containsKey('label') && item.containsKey('path')) {
+      return InkWell(
+        onTap: isLast ? null : () => Get.toNamed(item['path']!),
+        child: Padding(
+          padding: const EdgeInsets.all(PSizes.xs),
+          child: Text(
+            item['label']!,
+            style: Get.textTheme.bodySmall!.apply(fontWeightDelta: -1),
+          ),
+        ),
+      );
+    }
+    return const SizedBox();
+  }
+
   String capitalize(String s) {
     return s.isEmpty ? '' : s[0].toUpperCase() + s.substring(1);
   }
-
 }

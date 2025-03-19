@@ -38,7 +38,7 @@ class EditProductDesktopScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // Breadcrumbs
-              const PBreadcrumbsWithHeading(returnToPreviousScreen: true, heading: 'Cập nhật sản phẩm', breadcrumbItems: [PRoutes.products, 'Cập nhật sản phẩm']),
+              const PBreadcrumbsWithHeading(returnToPreviousScreen: true, heading: 'Cập nhật sản phẩm', breadcrumbItems: [{ 'label': 'Danh sách sản phẩm', 'path': PRoutes.products }, 'Cập nhật sản phẩm']),
               const SizedBox(height: PSizes.spaceBtwSections),
 
               // Edit Product

@@ -18,7 +18,7 @@ class CreateCategoryMobileScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // Breadcrumbs
-              PBreadcrumbsWithHeading(returnToPreviousScreen: true, heading: 'Tạo danh mục', breadcrumbItems: [PRoutes.categories, 'Tạo danh mục']),
+              PBreadcrumbsWithHeading(returnToPreviousScreen: true, heading: 'Tạo danh mục', breadcrumbItems: [{ 'label': 'Danh mục', 'path': PRoutes.categories }, 'Tạo danh mục']),
               SizedBox(height: PSizes.spaceBtwSections),
 
               // Form

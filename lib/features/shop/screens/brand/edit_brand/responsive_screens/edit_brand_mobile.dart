@@ -21,7 +21,7 @@ class EditBrandMobileScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // Breadcrumbs
-              const PBreadcrumbsWithHeading(returnToPreviousScreen: true, heading: 'Cập nhật thương hiệu', breadcrumbItems: [PRoutes.brands, 'Cập nhật thương hiệu']),
+              const PBreadcrumbsWithHeading(returnToPreviousScreen: true, heading: 'Cập nhật thương hiệu', breadcrumbItems: [{ 'label': 'Danh sách thương hiệu', 'path': PRoutes.brands }, 'Cập nhật thương hiệu']),
               const SizedBox(height: PSizes.spaceBtwSections),
 
               // Form

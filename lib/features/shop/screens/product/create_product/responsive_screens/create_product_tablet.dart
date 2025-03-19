@@ -17,7 +17,7 @@ class CreateProductTabletScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // Breadcrumbs
-              PBreadcrumbsWithHeading(returnToPreviousScreen: true, heading: 'Thêm sản phẩm', breadcrumbItems: [PRoutes.products, 'Thêm sản phẩm']),
+              PBreadcrumbsWithHeading(returnToPreviousScreen: true, heading: 'Thêm sản phẩm', breadcrumbItems: [{ 'label': 'Danh sách sản phẩm', 'path': PRoutes.products }, 'Thêm sản phẩm']),
               SizedBox(height: PSizes.spaceBtwSections),
             ],
           ),

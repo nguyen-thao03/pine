@@ -28,7 +28,7 @@ class MediaDesktopScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   // Breadcrumbs
-                  const PBreadcrumbsWithHeading(heading: 'Hình ảnh', breadcrumbItems: [PRoutes.login, 'Hình ảnh']),
+                  const PBreadcrumbsWithHeading(heading: 'Hình ảnh', breadcrumbItems: ['Hình ảnh']),
                   
                   SizedBox(
                     width: PSizes.buttonWidth * 1.5,

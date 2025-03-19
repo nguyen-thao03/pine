@@ -33,17 +33,17 @@ class PHeader extends StatelessWidget implements PreferredSizeWidget {
             : null,
 
         /// Search Field
-        title: PDeviceUtils.isDesktopScreen(context)
-            ? SizedBox(
-              width: 400,
-              child: TextFormField(
-                decoration: const InputDecoration(prefixIcon: Icon(Iconsax.search_normal), hintText: 'Search anything...'),
-              ),
-            ) : null,
+        // title: PDeviceUtils.isDesktopScreen(context)
+        //     ? SizedBox(
+        //       width: 400,
+        //       child: TextFormField(
+        //         decoration: const InputDecoration(prefixIcon: Icon(Iconsax.search_normal), hintText: 'Search anything...'),
+        //       ),
+        //     ) : null,
 
         /// Actions
-        actions: [
-          if (!PDeviceUtils.isDesktopScreen(context)) IconButton(onPressed: () {}, icon: const Icon(Iconsax.search_normal)),
+         actions: [
+        //   if (!PDeviceUtils.isDesktopScreen(context)) IconButton(onPressed: () {}, icon: const Icon(Iconsax.search_normal)),
           
           // Notification Icon
           IconButton(onPressed: () {}, icon: const Icon(Iconsax.notification)),
@@ -60,7 +60,8 @@ class PHeader extends StatelessWidget implements PreferredSizeWidget {
                   padding: 2,
                   height: 40,
                   imageType: controller.user.value.profilePicture.isNotEmpty ? ImageType.network : ImageType.asset,
-                  image: controller.user.value.profilePicture.isNotEmpty ? controller.user.value.profilePicture : PImages.user,
+                 // image: controller.user.value.profilePicture.isNotEmpty ? controller.user.value.profilePicture : PImages.user,
+                  image: PImages.user,
                 ),
               ),
               const SizedBox(width: PSizes.sm),

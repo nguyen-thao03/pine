@@ -26,7 +26,7 @@ class CustomerDetailMobileScreen extends StatelessWidget {
               PBreadcrumbsWithHeading(
                   returnToPreviousScreen: true,
                   heading: customer.fullName,
-                  breadcrumbItems: const [PRoutes.customers, 'Chi tiết']
+                  breadcrumbItems: const [{ 'label': 'Danh sách người dùng', 'path': PRoutes.customers }, 'Chi tiết']
               ),
               const SizedBox(height: PSizes.spaceBtwSections),
 

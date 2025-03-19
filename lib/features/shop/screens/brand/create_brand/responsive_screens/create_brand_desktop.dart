@@ -18,7 +18,7 @@ class CreateBrandDesktopScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // Breadcrumbs
-              PBreadcrumbsWithHeading(returnToPreviousScreen: true, heading: 'Thêm thương hiệu', breadcrumbItems: [PRoutes.brands, 'Thêm thương hiệu']),
+              PBreadcrumbsWithHeading(returnToPreviousScreen: true, heading: 'Thêm thương hiệu', breadcrumbItems: [{ 'label': 'Danh sách thương hiệu', 'path': PRoutes.brands }, 'Thêm thương hiệu']),
               SizedBox(height: PSizes.spaceBtwSections),
 
               // Form
