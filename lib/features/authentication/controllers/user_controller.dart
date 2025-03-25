@@ -5,8 +5,7 @@ import 'package:pine_admin_panel/utils/popups/loaders.dart';
 
 class UserController extends GetxController {
   static UserController get instance => Get.find();
-  
-  // Observable variables
+
   RxBool loading = false.obs;
   Rx<UserModel> user = UserModel.empty().obs;
   

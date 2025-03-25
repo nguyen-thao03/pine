@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:pine_admin_panel/common/widgets/containers/rounded_container.dart';
+import 'package:pine_admin_panel/features/shop/controllers/category_controller.dart';
+import 'package:pine_admin_panel/features/shop/controllers/edit_category_controller.dart';
 import 'package:pine_admin_panel/utils/constants/sizes.dart';
 import 'package:pine_admin_panel/utils/validators/validation.dart';
 
@@ -16,10 +19,14 @@ class EditCategoryForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final editController = Get.put(EditCategoryController());
+    Future.microtask(() => editController.init(category));
+    final categoryController = Get.put(CategoryController());
     return PRoundedContainer(
       width: 500,
       padding: const EdgeInsets.all(PSizes.defaultSpace),
       child: Form(
+        key: editController.formKey,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -30,50 +37,63 @@ class EditCategoryForm extends StatelessWidget {
 
             // Name Text Field
             TextFormField(
+              controller: editController.name,
               validator: (value) => PValidator.validateEmptyText('Tên', value),
               decoration: const InputDecoration(labelText: 'Tên danh mục', prefixIcon: Icon(Iconsax.category)),
             ),
 
             const SizedBox(height: PSizes.spaceBtwInputFields),
 
-            DropdownButtonFormField(
-              decoration: const InputDecoration(
-                hintText: 'Danh mục cha',
-                labelText: 'Danh mục cha',
-                prefixIcon: Icon(Iconsax.bezier),
+            Obx(
+                  () => DropdownButtonFormField<CategoryModel>(
+                decoration: const InputDecoration(
+                  hintText: 'Danh mục cha',
+                  labelText: 'Danh mục cha',
+                  prefixIcon: Icon(Iconsax.bezier),
+                ),
+                onChanged: (newValue) => editController.selectedParent.value = newValue!,
+
+                value: editController.selectedParent.value.id.isNotEmpty ? editController.selectedParent.value : null,
+
+                items: [
+                  DropdownMenuItem(
+                    value: CategoryModel(id: "", name: "Không có", image: ""),
+                    child: const Text("Không có"),
+                  ),
+                  ...categoryController.allItems.map(
+                        (item) => DropdownMenuItem(
+                      value: item,
+                      child: Text(item.name),
+                    ),
+                  ),
+                ],
               ),
-              onChanged: (newValue) {},
-              items: const [
-                DropdownMenuItem(
-                  value: '',
-                  child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [Text('item.name')]),
-                )
-              ],
             ),
+
             const SizedBox(height: PSizes.spaceBtwInputFields * 2),
-            PImageUploader(
-              width: 80,
-              height: 80,
-              image: PImages.defaultImage,
-              imageType: ImageType.asset,
-              onIconButtonPressed: () {},
+            Obx(
+              () => PImageUploader(
+                width: 80,
+                height: 80,
+                image: editController.imageURL.value.isNotEmpty ? editController.imageURL.value : PImages.defaultImage,
+                imageType: editController.imageURL.value.isNotEmpty ? ImageType.network : ImageType.asset,
+                onIconButtonPressed: () => editController.pickImage(),
+              ),
             ),
             const SizedBox(height: PSizes.spaceBtwInputFields),
 
-            CheckboxMenuButton(
-              value: true,
-              onChanged: (value) {},
-              child: const Text('Nổi bật'),
+            Obx(
+              () => CheckboxMenuButton(
+                value: editController.isFeatured.value,
+                onChanged: (value) => editController.isFeatured.value = value ?? false,
+                child: const Text('Nổi bật'),
+              ),
             ),
             const SizedBox(height: PSizes.spaceBtwInputFields * 2),
-
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(onPressed: () {}, child: const Text('Cập nhật')),
-            ),
-
+          SizedBox(
+                width: double.infinity,
+                child: ElevatedButton(onPressed: () => editController.updateCategory(category), child: const Text('Cập nhật')),
+              ),
             const SizedBox(height: PSizes.spaceBtwInputFields * 2),
           ],
         ),

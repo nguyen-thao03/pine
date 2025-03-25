@@ -32,7 +32,7 @@ class OrderTransaction extends StatelessWidget {
                   child: Row(
                     children: [
                       const PRoundedImage(
-                          imageType: ImageType.asset, image: PImages.googlePay),
+                          imageType: ImageType.asset, image: PImages.cashOnDelivery),
                       Expanded(
                           child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -61,7 +61,7 @@ class OrderTransaction extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text('Tổng', style: Theme.of(context).textTheme.labelMedium),
-                  Text('${order.totalAmount}đ',
+                  Text('265,000đ',
                       style: Theme.of(context).textTheme.bodyLarge),
                 ],
               )),

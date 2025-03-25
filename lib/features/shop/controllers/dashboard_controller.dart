@@ -17,31 +17,31 @@ class DashboardController extends GetxController {
     OrderModel(
         id: 'P0012',
         status: OrderStatus.pending,
-        totalAmount: 265.000,
+        totalAmount: 265000,
         orderDate: DateTime(2025, 2, 20),
         deliveryDate: DateTime(2025, 2, 20), items: []),
     OrderModel(
         id: 'P0025',
         status: OrderStatus.processing,
-        totalAmount: 369.000,
+        totalAmount: 369000,
         orderDate: DateTime(2024, 5, 21),
         deliveryDate: DateTime(2024, 5, 21), items: []),
     OrderModel(
         id: 'P0152',
         status: OrderStatus.delivered,
-        totalAmount: 254.000,
+        totalAmount: 254000,
         orderDate: DateTime(2024, 5, 22),
         deliveryDate: DateTime(2024, 5, 22), items: []),
     OrderModel(
         id: 'P0256',
         status: OrderStatus.processing,
-        totalAmount: 355.000,
+        totalAmount: 355000,
         orderDate: DateTime(2024, 5, 23),
         deliveryDate: DateTime(2024, 5, 23), items: []),
     OrderModel(
         id: 'P1536',
         status: OrderStatus.cancelled,
-        totalAmount: 115.000,
+        totalAmount: 115000,
         orderDate: DateTime(2024, 5, 24),
         deliveryDate: DateTime(2024, 5, 24), items: []),
   ];

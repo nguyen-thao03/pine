@@ -33,38 +33,30 @@ class LoginController extends GetxController {
   /// Handles email and password sign-in process
   Future<void> emailAndPasswordSignIn() async {
     try {
-      // Start Loading
       PFullScreenLoader.openLoadingDialog('Đang đăng nhập...', PImages.docerAnimation);
-
-      // Check Internet Connectivity
       final isConnected = await NetworkManager.instance.isConnected();
       if (!isConnected) {
         PFullScreenLoader.stopLoading();
         return;
       }
 
-      // Form Validation
       if (!loginFormKey.currentState!.validate()) {
         PFullScreenLoader.stopLoading();
         return;
       }
 
-      // Save Data if Remember Me is selected
       if (rememberMe.value) {
         localStorage.write('REMEMBER_ME-EMAIL', email.text.trim());
         localStorage.write('REMEMBER_ME-PASSWORD', password.text.trim());
       }
 
-      // Login user using Email & Password Authentication
       await AuthenticationRepository.instance.loginWithEmailAndPassword(email.text.trim(), password.text.trim());
 
-      // Fetch user details and assign to UserController
       final user = await UserController.instance.fetchUserDetails();
 
-      // Remove Loader
       PFullScreenLoader.stopLoading();
 
-      // If user is not admin, logout and return
+
       if (user.role != AppRole.admin) {
         await AuthenticationRepository.instance.logout();
         PLoaders.errorSnackBar(title: 'Không được ủy quyền', message: 'Bạn không được ủy quyền hoặc có quyền truy cập. Liên hệ với quản trị viên');
@@ -81,10 +73,8 @@ class LoginController extends GetxController {
   /// Handles registration of admin user
   Future<void> registerAdmin() async {
     try {
-      // Start Loading
       PFullScreenLoader.openLoadingDialog('Đăng ký tài khoản admin...', PImages.docerAnimation);
 
-      // Check Internet Connectivity
       final isConnected = await NetworkManager.instance.isConnected();
       if (!isConnected) {
         PFullScreenLoader.stopLoading();
@@ -94,7 +84,7 @@ class LoginController extends GetxController {
       // Register user using Email & Password Authentication
       await AuthenticationRepository.instance.registerWithEmailAndPassword(PTexts.adminEmail, PTexts.adminPassword);
 
-      // Create admin record in the Firestore
+
       final userRepository = Get.put(UserRepository());
       await userRepository.createUser(
         UserModel(

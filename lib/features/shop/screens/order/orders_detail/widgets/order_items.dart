@@ -65,7 +65,7 @@ class OrderItems extends StatelessWidget {
                     const SizedBox(width: PSizes.spaceBtwItems),
                     SizedBox(
                       width: PSizes.xl * 2,
-                      child: Text('${item.price.toStringAsFixed(1)}đ', style: Theme.of(context).textTheme.bodyLarge),
+                      child: Text('250,000đ', style: Theme.of(context).textTheme.bodyLarge),
                     ),
                     SizedBox(
                       width: PDeviceUtils.isMobileScreen(context) ? PSizes.xl * 1.4 : PSizes.xl * 2,
@@ -73,7 +73,7 @@ class OrderItems extends StatelessWidget {
                     ),
                     SizedBox(
                       width: PDeviceUtils.isMobileScreen(context) ? PSizes.xl * 1.4 : PSizes.xl * 2,
-                      child: Text('${item.totalAmount}đ', style: Theme.of(context).textTheme.bodyLarge),
+                      child: Text('250,000đ', style: Theme.of(context).textTheme.bodyLarge),
                     ),
                   ],
                 );
@@ -91,7 +91,7 @@ class OrderItems extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text('Tạm tính', style: Theme.of(context).textTheme.titleLarge),
-                    Text('$subTotalđ', style: Theme.of(context).textTheme.titleLarge),
+                    Text('250,000đ', style: Theme.of(context).textTheme.titleLarge),
                   ],
                 ),
                 const SizedBox(height: PSizes.spaceBtwItems),
@@ -120,7 +120,7 @@ class OrderItems extends StatelessWidget {
                   children: [
                     Text('Tổng', style: Theme.of(context).textTheme.titleLarge),
                     Text(
-                        '${PPricingCalculator.calculateTotalPrice(subTotal, '')}đ',
+                        '265,000đ',
                         style: Theme.of(context).textTheme.titleLarge),
                   ],
                 ),

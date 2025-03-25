@@ -24,13 +24,13 @@ class ProductsRows extends DataTableSource {
                 width: 50,
                   height: 50,
                   padding: PSizes.xs,
-                  image: PImages.banner1,
+                  image: PImages.productImage78,
                   imageType: ImageType.asset,
                 borderRadius: PSizes.borderRadiusMd,
                 backgroundColor: PColors.primaryBackground,
               ),
               const SizedBox(width: PSizes.spaceBtwItems),
-              Flexible(child: Text('Tiêu đề sản phẩm', style: Theme.of(Get.context!).textTheme.bodyLarge!.apply(color: PColors.primary))),
+              Flexible(child: Text('Nước ngọt 7up', style: Theme.of(Get.context!).textTheme.bodyLarge!.apply(color: PColors.primary))),
             ],
           )
         ),
@@ -44,7 +44,7 @@ class ProductsRows extends DataTableSource {
                 width: 35,
                   height: 35,
                   padding: PSizes.xs,
-                  image: PImages.lightAppLogo,
+                  image: PImages.cocacolaLogo,
                   imageType: ImageType.asset,
                 borderRadius: PSizes.borderRadiusMd,
                 backgroundColor: PColors.primaryBackground,
@@ -54,7 +54,7 @@ class ProductsRows extends DataTableSource {
             ],
           )
         ),
-        const DataCell(Text('150,000đ')),
+        const DataCell(Text('8,000đ')),
 
         DataCell(Text(DateTime.now().toString())),
 

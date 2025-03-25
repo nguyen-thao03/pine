@@ -23,7 +23,7 @@ class BrandRows extends DataTableSource {
                   width: 50,
                   height: 50,
                   padding: PSizes.sm,
-                  image: PImages.lightAppLogo,
+                  image: PImages.cocacolaLogo,
                   imageType: ImageType.asset,
                   borderRadius: PSizes.borderRadiusMd,
                   backgroundColor: PColors.primaryBackground,

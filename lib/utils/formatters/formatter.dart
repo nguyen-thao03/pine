@@ -3,55 +3,43 @@ import 'package:intl/intl.dart';
 class PFormatter {
   static String formatDate(DateTime? date) {
     date ??= DateTime.now();
-    final onlyDate = DateFormat('dd/MM/yyyy').format(date);
-    final onlyTime = DateFormat('hh:mm').format(date);
-    return '$onlyDate at $onlyTime';
+    return DateFormat('dd-MM-yyyy').format(date); // Định dạng ngày tháng kiểu Việt Nam
+    // Hoặc sử dụng DateFormat('dd/MM/yyyy') cho định dạng dd/MM/yyyy
   }
 
   static String formatCurrency(double amount) {
-    return NumberFormat.currency(locale: 'en_US', symbol: '\$').format(amount); // Customize the currency locale and symbol as needed
+    final format = NumberFormat.currency(locale: 'vi_VN', symbol: '₫'); // Định dạng tiền tệ Việt Nam
+    return format.format(amount);
   }
 
   static String formatPhoneNumber(String phoneNumber) {
-    // Assuming a 10-digit US phone number format: (123) 456-7890
-    if (phoneNumber.length == 10) {
-      return '(${phoneNumber.substring(0, 3)}) ${phoneNumber.substring(3, 6)} ${phoneNumber.substring(6)}';
-    } else if (phoneNumber.length == 11) {
-      return '(${phoneNumber.substring(0, 4)}) ${phoneNumber.substring(4, 7)} ${phoneNumber.substring(7)}';
+    // Loại bỏ các ký tự không phải là số
+    String cleanedPhoneNumber = phoneNumber.replaceAll(RegExp(r'[^\d]'), '');
+
+    // Định dạng số điện thoại Việt Nam
+    if (cleanedPhoneNumber.length == 10) {
+      return '0${cleanedPhoneNumber.substring(1, 4)} ${cleanedPhoneNumber.substring(4, 7)} ${cleanedPhoneNumber.substring(7)}';
     }
-    // Add more custom phone number formatting logic for different formats if needed.
+    // Nếu không đúng định dạng, trả về số gốc
     return phoneNumber;
   }
 
-  // Not fully tested.
+
   static String internationalFormatPhoneNumber(String phoneNumber) {
     // Remove any non-digit characters from the phone number
-    var digitsOnly = phoneNumber.replaceAll(RegExp(r'\D'), '');
+    String digitsOnly = phoneNumber.replaceAll(RegExp(r'\D'), '');
 
-    // Extract the country code from the digitsOnly
-    String countryCode = '+${digitsOnly.substring(0, 2)}';
-    digitsOnly = digitsOnly.substring(2);
-
-    // Add the remaining digits with proper formatting
-    final formattedNumber = StringBuffer();
-    formattedNumber.write('($countryCode) ');
-
-    int i = 0;
-    while (i < digitsOnly.length) {
-      int groupLength = 2;
-      if (i == 0 && countryCode == '+1') {
-        groupLength = 3;
-      }
-
-      int end = i + groupLength;
-      formattedNumber.write(digitsOnly.substring(i, end));
-
-      if (end < digitsOnly.length) {
-        formattedNumber.write(' ');
-      }
-      i = end;
+    // Nếu số điện thoại bắt đầu bằng '0', giữ nguyên
+    if (digitsOnly.startsWith('0')) {
+      return digitsOnly;
     }
-
-    return formattedNumber.toString();
+    // Nếu số điện thoại có 9 hoặc 10 chữ số (không có '0' ở đầu), thêm '0' vào đầu
+    else if (digitsOnly.length == 9 || digitsOnly.length == 10) {
+      return '0$digitsOnly';
+    }
+    // Trường hợp còn lại, trả về số điện thoại đã làm sạch (có thể là số không hợp lệ)
+    else {
+      return digitsOnly;
+    }
   }
 }

@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:pine_admin_panel/utils/formatters/formatter.dart';
 
 class CategoryModel {
   String id;
@@ -18,6 +19,9 @@ class CategoryModel {
     this.createdAt,
     this.updatedAt,
   });
+
+  String get formattedDate => PFormatter.formatDate(createdAt);
+  String get formattedUpdatedDate => PFormatter.formatDate(updatedAt);
 
   /// Empty Helper Function
   static CategoryModel empty() => CategoryModel(id: '', name: '', image: '', isFeatured: false);

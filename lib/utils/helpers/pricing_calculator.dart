@@ -13,7 +13,7 @@ class PPricingCalculator {
   /// -- Calculate shipping cost
   static String calculateShippingCost(double productPrice, String location) {
   double shippingCost = getShippingCost(location);
-  return shippingCost.toStringAsFixed(2);
+  return shippingCost.toStringAsFixed(0);
   }
 
   static double getShippingCost(String location) {

@@ -14,7 +14,6 @@ class UserRepository extends GetxController {
 
   final _db = FirebaseFirestore.instance;
 
-  /// Function to save user data to Firestore
   Future<void> createUser(UserModel user) async {
     try {
       await _db.collection('Users').doc(user.id).set(user.toJson());
@@ -29,7 +28,6 @@ class UserRepository extends GetxController {
     }
   }
 
-  /// Function to fetch user details based on user ID.
   Future<UserModel> fetchAdminDetails() async {
     try {
       final docSnapshot = await _db.collection('Users').doc(AuthenticationRepository.instance.authUser!.uid).get();

@@ -29,6 +29,7 @@ class PImages {
   static const String furnitureIcon = "assets/icons/categories/icons8-dining-chair-64.png";
   static const String jeweleryIcon = "assets/icons/categories/icons8-sparkling-diamond-64.png";
   static const String electronicsIcon = "assets/icons/categories/icons8-smartphone-64.png";
+  static const String drinkIcon = "assets/icons/categories/soft-drink.png";
 
   // -- Brand Icons
   static const String nikeLogo = "assets/icons/brands/nike.png";
@@ -83,7 +84,7 @@ class PImages {
   static const String onBoardingImage3 = "assets/images/on_boarding_images/sammy-line-delivery.gif";
 
   // -- Products
-  static const String productImage1 = "assets/images/products/nike-shoes.png";
+  static const String productImage1 = "assets/images/products/7up.png";
   static const String productImage2 = "assets/images/products/product-1.png";
   static const String productImage3 = "assets/images/products/product-jacket.png";
   static const String productImage4 = "assets/images/products/product-jeans.png";
@@ -160,6 +161,7 @@ class PImages {
   static const String productImage75 = "assets/images/products/slipper-product-2.png";
   static const String productImage76 = "assets/images/products/slipper-product-3.png";
   static const String productImage77= "assets/images/products/slipper-product.png";
+  static const String productImage78 = "assets/images/products/7up.png";
 
 
 
@@ -181,6 +183,7 @@ class PImages {
 
   // -- Payment Methods
   static const String applePay = "assets/icons/payment_methods/apple-pay.png";
+  static const String cashOnDelivery = "assets/icons/payment_methods/cash-on-delivery.png";
   static const String googlePay = "assets/icons/payment_methods/google-pay.png";
   static const String creditCard = "assets/icons/payment_methods/credit-card.png";
   static const String masterCard = "assets/icons/payment_methods/master-card.png";

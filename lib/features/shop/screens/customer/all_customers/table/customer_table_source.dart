@@ -23,7 +23,7 @@ class CustomerRows extends DataTableSource {
                 width: 50,
                   height: 50,
                   padding: PSizes.sm,
-                  image: PImages.lightAppLogo,
+                  image: PImages.user,
                   imageType: ImageType.network,
                 borderRadius: PSizes.borderRadiusMd,
                 backgroundColor: PColors.primaryBackground,

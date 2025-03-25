@@ -21,7 +21,7 @@ class CartItemModel {
   });
 
   /// Calculate Total Amount
-  String get totalAmount => (price * quantity).toStringAsFixed(1);
+  double get totalAmount => price * quantity;
 
   static CartItemModel empty() => CartItemModel(productId: '', quantity: 0);
 

@@ -77,7 +77,7 @@ class MediaUploader extends StatelessWidget {
                               const Text('Kéo thả hình ảnh'),
                               const SizedBox(height: PSizes.spaceBtwItems),
                               OutlinedButton(
-                                  onPressed: () {},
+                                  onPressed: () => controller.selectLocalImages(),
                                   child: const Text('Chọn hình ảnh')),
                             ],
                           ),

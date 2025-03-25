@@ -5,7 +5,6 @@ import 'package:pine_admin_panel/routes/routes.dart';
 import '../common/widgets/layouts/sidebars/sidebar_controller.dart';
 
  class RouteObservers extends GetObserver {
-   /// Called when a route is popped from the navigation stack
    @override
    void didPop(Route<dynamic>? route, Route<dynamic>? previousRoute) {
      final sidebarController = Get.put(SidebarController());

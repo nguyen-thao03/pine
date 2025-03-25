@@ -12,7 +12,7 @@ class EditCategoryScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final category = CategoryModel(id: '', name: '', image: '');
+    final category = Get.arguments;
     return PSiteTemplate(
         desktop: EditCategoryDesktopScreen(category: category),
         tablet: EditCategoryTabletScreen(category: category),

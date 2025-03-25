@@ -6,6 +6,7 @@ import '../../../../../../common/widgets/containers/rounded_container.dart';
 import '../../../../../../common/widgets/data_table/table_header.dart';
 import '../../../../../../routes/routes.dart';
 import '../../../../../../utils/constants/sizes.dart';
+import '../../../../controllers/category_controller.dart';
 import '../table/category_table.dart';
 
 class CategoriesMobileScreen extends StatelessWidget {
@@ -13,6 +14,7 @@ class CategoriesMobileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final controller = Get.put(CategoryController());
     return Scaffold(
       body: SingleChildScrollView(
         child: Padding(
@@ -31,7 +33,11 @@ class CategoriesMobileScreen extends StatelessWidget {
                   child: Column(
                     children: [
                       // Table Header
-                      PTableHeader(buttonText: 'Tạo danh mục', onPressed: () => Get.toNamed(PRoutes.createCategory)),
+                      PTableHeader(buttonText: 'Tạo danh mục',
+                          onPressed: () => Get.toNamed(PRoutes.createCategory),
+                          searchController: controller.searchTextController,
+                          searchOnChanged: (query) => controller.searchQuery(query)
+                      ),
                       const SizedBox(height: PSizes.spaceBtwItems),
 
                       // Table

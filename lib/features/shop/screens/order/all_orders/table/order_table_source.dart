@@ -39,7 +39,8 @@ class OrderRows extends DataTableSource {
           )
         ),
 
-        DataCell(Text('${order.totalAmount}đ')),
+        //DataCell(Text('${order.totalAmount}đ')),
+        DataCell(Text('250,000đ')),
         DataCell(
           PTableActionButtons(
             view: true,
