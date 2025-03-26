@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:pine_admin_panel/common/widgets/chips/rounded_choice_chips.dart';
 import 'package:pine_admin_panel/common/widgets/containers/rounded_container.dart';
 import 'package:pine_admin_panel/common/widgets/images/image_uploader.dart';
+import 'package:pine_admin_panel/features/shop/controllers/category_controller.dart';
+import 'package:pine_admin_panel/features/shop/controllers/create_brand_controller.dart';
 import 'package:pine_admin_panel/utils/constants/enums.dart';
 import 'package:pine_admin_panel/utils/constants/image_strings.dart';
 import 'package:pine_admin_panel/utils/validators/validation.dart';
@@ -14,10 +17,12 @@ class CreateBrandForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final controller = Get.put(CreateBrandController());
     return PRoundedContainer(
       width: 500,
       padding: const EdgeInsets.all(PSizes.defaultSpace),
       child: Form(
+        key: controller.formKey,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -28,6 +33,8 @@ class CreateBrandForm extends StatelessWidget {
 
               // Name Text Field
               TextFormField(
+                controller: controller.name,
+                validator: (value) => PValidator.validateEmptyText('Tên', value),
                 decoration: const InputDecoration(labelText: 'Tên thương hiệu', prefixIcon: Icon(Iconsax.box)),
               ),
               const SizedBox(height: PSizes.spaceBtwInputFields),
@@ -35,42 +42,48 @@ class CreateBrandForm extends StatelessWidget {
               // Categories
               Text('Chọn danh mục', style: Theme.of(context).textTheme.titleMedium),
               const SizedBox(height: PSizes.spaceBtwInputFields / 2),
-              Wrap(
-                spacing: PSizes.sm,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: PSizes.sm),
-                    child: PChoiceChip(text: 'Đồ uống', selected: false, onSelected: (values) {}),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: PSizes.sm),
-                    child: PChoiceChip(text: 'Đông lạnh', selected: false, onSelected: (values) {}),
-                  ),
-                ],
+              Obx(
+                () => Wrap(
+                  spacing: PSizes.sm,
+                  children: CategoryController.instance.allItems
+                  .map((category) =>
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: PSizes.sm),
+                      child: PChoiceChip(
+                          text: category.name,
+                          selected: controller.selectedCategories.contains(category),
+                          onSelected: (values) => controller.toggleSelection(category)),
+                    ),
+                  ).toList(),
+
+                ),
               ),
               const SizedBox(height: PSizes.spaceBtwInputFields * 2),
 
-              PImageUploader(
-                width: 80,
-                height: 80,
-                image: PImages.defaultImage,
-                imageType: ImageType.asset,
-                onIconButtonPressed: (){},
+              Obx(
+                () => PImageUploader(
+                  width: 80,
+                  height: 80,
+                  image: controller.imageURL.value.isNotEmpty ? controller.imageURL.value : PImages.defaultImage,
+                  imageType: controller.imageURL.value.isNotEmpty ? ImageType.network : ImageType.asset,
+                  onIconButtonPressed: () => controller.pickImage(),
+                ),
               ),
               const SizedBox(height: PSizes.spaceBtwInputFields),
 
-              CheckboxMenuButton(
-                value: true,
-                onChanged: (value){},
-                child: const Text('Nổi bật'),
+              Obx(
+                () => CheckboxMenuButton(
+                  value: controller.isFeatured.value,
+                  onChanged: (value) => controller.isFeatured.value = value ?? false,
+                  child: const Text('Nổi bật'),
+                ),
               ),
               const SizedBox(height: PSizes.spaceBtwInputFields * 2),
 
               SizedBox(
                 width: double.infinity,
-                child: ElevatedButton(onPressed: (){}, child: const Text('Thêm')),
+                child: ElevatedButton(onPressed: () => controller.createBrand(), child: const Text('Thêm')),
               ),
-
 
               const SizedBox(height: PSizes.spaceBtwInputFields * 2),
             ],

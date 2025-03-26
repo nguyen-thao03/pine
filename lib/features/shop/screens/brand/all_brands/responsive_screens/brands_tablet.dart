@@ -4,8 +4,10 @@ import 'package:get/get.dart';
 import '../../../../../../common/widgets/breadcrumbs/breadcrumb_with_heading.dart';
 import '../../../../../../common/widgets/containers/rounded_container.dart';
 import '../../../../../../common/widgets/data_table/table_header.dart';
+import '../../../../../../common/widgets/loaders/loader_animation.dart';
 import '../../../../../../routes/routes.dart';
 import '../../../../../../utils/constants/sizes.dart';
+import '../../../../controllers/brand_controller.dart';
 import '../table/brand_table.dart';
 
 class BrandsTabletScreen extends StatelessWidget {
@@ -13,6 +15,7 @@ class BrandsTabletScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final controller = Get.put(BrandController());
     return Scaffold(
       body: SingleChildScrollView(
         child: Padding(
@@ -34,7 +37,10 @@ class BrandsTabletScreen extends StatelessWidget {
                     const SizedBox(height: PSizes.spaceBtwItems),
 
                     // Table
-                    BrandTable(),
+                    Obx(() {
+                      if (controller.isLoading.value) return const PLoaderAnimation();
+                      return const BrandTable();
+                    }),
                   ],
                 ),
               ),

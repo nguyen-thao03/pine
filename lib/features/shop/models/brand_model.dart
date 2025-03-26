@@ -54,6 +54,8 @@ class BrandModel {
       image: data['Image'] ?? '',
       isFeatured: data['IsFeatured'] ?? false,
       productsCount: int.parse((data['ProductsCount'] ?? 0).toString()),
+      createdAt: data.containsKey('CreatedAt') ? data['CreatedAt']?.toDate() : null,
+      updatedAt: data.containsKey('UpdatedAt') ? data['UpdatedAt']?.toDate() : null,
     );
   }
 

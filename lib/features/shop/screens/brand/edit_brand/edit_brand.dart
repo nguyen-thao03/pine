@@ -11,7 +11,7 @@ class EditBrandScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final brand = BrandModel(id: 'id', image: 'image', name: 'name');
+    final brand = Get.arguments;
     return PSiteTemplate(
         desktop: EditBrandDesktopScreen(brand: brand),
         tablet: EditBrandTabletScreen(brand: brand),

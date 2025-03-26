@@ -25,7 +25,7 @@ class CategoryTable extends StatelessWidget {
                     controller.sortByName(columnIndex, ascending)),
             DataColumn2(label: const Text('Danh mục cha'),
                 onSort: (columnIndex, ascending) =>
-                    controller.sortByParentName(columnIndex, ascending)),
+                    controller.sortByName(columnIndex, ascending)),
             const DataColumn2(label: Text('Nổi bật')),
             const DataColumn2(label: Text('Ngày')),
             const DataColumn2(label: Text('Hành động'), fixedWidth: 100),
