@@ -14,6 +14,11 @@ class OrderDetailController extends GetxController {
   Future<void> getCustomerOfCurrentOrder() async {
     try {
       loading.value = true;
+      if (order.value.userId.isEmpty) {
+        throw 'User ID is empty';
+      }
+
+      print('Fetching user details for userId: ${order.value.userId}');
       final user = await UserRepository.instance.fetchUserDetails(order.value.userId);
 
       customer.value = user;
@@ -23,4 +28,5 @@ class OrderDetailController extends GetxController {
       loading.value = false;
     }
   }
+
 }

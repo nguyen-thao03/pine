@@ -49,7 +49,7 @@ class UserModel {
       'LastName': lastName,
       'Username': userName,
       'Email': email,
-      'PhoneNumber': phoneNumber,
+      'PhoneNumber': phoneNumber.trim().replaceAll(' ', ''),
       'ProfilePicture': profilePicture,
       'Role': role.name.toString(),
       'CreatedAt': createdAt,

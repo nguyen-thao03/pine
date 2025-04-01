@@ -50,7 +50,9 @@ class DashboardDesktopScreen extends StatelessWidget {
                             headingIconBgColor: Colors.green.withValues(alpha: 0.1),
                             context: context,
                             title: 'Giá trị đơn hàng trung bình',
-                            subTitle: '${(controller.orderController.allItems.fold(0.0, (previousValue, element) => previousValue + element.totalAmount) / controller.orderController.allItems.length)}đ',
+                            subTitle: controller.orderController.allItems.isNotEmpty
+                                ? '${(controller.orderController.allItems.fold(0.0, (previousValue, element) => previousValue + element.totalAmount) / controller.orderController.allItems.length).toStringAsFixed(2)}đ'
+                                : '0.00đ',
                             stats: 15,
                           icon: Iconsax.arrow_down,
                           color: PColors.error,
@@ -70,14 +72,16 @@ class DashboardDesktopScreen extends StatelessWidget {
                       )),
                   SizedBox(width: PSizes.spaceBtwItems),
                   Expanded(
-                      child: PDashboardCard(
-                          headingIcon: Iconsax.user,
-                          headingIconColor: Colors.deepOrange,
-                          headingIconBgColor: Colors.deepOrange.withValues(alpha: 0.1),
-                          context: context,
-                          title: 'Người dùng',
-                          subTitle: controller.customerController.allItems.length.toString(),
-                          stats: 2)),
+                      child: Obx(
+                        () => PDashboardCard(
+                            headingIcon: Iconsax.user,
+                            headingIconColor: Colors.deepOrange,
+                            headingIconBgColor: Colors.deepOrange.withValues(alpha: 0.1),
+                            context: context,
+                            title: 'Người dùng',
+                            subTitle: '${controller.customerController.allItems.length}',
+                            stats: 2),
+                      )),
                 ],
               ),
               const SizedBox(height: PSizes.spaceBtwSections),

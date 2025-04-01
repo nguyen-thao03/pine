@@ -14,6 +14,9 @@ import '../features/shop/screens/brand/edit_brand/edit_brand.dart';
 import '../features/shop/screens/category/all_categories/categories.dart';
 import '../features/shop/screens/category/create_category/create_category.dart';
 import '../features/shop/screens/category/edit_category/edit_category.dart';
+import '../features/shop/screens/coupon/all_coupons/coupons.dart';
+import '../features/shop/screens/coupon/create_coupon/create_coupon.dart';
+import '../features/shop/screens/coupon/edit_coupon/edit_coupon.dart';
 import '../features/shop/screens/customer/all_customers/customers.dart';
 import '../features/shop/screens/customer/customer_detail/customer.dart';
 import '../features/shop/screens/dashboard/dashboard.dart';
@@ -55,6 +58,11 @@ class PAppRoute {
       GetPage(name: PRoutes.createBrand, page: () => const CreateBrandScreen(), middlewares: [PRouteMiddleware()]),
       GetPage(name: PRoutes.editBrand, page: () => const EditBrandScreen(), middlewares: [PRouteMiddleware()]),
 
+    //Coupons
+    GetPage(name: PRoutes.coupons, page: () => const CouponsScreen(), middlewares: [PRouteMiddleware()]),
+    GetPage(name: PRoutes.createCoupon, page: () => const CreateCouponScreen(), middlewares: [PRouteMiddleware()]),
+    GetPage(name: PRoutes.editCoupon, page: () => const EditCouponScreen(), middlewares: [PRouteMiddleware()]),
+
      //Customers
       GetPage(name: PRoutes.customers, page: () => const CustomersScreen(), middlewares: [PRouteMiddleware()]),
       GetPage(name: PRoutes.customerDetails, page: () => const CustomerDetailScreen(), middlewares: [PRouteMiddleware()]),
@@ -63,7 +71,6 @@ class PAppRoute {
       GetPage(name: PRoutes.orders, page: () => const OrdersScreen(), middlewares: [PRouteMiddleware()]),
       GetPage(name: PRoutes.orderDetails, page: () => const OrderDetailScreen(), middlewares: [PRouteMiddleware()]),
 
-    GetPage(name: PRoutes.settings, page: () => const SettingsScreen(), middlewares: [PRouteMiddleware()]),
     GetPage(name: PRoutes.profile, page: () => const ProfileScreen(), middlewares: [PRouteMiddleware()]),
   ];
 }

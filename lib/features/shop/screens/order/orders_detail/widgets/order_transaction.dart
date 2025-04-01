@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:pine_admin_panel/features/shop/models/order_model.dart';
 import 'package:pine_admin_panel/utils/device/device_utility.dart';
 
@@ -16,6 +17,9 @@ class OrderTransaction extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final currencyFormatter = NumberFormat.simpleCurrency(locale: 'vi_VN', decimalDigits: 0);
+    final formattedDate = DateFormat('dd/MM/yyyy').format(order.orderDate);
+
     return PRoundedContainer(
       padding: const EdgeInsets.all(PSizes.defaultSpace),
       child: Column(
@@ -24,49 +28,62 @@ class OrderTransaction extends StatelessWidget {
           Text('Giao dịch', style: Theme.of(context).textTheme.headlineMedium),
           const SizedBox(height: PSizes.spaceBtwSections),
 
-          // Adjust as per your needs
+          // Chi tiết giao dịch
           Row(
             children: [
               Expanded(
-                  flex: PDeviceUtils.isMobileScreen(context) ? 2 : 1,
-                  child: Row(
-                    children: [
-                      const PRoundedImage(
-                          imageType: ImageType.asset, image: PImages.cashOnDelivery),
-                      Expanded(
-                          child: Column(
+                flex: PDeviceUtils.isMobileScreen(context) ? 2 : 1,
+                child: Row(
+                  children: [
+                    const PRoundedImage(
+                      imageType: ImageType.asset,
+                      image: PImages.cashOnDelivery,
+                    ),
+                    const SizedBox(width: PSizes.spaceBtwItems),
+                    Expanded(
+                      child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                              '${order.paymentMethod.capitalize}',
-                              style: Theme.of(context).textTheme.titleLarge),
-                          // Adjust your Payment Method Fee if any
-                          Text('${order.paymentMethod.capitalize}',
-                              style: Theme.of(context).textTheme.labelMedium),
+                            order.paymentMethod.capitalize ?? 'Không xác định',
+                            style: Theme.of(context).textTheme.titleLarge,
+                          ),
+                          Text(
+                            order.paymentMethod.capitalize ?? '',
+                            style: Theme.of(context).textTheme.labelMedium,
+                          ),
                         ],
-                      ))
-                    ],
-                  )),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
               Expanded(
-                  child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text('Ngày', style: Theme.of(context).textTheme.labelMedium),
-                  Text('${order.orderDate}',
-                      style: Theme.of(context).textTheme.bodyLarge),
-                ],
-              )),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text('Ngày', style: Theme.of(context).textTheme.labelMedium),
+                    Text(
+                      formattedDate,
+                      style: Theme.of(context).textTheme.bodyLarge,
+                    ),
+                  ],
+                ),
+              ),
               Expanded(
-                  child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text('Tổng', style: Theme.of(context).textTheme.labelMedium),
-                  Text('${order.totalAmount}',
-                      style: Theme.of(context).textTheme.bodyLarge),
-                ],
-              )),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text('Tổng', style: Theme.of(context).textTheme.labelMedium),
+                    Text(
+                      currencyFormatter.format(order.totalAmount),
+                      style: Theme.of(context).textTheme.bodyLarge!.copyWith(fontWeight: FontWeight.bold),
+                    ),
+                  ],
+                ),
+              ),
             ],
-          )
+          ),
         ],
       ),
     );

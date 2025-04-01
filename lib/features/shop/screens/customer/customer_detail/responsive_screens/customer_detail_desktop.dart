@@ -10,15 +10,28 @@ import '../widgets/customer_info.dart';
 import '../widgets/customer_orders.dart';
 import '../widgets/shipping_address.dart';
 
-class CustomerDetailDesktopScreen extends StatelessWidget {
+class CustomerDetailDesktopScreen extends StatefulWidget {
   const CustomerDetailDesktopScreen({super.key, required this.customer});
 
   final UserModel customer;
 
   @override
+  _CustomerDetailDesktopScreenState createState() => _CustomerDetailDesktopScreenState();
+}
+
+class _CustomerDetailDesktopScreenState
+    extends State<CustomerDetailDesktopScreen> {
+  late CustomerDetailController controller;
+
+  @override
+  void initState() {
+    super.initState();
+    controller = Get.put(CustomerDetailController());
+    controller.customer.value = widget.customer;
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final controller = Get.put(CustomerDetailController());
-    controller.customer.value = customer;
     return Scaffold(
       body: SingleChildScrollView(
         child: Padding(
@@ -29,8 +42,11 @@ class CustomerDetailDesktopScreen extends StatelessWidget {
               // Breadcrumbs
               PBreadcrumbsWithHeading(
                 returnToPreviousScreen: true,
-                  heading: customer.fullName,
-                  breadcrumbItems: [{ 'label': 'Danh sách người dùng', 'path': PRoutes.customers }, 'Chi tiết']
+                heading: widget.customer.fullName,
+                breadcrumbItems: [
+                  {'label': 'Danh sách người dùng', 'path': PRoutes.customers},
+                  'Chi tiết'
+                ],
               ),
               const SizedBox(height: PSizes.spaceBtwSections),
 
@@ -43,14 +59,13 @@ class CustomerDetailDesktopScreen extends StatelessWidget {
                       child: Column(
                         children: [
                           // Customer Info
-                          CustomerInfo(customer: customer),
+                          CustomerInfo(customer: widget.customer),
                           const SizedBox(height: PSizes.spaceBtwSections),
 
                           // Shipping Address
                           const ShippingAddress(),
                         ],
-                      )
-                  ),
+                      )),
                   const SizedBox(width: PSizes.spaceBtwSections),
 
                   // Right Side Customer Orders

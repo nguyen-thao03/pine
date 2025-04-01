@@ -96,7 +96,7 @@ class OrderInfo extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const Text('Tổng'),
-                      Text('${order.totalAmount}', style: Theme.of(context).textTheme.bodyLarge),
+                      Text(order.formattedCurrency, style: Theme.of(context).textTheme.bodyLarge),
                     ],
                   )
               ),

@@ -84,7 +84,11 @@ class OrderCustomer extends StatelessWidget {
                   const SizedBox(height: PSizes.spaceBtwSections / 2),
                   Text(controller.customer.value.email, style: Theme.of(context).textTheme.titleSmall),
                   const SizedBox(height: PSizes.spaceBtwSections / 2),
-                  Text(controller.customer.value.formattedPhoneNo.isNotEmpty ? controller.customer.value.formattedPhoneNo : '011 *** ****', style: Theme.of(context).textTheme.titleSmall),
+                  Text(controller.customer.value.formattedPhoneNo.isNotEmpty
+                      ? '${controller.customer.value.formattedPhoneNo.substring(0, 3)} *** ****'
+                      : 'Không có số điện thoại',
+                      style: Theme.of(context).textTheme.titleSmall),
+
                 ],
               ),
             ),

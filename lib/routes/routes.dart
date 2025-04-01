@@ -31,9 +31,11 @@ class PRoutes {
   static const orderDetails = '/orderDetails';
 
   static const coupons = '/coupons';
-  static const settings = '/settings';
+  static const createCoupon = '/createCoupon';
+  static const editCoupon = '/editCoupon';
+
   static const profile = '/profile';
 
   // Sidebar Menu Items List
-  static List sidebarMenuItems = [dashboard, media, categories, brands, banners, products, customers, orders, settings, profile];
+  static List sidebarMenuItems = [dashboard, media, categories, brands, banners, products, coupons, customers, orders, profile];
 }
