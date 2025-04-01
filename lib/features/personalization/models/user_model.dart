@@ -1,4 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:pine_admin_panel/features/personalization/models/address_model.dart';
+import 'package:pine_admin_panel/features/shop/models/order_model.dart';
 import 'package:pine_admin_panel/utils/constants/enums.dart';
 import 'package:pine_admin_panel/utils/formatters/formatter.dart';
 
@@ -14,6 +16,8 @@ class UserModel {
   AppRole role;
   DateTime? createdAt;
   DateTime? updatedAt;
+  List<OrderModel>? orders;
+  List<AddressModel>? addresses;
 
   /// Constructor for UserModel
   UserModel({
@@ -43,7 +47,7 @@ class UserModel {
     return {
       'FirstName': firstName,
       'LastName': lastName,
-      'UserName': userName,
+      'Username': userName,
       'Email': email,
       'PhoneNumber': phoneNumber,
       'ProfilePicture': profilePicture,
@@ -61,7 +65,7 @@ class UserModel {
         id: document.id,
         firstName: data.containsKey('FirstName') ? data['FirstName'] ?? '' : '',
         lastName: data.containsKey('LastName') ? data['LastName'] ?? '' : '',
-        userName: data.containsKey('UserName') ? data['UserName'] ?? '' : '',
+        userName: data.containsKey('Username') ? data['Username'] ?? '' : '',
         email: data.containsKey('Email') ? data['Email'] ?? '' : '',
         phoneNumber: data.containsKey('PhoneNumber') ? data['PhoneNumber'] ?? '' : '',
         profilePicture: data.containsKey('ProfilePicture') ? data['ProfilePicture'] ?? '' : '',

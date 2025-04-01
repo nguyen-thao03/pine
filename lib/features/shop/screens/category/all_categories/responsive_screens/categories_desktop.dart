@@ -6,7 +6,7 @@ import 'package:pine_admin_panel/common/widgets/loaders/loader_animation.dart';
 import 'package:pine_admin_panel/routes/routes.dart';
 import 'package:pine_admin_panel/utils/constants/sizes.dart';
 
-import '../../../../controllers/category_controller.dart';
+import '../../../../controllers/category/category_controller.dart';
 import '../table/category_table.dart';
 import '../../../../../../common/widgets/data_table/table_header.dart';
 

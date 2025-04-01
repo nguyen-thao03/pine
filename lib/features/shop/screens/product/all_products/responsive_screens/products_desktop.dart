@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pine_admin_panel/common/widgets/breadcrumbs/breadcrumb_with_heading.dart';
 import 'package:pine_admin_panel/common/widgets/containers/rounded_container.dart';
+import 'package:pine_admin_panel/common/widgets/loaders/loader_animation.dart';
+import 'package:pine_admin_panel/features/shop/controllers/product/product_controller.dart';
 import 'package:pine_admin_panel/routes/routes.dart';
 import 'package:pine_admin_panel/utils/constants/sizes.dart';
 
@@ -13,6 +15,7 @@ class ProductsDesktopScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final controller = Get.put(ProductController());
     return Scaffold(
       body: SingleChildScrollView(
         child: Padding(
@@ -25,19 +28,28 @@ class ProductsDesktopScreen extends StatelessWidget {
               const SizedBox(height: PSizes.spaceBtwSections),
         
               // Table Body
-              // Show Loader
-              PRoundedContainer(
-                  child: Column(
-                    children: [
-                      // Table Header
-                      PTableHeader(buttonText: 'Thêm sản phẩm', onPressed: () => Get.toNamed(PRoutes.createProduct)),
-                      const SizedBox(height: PSizes.spaceBtwItems),
-        
-                      // Table
-                      const ProductsTable(),
-                    ],
-                  ),
-                ),
+              Obx(
+                () {
+                  if (controller.isLoading.value) return const PLoaderAnimation();
+
+                    return PRoundedContainer(
+                      child: Column(
+                        children: [
+                          // Table Header
+                          PTableHeader(
+                              buttonText: 'Thêm sản phẩm',
+                              onPressed: () => Get.toNamed(PRoutes.createProduct),
+                            searchOnChanged: (query) => controller.searchQuery(query),
+                          ),
+                          const SizedBox(height: PSizes.spaceBtwItems),
+
+                          // Table
+                          const ProductsTable(),
+                        ],
+                      ),
+                    );
+                  }
+              ),
             ],
           ),
         ),

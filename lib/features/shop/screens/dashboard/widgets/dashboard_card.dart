@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:pine_admin_panel/common/widgets/containers/rounded_container.dart';
+import 'package:pine_admin_panel/common/widgets/icons/p_circular_icon.dart';
 import 'package:pine_admin_panel/common/widgets/texts/section_heading.dart';
 
 import '../../../../../utils/constants/colors.dart';
@@ -14,61 +15,40 @@ class PDashboardCard extends StatelessWidget {
       this.icon = Iconsax.arrow_up_3,
       this.color = PColors.success,
       required this.stats,
-      this.onTap});
+      this.onTap,
+      required this.context,
+      required this.headingIcon,
+      required this.headingIconColor,
+      required this.headingIconBgColor});
 
+  final BuildContext context;
   final String title, subTitle;
-  final IconData icon;
-  final Color color;
+  final IconData icon, headingIcon;
+  final Color color, headingIconColor, headingIconBgColor;
   final int stats;
   final void Function()? onTap;
 
   @override
   Widget build(BuildContext context) {
     return PRoundedContainer(
-      onTap: onTap,
-      padding: const EdgeInsets.all(PSizes.lg),
-      child: Column(
-        children: [
-          /// Heading
-          PSectionHeading(title: title, textColor: PColors.textSecondary),
-          const SizedBox(height: PSizes.spaceBtwSections),
-
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(subTitle, style: Theme.of(context).textTheme.headlineMedium),
-
-              /// Right Side Stats
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  /// Indicator
-                  SizedBox(
-                    child: Row(
-                      children: [
-                        Icon(icon, color: color, size: PSizes.iconSm),
-                        Text(
-                          '$stats%',
-                          style: Theme.of(context).textTheme.titleLarge!.apply(color: color, overflow: TextOverflow.ellipsis),
-                        ),
-                      ],
-                    ),
-                  ),
-                  SizedBox(
-                    width: 135,
-                    child: Text(
-                      'So với tháng 12/2024',
-                      style:
-                      Theme.of(context).textTheme.labelMedium,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  )
-                ],
-              )
-            ],
-          )
-        ],
-      ),
-    );
+        onTap: onTap,
+        padding: const EdgeInsets.all(PSizes.lg),
+        child: Column(
+          children: [
+            Row(
+              children: [
+                PCircularIcon(
+                  icon: headingIcon,
+                  backgroundColor: headingIconBgColor,
+                  color: headingIconColor,
+                  size: PSizes.md,
+                ),
+                const SizedBox(width: PSizes.spaceBtwItems),
+                PSectionHeading(title: title, textColor: PColors.textSecondary),
+              ],
+            ),
+            const SizedBox(height: PSizes.spaceBtwSections),
+          ],
+        ));
   }
 }

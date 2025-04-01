@@ -7,7 +7,7 @@ import '../../../../../../common/widgets/data_table/table_header.dart';
 import '../../../../../../common/widgets/loaders/loader_animation.dart';
 import '../../../../../../routes/routes.dart';
 import '../../../../../../utils/constants/sizes.dart';
-import '../../../../controllers/brand_controller.dart';
+import '../../../../controllers/brand/brand_controller.dart';
 import '../table/brand_table.dart';
 
 class BrandsTabletScreen extends StatelessWidget {

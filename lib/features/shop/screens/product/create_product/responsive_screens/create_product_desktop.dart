@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pine_admin_panel/common/widgets/breadcrumbs/breadcrumb_with_heading.dart';
 import 'package:pine_admin_panel/common/widgets/containers/rounded_container.dart';
+import 'package:pine_admin_panel/features/shop/controllers/product/product_images_controller.dart';
 import 'package:pine_admin_panel/utils/constants/enums.dart';
 import 'package:pine_admin_panel/utils/constants/sizes.dart';
 import 'package:pine_admin_panel/utils/device/device_utility.dart';
@@ -24,16 +25,21 @@ class CreateProductDesktopScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final controller = Get.put(ProductImagesController());
+
     return Scaffold(
       bottomNavigationBar: const ProductBottomNavigationButtons(),
       body: SingleChildScrollView(
         child: Padding(
-            padding: EdgeInsets.all(PSizes.defaultSpace),
+            padding: const EdgeInsets.all(PSizes.defaultSpace),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // Breadcrumbs
-              const PBreadcrumbsWithHeading(returnToPreviousScreen: true, heading: 'Thêm sản phẩm', breadcrumbItems: [{ 'label': 'Danh sách sản phẩm', 'path': PRoutes.products }, 'Thêm sản phẩm']),
+              const PBreadcrumbsWithHeading(
+                  returnToPreviousScreen: true,
+                  heading: 'Thêm sản phẩm',
+                  breadcrumbItems: [{ 'label': 'Danh sách sản phẩm', 'path': PRoutes.products }, 'Thêm sản phẩm']),
               const SizedBox(height: PSizes.spaceBtwSections),
 
               // Create Product
@@ -97,9 +103,9 @@ class CreateProductDesktopScreen extends StatelessWidget {
                                 Text('Tất cả ảnh sản phẩm', style: Theme.of(context).textTheme.headlineSmall),
                                 const SizedBox(height: PSizes.spaceBtwItems),
                                 ProductAdditionalImages(
-                                  additionalProductImagesURLs: RxList<String>.empty(),
-                                  onTapToAddImages: (){},
-                                  onTapToRemoveImage: (index){},
+                                  additionalProductImagesURLs: controller.additionalProductImagesUrls,
+                                  onTapToAddImages: () => controller.selectMultipleProductImages(),
+                                  onTapToRemoveImage: (index) => controller.removeImage(index),
                                 ),
                               ],
                             ),

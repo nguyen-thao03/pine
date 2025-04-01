@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:pine_admin_panel/data/repositories/category_repository.dart';
 import 'package:pine_admin_panel/features/media/controllers/media_controller.dart';
 import 'package:pine_admin_panel/features/media/models/image_model.dart';
-import 'package:pine_admin_panel/features/shop/controllers/category_controller.dart';
+import 'package:pine_admin_panel/features/shop/controllers/category/category_controller.dart';
 import 'package:pine_admin_panel/features/shop/models/category_model.dart';
 import 'package:pine_admin_panel/utils/helpers/network_manager.dart';
 import 'package:pine_admin_panel/utils/popups/full_screen_loader.dart';

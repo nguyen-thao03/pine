@@ -52,7 +52,7 @@ class OrderTransaction extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text('Ngày', style: Theme.of(context).textTheme.labelMedium),
-                  Text('12/3/2025',
+                  Text('${order.orderDate}',
                       style: Theme.of(context).textTheme.bodyLarge),
                 ],
               )),
@@ -61,7 +61,7 @@ class OrderTransaction extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text('Tổng', style: Theme.of(context).textTheme.labelMedium),
-                  Text('265,000đ',
+                  Text('${order.totalAmount}',
                       style: Theme.of(context).textTheme.bodyLarge),
                 ],
               )),

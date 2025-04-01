@@ -3,12 +3,12 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:pine_admin_panel/features/shop/models/category_model.dart';
 
-import '../../../data/repositories/category_repository.dart';
-import '../../../utils/helpers/network_manager.dart';
-import '../../../utils/popups/full_screen_loader.dart';
-import '../../../utils/popups/loaders.dart';
-import '../../media/controllers/media_controller.dart';
-import '../../media/models/image_model.dart';
+import '../../../../data/repositories/category_repository.dart';
+import '../../../../utils/helpers/network_manager.dart';
+import '../../../../utils/popups/full_screen_loader.dart';
+import '../../../../utils/popups/loaders.dart';
+import '../../../media/controllers/media_controller.dart';
+import '../../../media/models/image_model.dart';
 import 'category_controller.dart';
 
 class EditCategoryController extends GetxController {

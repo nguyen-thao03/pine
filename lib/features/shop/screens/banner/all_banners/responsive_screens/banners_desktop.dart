@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:pine_admin_panel/common/widgets/loaders/loader_animation.dart';
+import 'package:pine_admin_panel/features/shop/controllers/banner/banner_controller.dart';
 import 'package:pine_admin_panel/features/shop/screens/banner/all_banners/table/banner_table.dart';
 
 import '../../../../../../common/widgets/breadcrumbs/breadcrumb_with_heading.dart';
@@ -13,6 +15,7 @@ class BannersDesktopScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final controller = Get.put(BannerController());
     return Scaffold(
       body: SingleChildScrollView(
         child: Padding(
@@ -26,17 +29,23 @@ class BannersDesktopScreen extends StatelessWidget {
 
               // Table Body
               // Show Loader
-              PRoundedContainer(
-                child: Column(
-                  children: [
-                    // Table Header
-                    PTableHeader(buttonText: 'Thêm banner', onPressed: () => Get.toNamed(PRoutes.createBanner)),
-                    const SizedBox(height: PSizes.spaceBtwItems),
+              Obx(() {
+                  if(controller.isLoading.value) return const PLoaderAnimation();
 
-                    // Table
-                    const BannersTable(),
-                  ],
-                ),
+                   return PRoundedContainer(
+                    child: Column(
+                      children: [
+                        // Table Header
+                        PTableHeader(buttonText: 'Thêm banner', onPressed: () => Get.toNamed(PRoutes.createBanner)),
+                        SizedBox(height: PSizes.spaceBtwItems),
+
+                        // Table
+                        BannersTable(),
+                      ],
+                    ),
+                  );
+
+                }
               ),
             ],
           ),

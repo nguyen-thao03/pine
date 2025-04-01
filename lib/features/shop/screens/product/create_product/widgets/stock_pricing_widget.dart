@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
+import 'package:pine_admin_panel/features/shop/controllers/product/create_product_controller.dart';
+import 'package:pine_admin_panel/utils/constants/enums.dart';
 import 'package:pine_admin_panel/utils/validators/validation.dart';
 
 import '../../../../../../utils/constants/sizes.dart';
@@ -9,7 +12,12 @@ class ProductStockAndPricing extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Form(
+    final controller = CreateProductController.instance;
+
+    return Obx(
+          () => controller.productType.value == ProductType.single
+          ? Form(
+        key: controller.stockPriceFormKey,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -17,10 +25,11 @@ class ProductStockAndPricing extends StatelessWidget {
             FractionallySizedBox(
               widthFactor: 0.45,
               child: TextFormField(
-                decoration: const InputDecoration(labelText: 'Kho', hintText: 'Thêm kho, chỉ được phép "số"'),
+                controller: controller.stock,
+                decoration: const InputDecoration(labelText: 'Kho', hintText: 'Thêm kho, chỉ được phép số',),
                 validator: (value) => PValidator.validateEmptyText('Kho', value),
                 keyboardType: TextInputType.number,
-                inputFormatters: <TextInputFormatter>[FilteringTextInputFormatter.digitsOnly],
+                inputFormatters: <TextInputFormatter>[FilteringTextInputFormatter.digitsOnly,],
               ),
             ),
             const SizedBox(height: PSizes.spaceBtwInputFields),
@@ -30,31 +39,36 @@ class ProductStockAndPricing extends StatelessWidget {
               children: [
                 // Price
                 Expanded(
-                    child: TextFormField(
-                      decoration: const InputDecoration(labelText: 'Giá', hintText: 'Nhập giá sản phẩm'),
-                      validator: (value) => PValidator.validateEmptyText('Giá', value),
-                      keyboardType: const TextInputType.numberWithOptions(decimal: true),
-                      inputFormatters: <TextInputFormatter>[
-                        FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0}đ')),
-                      ],
-                    ),
+                  child: TextFormField(
+                    controller: controller.price,
+                    decoration: const InputDecoration(labelText: 'Giá', hintText: 'Nhập giá sản phẩm',),
+                    validator: (value) => PValidator.validateEmptyText('Giá', value),
+                    keyboardType: TextInputType.number,
+                    inputFormatters: <TextInputFormatter>[FilteringTextInputFormatter.digitsOnly,],
+                  ),
                 ),
                 const SizedBox(width: PSizes.spaceBtwItems),
 
                 // Sale Price
                 Expanded(
                   child: TextFormField(
-                    decoration: const InputDecoration(labelText: 'Giảm giá', hintText: 'Nhập giá sản phẩm'),
-                    keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                    controller: controller.salePrice,
+                    decoration: const InputDecoration(
+                      labelText: 'Giảm giá',
+                      hintText: 'Nhập giá sản phẩm',
+                    ),
+                    keyboardType: TextInputType.number,
                     inputFormatters: <TextInputFormatter>[
-                      FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0}đ')),
+                      FilteringTextInputFormatter.digitsOnly, // Chỉ cho phép nhập số
                     ],
                   ),
                 ),
               ],
-            )
+            ),
           ],
-        )
+        ),
+      )
+          : const SizedBox.shrink(),
     );
   }
 }

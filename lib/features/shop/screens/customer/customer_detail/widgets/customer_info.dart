@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pine_admin_panel/common/widgets/containers/rounded_container.dart';
 import 'package:pine_admin_panel/common/widgets/images/p_rounded_image.dart';
-import 'package:pine_admin_panel/features/authentication/models/user_model.dart';
+import 'package:pine_admin_panel/features/personalization/models/user_model.dart';
 import 'package:pine_admin_panel/utils/constants/enums.dart';
 import 'package:pine_admin_panel/utils/constants/image_strings.dart';
 
@@ -22,15 +22,15 @@ class CustomerInfo extends StatelessWidget {
         children: [
           Text('Thông tin người dùng', style: Theme.of(context).textTheme.headlineMedium),
           const SizedBox(height: PSizes.spaceBtwSections),
-          
+
           // Personal Info Card
           Row(
             children: [
-              const PRoundedImage(
+              PRoundedImage(
                 padding: 0,
                   backgroundColor: PColors.primaryBackground,
-                  image: PImages.user,
-                  imageType: ImageType.asset,
+                  image: customer.profilePicture.isNotEmpty ? customer.profilePicture : PImages.user,
+                  imageType: customer.profilePicture.isNotEmpty ? ImageType.network : ImageType.asset,
               ),
               const SizedBox(width: PSizes.spaceBtwItems),
               Expanded(
@@ -38,8 +38,8 @@ class CustomerInfo extends StatelessWidget {
                     mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('Userpine', style: Theme.of(context).textTheme.titleLarge, overflow: TextOverflow.ellipsis, maxLines: 1),
-                      const Text('userpine@gmail.com', overflow: TextOverflow.ellipsis, maxLines: 1),
+                      Text(customer.fullName, style: Theme.of(context).textTheme.titleLarge, overflow: TextOverflow.ellipsis, maxLines: 1),
+                      Text(customer.email, overflow: TextOverflow.ellipsis, maxLines: 1),
                     ],
                   )
               )
@@ -53,16 +53,16 @@ class CustomerInfo extends StatelessWidget {
               const SizedBox(width: 120, child: Text('Tên người dùng')),
               const Text(':'),
               const SizedBox(width: PSizes.spaceBtwItems / 2),
-              Expanded(child: Text('user1', style: Theme.of(context).textTheme.titleMedium)),
+              Expanded(child: Text(customer.userName, style: Theme.of(context).textTheme.titleMedium)),
             ],
           ),
           const SizedBox(height: PSizes.spaceBtwItems),
           Row(
             children: [
-              const SizedBox(width: 120, child: Text('Thành phố')),
+              const SizedBox(width: 120, child: Text('Địa chỉ')),
               const Text(':'),
               const SizedBox(width: PSizes.spaceBtwItems / 2),
-              Expanded(child: Text('Đà Lạt', style: Theme.of(context).textTheme.titleMedium)),
+              Expanded(child: Text('Việt Nam', style: Theme.of(context).textTheme.titleMedium)),
             ],
           ),
           const SizedBox(height: PSizes.spaceBtwItems),
@@ -71,7 +71,7 @@ class CustomerInfo extends StatelessWidget {
               const SizedBox(width: 120, child: Text('Số điện thoại')),
               const Text(':'),
               const SizedBox(width: PSizes.spaceBtwItems / 2),
-              Expanded(child: Text('+84271830291', style: Theme.of(context).textTheme.titleMedium)),
+              Expanded(child: Text(customer.phoneNumber, style: Theme.of(context).textTheme.titleMedium)),
             ],
           ),
           const SizedBox(height: PSizes.spaceBtwItems),

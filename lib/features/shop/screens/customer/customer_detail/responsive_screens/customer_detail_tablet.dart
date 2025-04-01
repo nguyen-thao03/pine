@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../../../../../../common/widgets/breadcrumbs/breadcrumb_with_heading.dart';
 import '../../../../../../routes/routes.dart';
 import '../../../../../../utils/constants/sizes.dart';
-import '../../../../../authentication/models/user_model.dart';
+import '../../../../../personalization/models/user_model.dart';
 import '../widgets/customer_info.dart';
 import '../widgets/customer_orders.dart';
 import '../widgets/shipping_address.dart';

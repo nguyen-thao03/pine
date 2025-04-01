@@ -73,6 +73,7 @@ class PLoginForm extends StatelessWidget {
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(onPressed: () => controller.emailAndPasswordSignIn(), child: Text(PTexts.signIn)),
+              //child: ElevatedButton(onPressed: () => controller.registerAdmin(), child: Text('Đăng nhập Admin')),
             )
           ],
         ),

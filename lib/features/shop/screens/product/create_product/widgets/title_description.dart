@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:pine_admin_panel/common/widgets/containers/rounded_container.dart';
+import 'package:pine_admin_panel/features/shop/controllers/product/create_product_controller.dart';
 import 'package:pine_admin_panel/utils/validators/validation.dart';
 
 import '../../../../../../utils/constants/sizes.dart';
@@ -9,8 +11,11 @@ class ProductTitleAndDescription extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final controller = Get.put(CreateProductController());
+
     return PRoundedContainer(
       child: Form(
+        key: controller.titleDescriptionFormKey,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -20,6 +25,7 @@ class ProductTitleAndDescription extends StatelessWidget {
 
               // Product Title Input Field
               TextFormField(
+                controller: controller.title,
                 validator: (value) => PValidator.validateEmptyText('Tiêu đề sản phẩm', value),
                 decoration: const InputDecoration(labelText: 'Tiêu đề sản phẩm'),
               ),
@@ -32,6 +38,7 @@ class ProductTitleAndDescription extends StatelessWidget {
                   expands: true,
                   maxLines: null,
                   textAlign: TextAlign.start,
+                  controller: controller.description,
                   keyboardType: TextInputType.multiline,
                   textAlignVertical: TextAlignVertical.top,
                   validator: (value) => PValidator.validateEmptyText('Mô tả sản phẩm', value),

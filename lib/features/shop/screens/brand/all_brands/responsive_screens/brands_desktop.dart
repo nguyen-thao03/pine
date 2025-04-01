@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pine_admin_panel/common/widgets/loaders/loader_animation.dart';
-import 'package:pine_admin_panel/features/shop/controllers/brand_controller.dart';
+import 'package:pine_admin_panel/features/shop/controllers/brand/brand_controller.dart';
 
 import '../../../../../../common/widgets/breadcrumbs/breadcrumb_with_heading.dart';
 import '../../../../../../common/widgets/containers/rounded_container.dart';

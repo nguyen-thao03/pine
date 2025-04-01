@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:pine_admin_panel/common/widgets/loaders/loader_animation.dart';
+import 'package:pine_admin_panel/features/shop/controllers/customer/customer_controller.dart';
 
 import '../../../../../../common/widgets/breadcrumbs/breadcrumb_with_heading.dart';
 import '../../../../../../common/widgets/containers/rounded_container.dart';
@@ -13,6 +15,7 @@ class CustomersDesktopScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final controller = Get.put(CustomerController());
     return Scaffold(
       body: SingleChildScrollView(
         child: Padding(
@@ -30,11 +33,18 @@ class CustomersDesktopScreen extends StatelessWidget {
                 child: Column(
                   children: [
                     // Table Header
-                    PTableHeader(showLeftWidget: false),
+                    PTableHeader(
+                        showLeftWidget: false,
+                      searchController: controller.searchTextController,
+                      searchOnChanged: (query) => controller.searchQuery(query),
+                    ),
                     const SizedBox(height: PSizes.spaceBtwItems),
 
                     // Table
-                    CustomerTable(),
+                    Obx(() {
+                      if (controller.isLoading.value) return const PLoaderAnimation();
+                      return const CustomerTable();
+                    }),
                   ],
                 ),
               ),

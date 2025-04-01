@@ -10,9 +10,9 @@ class BannerModel {
 
   Map<String, dynamic> toJson() {
     return {
-      'imageUrl': imageUrl,
-      'active': active,
-      'targetScreen': targetScreen,
+      'ImageUrl': imageUrl,
+      'Active': active,
+      'TargetScreen': targetScreen,
     };
   }
 
@@ -22,9 +22,9 @@ class BannerModel {
 
       return BannerModel(
         id: snapshot.id,
-        imageUrl: data['imageUrl'] ?? '',
-        active: data['active'] ?? '',
-        targetScreen: data['targetScreen'] ?? '',
+        imageUrl: data['ImageUrl'] ?? '',
+        active: data['Active'] ?? '',
+        targetScreen: data['TargetScreen'] ?? '',
       );
   }
 }

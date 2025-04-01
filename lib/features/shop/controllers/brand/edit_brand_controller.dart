@@ -1,18 +1,17 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:pine_admin_panel/data/repositories/brand_repository.dart';
 import 'package:pine_admin_panel/features/shop/models/brand_category_model.dart';
 import 'package:pine_admin_panel/features/shop/models/brand_model.dart';
 
-import '../../../data/repositories/brand_repository.dart';
-import '../../../utils/helpers/network_manager.dart';
-import '../../../utils/popups/full_screen_loader.dart';
-import '../../../utils/popups/loaders.dart';
-import '../../media/controllers/media_controller.dart';
-import '../../media/models/image_model.dart';
-import '../models/category_model.dart';
+import '../../../../utils/helpers/network_manager.dart';
+import '../../../../utils/popups/full_screen_loader.dart';
+import '../../../../utils/popups/loaders.dart';
+import '../../../media/controllers/media_controller.dart';
+import '../../../media/models/image_model.dart';
+import '../../models/category_model.dart';
 import 'brand_controller.dart';
+
 
 class EditBrandController extends GetxController {
   static EditBrandController get instance => Get.find();

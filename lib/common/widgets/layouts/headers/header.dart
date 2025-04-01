@@ -60,8 +60,8 @@ class PHeader extends StatelessWidget implements PreferredSizeWidget {
                   padding: 2,
                   height: 40,
                   imageType: controller.user.value.profilePicture.isNotEmpty ? ImageType.network : ImageType.asset,
-                 // image: controller.user.value.profilePicture.isNotEmpty ? controller.user.value.profilePicture : PImages.user,
-                  image: PImages.user,
+                  image: controller.user.value.profilePicture.isNotEmpty ? controller.user.value.profilePicture : PImages.user,
+
                 ),
               ),
               const SizedBox(width: PSizes.sm),

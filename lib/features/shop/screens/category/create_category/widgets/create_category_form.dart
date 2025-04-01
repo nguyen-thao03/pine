@@ -4,13 +4,13 @@ import 'package:iconsax/iconsax.dart';
 import 'package:pine_admin_panel/common/widgets/containers/rounded_container.dart';
 import 'package:pine_admin_panel/common/widgets/images/image_uploader.dart';
 import 'package:pine_admin_panel/common/widgets/shimmers/shimmer.dart';
-import 'package:pine_admin_panel/features/shop/controllers/category_controller.dart';
-import 'package:pine_admin_panel/features/shop/controllers/create_category_controller.dart';
+import 'package:pine_admin_panel/features/shop/controllers/category/category_controller.dart';
 import 'package:pine_admin_panel/utils/constants/enums.dart';
 import 'package:pine_admin_panel/utils/constants/image_strings.dart';
 import 'package:pine_admin_panel/utils/validators/validation.dart';
 
 import '../../../../../../utils/constants/sizes.dart';
+import '../../../../controllers/category/create_category_controller.dart';
 
 class CreateCategoryForm extends StatelessWidget {
   const CreateCategoryForm({super.key});

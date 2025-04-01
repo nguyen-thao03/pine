@@ -13,7 +13,7 @@ import '../../../../../../utils/constants/sizes.dart';
 class OrderOrdersRows extends DataTableSource {
   @override
   DataRow? getRow(int index) {
-    final order = OrderModel(id: 'id', status: OrderStatus.shipped, totalAmount: 250.000, orderDate: DateTime.now(), items: []);
+    final order = OrderModel(id: 'id', status: OrderStatus.shipped, totalAmount: 250.000, orderDate: DateTime.now(), items: [], shippingCost: 15.000);
     const totalAmount = '250,000';
     return DataRow2(
       selected: false,

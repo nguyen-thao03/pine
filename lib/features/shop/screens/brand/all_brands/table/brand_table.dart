@@ -5,7 +5,7 @@ import 'package:pine_admin_panel/common/widgets/data_table/paginated_data_table.
 import 'package:pine_admin_panel/features/shop/screens/brand/all_brands/table/brand_table_source.dart';
 import 'package:pine_admin_panel/utils/device/device_utility.dart';
 
-import '../../../../controllers/brand_controller.dart';
+import '../../../../controllers/brand/brand_controller.dart';
 
 class BrandTable extends StatelessWidget {
   const BrandTable({super.key});

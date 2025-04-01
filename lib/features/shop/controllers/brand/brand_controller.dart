@@ -2,7 +2,7 @@ import 'package:diacritic/diacritic.dart';
 import 'package:get/get.dart';
 import 'package:pine_admin_panel/data/abstract/base_data_table_controller.dart';
 import 'package:pine_admin_panel/data/repositories/brand_repository.dart';
-import 'package:pine_admin_panel/features/shop/controllers/category_controller.dart';
+import 'package:pine_admin_panel/features/shop/controllers/category/category_controller.dart';
 import 'package:pine_admin_panel/features/shop/models/brand_model.dart';
 
 class BrandController extends PBaseController<BrandModel> {

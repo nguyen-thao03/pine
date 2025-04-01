@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:iconsax/iconsax.dart';
+import 'package:get/get.dart';
 import 'package:pine_admin_panel/common/widgets/images/p_rounded_image.dart';
+import 'package:pine_admin_panel/features/shop/controllers/banner/edit_banner_controller.dart';
 import 'package:pine_admin_panel/features/shop/models/banner_model.dart';
 
-import '../../../../../../common/widgets/chips/rounded_choice_chips.dart';
 import '../../../../../../common/widgets/containers/rounded_container.dart';
-import '../../../../../../common/widgets/images/image_uploader.dart';
+import '../../../../../../routes/app_screens.dart';
 import '../../../../../../utils/constants/colors.dart';
 import '../../../../../../utils/constants/enums.dart';
 import '../../../../../../utils/constants/image_strings.dart';
@@ -18,10 +18,13 @@ class EditBannerForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final controller = Get.put(EditBannerController());
+    Future.microtask(() => controller.init(banner));
     return PRoundedContainer(
       width: 500,
       padding: const EdgeInsets.all(PSizes.defaultSpace),
       child: Form(
+        key: controller.formKey,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -33,35 +36,46 @@ class EditBannerForm extends StatelessWidget {
               // Image Uploader & Featured Checkbox
               Column(
                 children: [
-                  GestureDetector(
-                    child: const PRoundedImage(
+                  Obx(
+                    () => PRoundedImage(
                       width: 400,
                       height: 200,
                       backgroundColor: PColors.primaryBackground,
-                      image: PImages.defaultImage,
-                      imageType: ImageType.asset,
+                      image: controller.imageURL.value.isNotEmpty ? controller.imageURL.value : PImages.defaultImage,
+                      imageType: controller.imageURL.value.isNotEmpty ? ImageType.network : ImageType.asset,
                     ),
                   ),
                   const SizedBox(height: PSizes.spaceBtwItems),
-                  TextButton(onPressed: () {}, child: const Text('Chọn ảnh')),
+                  TextButton(onPressed: () => controller.pickImage(), child: const Text('Chọn ảnh')),
                 ],
               ),
               const SizedBox(height: PSizes.spaceBtwInputFields),
 
               Text('Làm cho Banner của bạn hoạt động hoặc không hoạt động', style: Theme.of(context).textTheme.bodyMedium),
-              CheckboxMenuButton(value: true, onChanged: (value) {}, child: const Text('Hoạt động')),
+              Obx(
+                      () => CheckboxMenuButton(
+                          value: controller.isActive.value,
+                          onChanged: (value) => controller.isActive.value = value ?? false,
+                          child: const Text('Hoạt động'))),
               const SizedBox(height: PSizes.spaceBtwInputFields),
 
               // Dropdown Menu Screens
-              DropdownButton<String>(value: 'search', onChanged: (String? newValue) {}, items: const [
-                DropdownMenuItem<String>(value: 'home', child: Text('Trang chủ')),
-                DropdownMenuItem<String>(value: 'search', child: Text('Tìm kiếm')),
-              ]),
+              Obx(
+                      () {
+                    return DropdownButton<String>(
+                      value: controller.targetScreen.value,
+                      onChanged: (String? newValue) => controller.targetScreen.value = newValue!,
+                      items: AppScreens.allAppScreenItems.map<DropdownMenuItem<String>>((value) {
+                        return DropdownMenuItem<String>(value: value, child: Text(value));
+                      }).toList(),
+                    );
+                  }
+              ),
               const SizedBox(height: PSizes.spaceBtwInputFields * 2),
 
               SizedBox(
                 width: double.infinity,
-                child: ElevatedButton(onPressed: (){}, child: const Text('Cập nhật')),
+                child: ElevatedButton(onPressed: () => controller.updateBanner(banner), child: const Text('Cập nhật')),
               ),
 
 

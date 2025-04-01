@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_rx/src/rx_types/rx_types.dart';
 
 import '../../../../../../common/widgets/breadcrumbs/breadcrumb_with_heading.dart';
 import '../../../../../../common/widgets/containers/rounded_container.dart';
 import '../../../../../../routes/routes.dart';
 import '../../../../../../utils/constants/sizes.dart';
 import '../../../../../../utils/device/device_utility.dart';
-import '../../../../controllers/product_images_controller.dart';
+import '../../../../controllers/product/product_images_controller.dart';
 import '../../../../models/product_model.dart';
 import '../../create_product/widgets/additional_images.dart';
 import '../../create_product/widgets/attributes_widget.dart';
@@ -20,7 +19,7 @@ import '../../create_product/widgets/thumbnail_widget.dart';
 import '../../create_product/widgets/title_description.dart';
 import '../../create_product/widgets/variations_widget.dart';
 import '../../create_product/widgets/visibility_widget.dart';
-import '../widgets/edit_product_form.dart';
+
 
 class EditProductMobileScreen extends StatelessWidget {
   const EditProductMobileScreen({super.key, required this.product});

@@ -2,8 +2,10 @@ import 'package:data_table_2/data_table_2.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:intl/intl.dart';
 import 'package:pine_admin_panel/common/widgets/icons/table_action_icon_buttons.dart';
 import 'package:pine_admin_panel/common/widgets/images/p_rounded_image.dart';
+import 'package:pine_admin_panel/features/shop/controllers/product/product_controller.dart';
 import 'package:pine_admin_panel/routes/routes.dart';
 import 'package:pine_admin_panel/utils/constants/colors.dart';
 import 'package:pine_admin_panel/utils/constants/enums.dart';
@@ -13,57 +15,51 @@ import 'package:pine_admin_panel/utils/constants/sizes.dart';
 import '../../../../models/product_model.dart';
 
 class ProductsRows extends DataTableSource {
+  final controller = ProductController.instance;
+
   @override
   DataRow? getRow(int index) {
+    final product = controller.filteredItems[index];
     return DataRow2(
+      onTap: () {
+        Get.toNamed(PRoutes.editProduct, arguments: product);
+      },
       cells: [
-        DataCell(
-          Row(
-            children: [
-              PRoundedImage(
-                width: 50,
-                  height: 50,
-                  padding: PSizes.xs,
-                  image: PImages.productImage78,
-                  imageType: ImageType.asset,
-                borderRadius: PSizes.borderRadiusMd,
-                backgroundColor: PColors.primaryBackground,
-              ),
-              const SizedBox(width: PSizes.spaceBtwItems),
-              Flexible(child: Text('Nước ngọt 7up', style: Theme.of(Get.context!).textTheme.bodyLarge!.apply(color: PColors.primary))),
-            ],
-          )
-        ),
-        const DataCell(Text('256')),
-
-        // Brand
-        DataCell(
-          Row(
-            children: [
-              const PRoundedImage(
-                width: 35,
-                  height: 35,
-                  padding: PSizes.xs,
-                  image: PImages.cocacolaLogo,
-                  imageType: ImageType.asset,
-                borderRadius: PSizes.borderRadiusMd,
-                backgroundColor: PColors.primaryBackground,
-              ),
-              const SizedBox(width: PSizes.spaceBtwItems),
-              Flexible(child: Text('Coca Cola', style: Theme.of(Get.context!).textTheme.bodyLarge!.apply(color: PColors.primary))),
-            ],
-          )
-        ),
-        const DataCell(Text('8,000đ')),
-
-        DataCell(Text(DateTime.now().toString())),
-
-        DataCell(
-          PTableActionButtons(
-            onEditPressed: () => Get.toNamed(PRoutes.editProduct, arguments: ProductModel.empty()),
-            onDeletePressed: (){},
-          )
-        )
+        DataCell(Row(
+          children: [
+            PRoundedImage(
+              width: 50,
+              height: 50,
+              padding: PSizes.xs,
+              image: product.thumbnail,
+              imageType: ImageType.network,
+              borderRadius: PSizes.borderRadiusMd,
+              backgroundColor: PColors.primaryBackground,
+            ),
+            const SizedBox(width: PSizes.spaceBtwItems),
+            Flexible(
+                child: Text(product.title,
+                    style: Theme.of(Get.context!)
+                        .textTheme
+                        .bodyLarge!
+                        .apply(color: PColors.primary))),
+          ],
+        )),
+        DataCell(Text(controller.getProductStockTotal(product))),
+        DataCell(Text(controller.getProductSoldQuantity(product))),
+        DataCell(Text(product.brand != null ? product.brand!.name : '',
+            style: Theme.of(Get.context!)
+                .textTheme
+                .bodyLarge!
+                .apply(color: PColors.primary))),
+        DataCell(Text(product.formattedCurrency)),
+        DataCell(product.isFeatured ? const Icon(Iconsax.eye, color: PColors.primary) : const Icon(Iconsax.eye_slash)),
+        DataCell(Text(product.formattedDate)),
+        DataCell(PTableActionButtons(
+          onEditPressed: () =>
+              Get.toNamed(PRoutes.editProduct, arguments: product),
+          onDeletePressed: () => controller.confirmAndDeleteItem(product),
+        ))
       ],
     );
   }
@@ -72,7 +68,7 @@ class ProductsRows extends DataTableSource {
   bool get isRowCountApproximate => false;
 
   @override
-  int get rowCount => 100;
+  int get rowCount => controller.filteredItems.length;
 
   @override
   int get selectedRowCount => 0;

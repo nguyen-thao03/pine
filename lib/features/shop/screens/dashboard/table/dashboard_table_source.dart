@@ -2,17 +2,22 @@ import 'package:data_table_2/data_table_2.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pine_admin_panel/common/widgets/containers/rounded_container.dart';
-import 'package:pine_admin_panel/features/shop/controllers/dashboard_controller.dart';
+import 'package:pine_admin_panel/routes/routes.dart';
 import 'package:pine_admin_panel/utils/constants/colors.dart';
 import 'package:pine_admin_panel/utils/helpers/helper_functions.dart';
 
 import '../../../../../utils/constants/sizes.dart';
+import '../../../controllers/order/order_controller.dart';
 
 class OrderRows extends DataTableSource {
+  final controller = OrderController.instance;
+
   @override
   DataRow? getRow(int index) {
-    final order = DashboardController.orders[index];
-    return DataRow2(cells: [
+    final order = controller.filteredItems[index];
+    return DataRow2(
+      onTap: () => Get.toNamed(PRoutes.orderDetails, arguments: order),
+        cells: [
       DataCell(
         Text(
           order.id,
@@ -20,7 +25,7 @@ class OrderRows extends DataTableSource {
         ),
       ),
       DataCell(Text(order.formattedOrderDate)),
-      DataCell(Text('5 sản phẩm')),
+      DataCell(Text('${order.items.length} sản phẩm')),
       DataCell(
         PRoundedContainer(
           radius: PSizes.cardRadiusSm,
@@ -40,7 +45,7 @@ class OrderRows extends DataTableSource {
   bool get isRowCountApproximate => false;
 
   @override
-  int get rowCount => DashboardController.orders.length;
+  int get rowCount => controller.filteredItems.length;
 
   @override
   int get selectedRowCount => 0;

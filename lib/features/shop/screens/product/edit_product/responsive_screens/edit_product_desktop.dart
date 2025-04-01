@@ -1,25 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:pine_admin_panel/common/widgets/breadcrumbs/breadcrumb_with_heading.dart';
-import 'package:pine_admin_panel/features/shop/controllers/product_images_controller.dart';
-import 'package:pine_admin_panel/features/shop/screens/product/create_product/widgets/bottom_navigation_widget.dart';
+import 'package:pine_admin_panel/features/shop/screens/product/edit_product/widgets/additional_images.dart';
+import 'package:pine_admin_panel/features/shop/screens/product/edit_product/widgets/attributes_widget.dart';
+import 'package:pine_admin_panel/features/shop/screens/product/edit_product/widgets/bottom_navigation_widget.dart';
+import 'package:pine_admin_panel/features/shop/screens/product/edit_product/widgets/brand_widget.dart';
+import 'package:pine_admin_panel/features/shop/screens/product/edit_product/widgets/categories_widget.dart';
+import 'package:pine_admin_panel/features/shop/screens/product/edit_product/widgets/product_type_widget.dart';
+import 'package:pine_admin_panel/features/shop/screens/product/edit_product/widgets/stock_pricing_widget.dart';
+import 'package:pine_admin_panel/features/shop/screens/product/edit_product/widgets/thumbnail_widget.dart';
+import 'package:pine_admin_panel/features/shop/screens/product/edit_product/widgets/title_description.dart';
+import 'package:pine_admin_panel/features/shop/screens/product/edit_product/widgets/variations_widget.dart';
+import 'package:pine_admin_panel/features/shop/screens/product/edit_product/widgets/visibility_widget.dart';
 
+import '../../../../../../common/widgets/breadcrumbs/breadcrumb_with_heading.dart';
 import '../../../../../../common/widgets/containers/rounded_container.dart';
 import '../../../../../../routes/routes.dart';
 import '../../../../../../utils/constants/sizes.dart';
 import '../../../../../../utils/device/device_utility.dart';
+import '../../../../controllers/product/product_images_controller.dart';
 import '../../../../models/product_model.dart';
-import '../../create_product/widgets/additional_images.dart';
-import '../../create_product/widgets/attributes_widget.dart';
-import '../../create_product/widgets/brand_widget.dart';
-import '../../create_product/widgets/categories_widget.dart';
-import '../../create_product/widgets/product_type_widget.dart';
-import '../../create_product/widgets/stock_pricing_widget.dart';
-import '../../create_product/widgets/thumbnail_widget.dart';
-import '../../create_product/widgets/title_description.dart';
-import '../../create_product/widgets/variations_widget.dart';
-import '../../create_product/widgets/visibility_widget.dart';
-import '../widgets/edit_product_form.dart';
 
 class EditProductDesktopScreen extends StatelessWidget {
   const EditProductDesktopScreen({super.key, required this.product});
@@ -30,7 +29,7 @@ class EditProductDesktopScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final controller = Get.put(ProductImagesController());
     return Scaffold(
-      bottomNavigationBar: const ProductBottomNavigationButtons(),
+      bottomNavigationBar: ProductBottomNavigationButtons(product: product),
       body: SingleChildScrollView(
         child: Padding(
           padding: EdgeInsets.all(PSizes.defaultSpace),
@@ -51,7 +50,7 @@ class EditProductDesktopScreen extends StatelessWidget {
                         crossAxisAlignment:  CrossAxisAlignment.start,
                         children: [
                           // Basic Information
-                          const ProductTitleAndDescription(),
+                          ProductTitleAndDescription(product: product),
                           const SizedBox(height: PSizes.spaceBtwSections),
 
                           // Stock & Pricing
@@ -64,15 +63,15 @@ class EditProductDesktopScreen extends StatelessWidget {
                                 const SizedBox(height: PSizes.spaceBtwItems),
 
                                 // Product Type
-                                const ProductTypeWidget(),
+                                ProductTypeWidget(product: product),
                                 const SizedBox(height: PSizes.spaceBtwInputFields),
 
                                 // Stock
-                                const ProductStockAndPricing(),
+                                ProductStockAndPricing(product: product),
                                 const SizedBox(height: PSizes.spaceBtwSections),
 
                                 // Attributes
-                                const ProductAttributes(),
+                                ProductAttributes(product: product),
                                 const SizedBox(height: PSizes.spaceBtwSections),
                               ],
                             ),
@@ -80,7 +79,7 @@ class EditProductDesktopScreen extends StatelessWidget {
                           const SizedBox(height: PSizes.spaceBtwSections),
 
                           // Variations
-                          const ProductVariations(),
+                          ProductVariations(product: product),
                         ],
                       )
                   ),
@@ -91,7 +90,7 @@ class EditProductDesktopScreen extends StatelessWidget {
                       child: Column(
                         children: [
                           // Product Thumbnail
-                          const ProductThumbnailImage(),
+                          ProductThumbnailImage(product: product),
                           const SizedBox(height: PSizes.spaceBtwSections),
 
                           // Product Images
@@ -103,8 +102,8 @@ class EditProductDesktopScreen extends StatelessWidget {
                                 const SizedBox(height: PSizes.spaceBtwItems),
                                 ProductAdditionalImages(
                                   additionalProductImagesURLs: RxList<String>.empty(),
-                                  onTapToAddImages: (){},
-                                  onTapToRemoveImage: (index){},
+                                  onTapToAddImages: () => controller.selectMultipleProductImages(),
+                                  onTapToRemoveImage: (index) => controller.removeImage(index),
                                 ),
                               ],
                             ),
@@ -112,11 +111,11 @@ class EditProductDesktopScreen extends StatelessWidget {
                           const SizedBox(height: PSizes.spaceBtwSections),
 
                           // Product Brand
-                          const ProductBrand(),
+                          ProductBrand(product: product),
                           const SizedBox(height: PSizes.spaceBtwSections),
 
                           // Product Categories
-                          const ProductCategories(),
+                          ProductCategories(product: product),
                           const SizedBox(height: PSizes.spaceBtwSections),
 
                           // Product Visibility

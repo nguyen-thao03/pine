@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pine_admin_panel/common/widgets/breadcrumbs/breadcrumb_with_heading.dart';
-import 'package:pine_admin_panel/features/authentication/models/user_model.dart';
+import 'package:pine_admin_panel/features/personalization/models/user_model.dart';
 import 'package:pine_admin_panel/features/shop/models/order_model.dart';
 import 'package:pine_admin_panel/utils/constants/sizes.dart';
 

@@ -7,7 +7,7 @@ import '../../utils/constants/sizes.dart';
 import '../../utils/popups/loaders.dart';
 
 abstract class PBaseController<P> extends GetxController {
-  RxBool isLoading = true.obs;
+  RxBool isLoading = false.obs;
   RxInt sortColumnIndex = 1.obs;
   RxBool sortAscending = true.obs;
   RxList<P> allItems = <P>[].obs;
@@ -82,8 +82,8 @@ abstract class PBaseController<P> extends GetxController {
 
   Future<void> confirmAndDeleteItem(P item) async {
     Get.defaultDialog(
-        title: 'Xóa danh mục',
-        content: const Text('Bạn có chắc muốn xóa danh mục này không?'),
+        title: 'Xóa mục',
+        content: const Text('Bạn có chắc muốn xóa mục này không?'),
         confirm: SizedBox(
           width: 60,
           child: ElevatedButton(
@@ -119,7 +119,7 @@ abstract class PBaseController<P> extends GetxController {
 
       removeItemFromLists(item);
       PFullScreenLoader.stopLoading();
-      PLoaders.successSnackBar(title: 'Đã xóa danh mục', message: 'Đã xóa danh mục');
+      PLoaders.successSnackBar(title: 'Đã xóa mục', message: 'Đã xóa mục');
     }catch(e){
       PFullScreenLoader.stopLoading();
       PLoaders.errorSnackBar(title: 'Ôi không!', message: e.toString());

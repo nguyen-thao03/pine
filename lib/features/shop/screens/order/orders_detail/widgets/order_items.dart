@@ -65,7 +65,7 @@ class OrderItems extends StatelessWidget {
                     const SizedBox(width: PSizes.spaceBtwItems),
                     SizedBox(
                       width: PSizes.xl * 2,
-                      child: Text('250,000đ', style: Theme.of(context).textTheme.bodyLarge),
+                      child: Text('${item.price}', style: Theme.of(context).textTheme.bodyLarge),
                     ),
                     SizedBox(
                       width: PDeviceUtils.isMobileScreen(context) ? PSizes.xl * 1.4 : PSizes.xl * 2,
@@ -73,7 +73,7 @@ class OrderItems extends StatelessWidget {
                     ),
                     SizedBox(
                       width: PDeviceUtils.isMobileScreen(context) ? PSizes.xl * 1.4 : PSizes.xl * 2,
-                      child: Text('250,000đ', style: Theme.of(context).textTheme.bodyLarge),
+                      child: Text('${item.totalAmount}', style: Theme.of(context).textTheme.bodyLarge),
                     ),
                   ],
                 );
@@ -91,7 +91,7 @@ class OrderItems extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text('Tạm tính', style: Theme.of(context).textTheme.titleLarge),
-                    Text('250,000đ', style: Theme.of(context).textTheme.titleLarge),
+                    Text('$subTotal', style: Theme.of(context).textTheme.titleLarge),
                   ],
                 ),
                 const SizedBox(height: PSizes.spaceBtwItems),
@@ -108,7 +108,7 @@ class OrderItems extends StatelessWidget {
                   children: [
                     Text('Phí vận chuyển', style: Theme.of(context).textTheme.titleLarge),
                     Text(
-                        '${PPricingCalculator.calculateShippingCost(subTotal, '')}đ',
+                        '${order.shippingCost}đ',
                         style: Theme.of(context).textTheme.titleLarge),
                   ],
                 ),
@@ -120,7 +120,7 @@ class OrderItems extends StatelessWidget {
                   children: [
                     Text('Tổng', style: Theme.of(context).textTheme.titleLarge),
                     Text(
-                        '265,000đ',
+                        '${order.totalAmount}',
                         style: Theme.of(context).textTheme.titleLarge),
                   ],
                 ),

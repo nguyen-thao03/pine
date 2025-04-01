@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:pine_admin_panel/common/widgets/icons/table_action_icon_buttons.dart';
 import 'package:pine_admin_panel/common/widgets/images/p_rounded_image.dart';
-import 'package:pine_admin_panel/features/shop/controllers/category_controller.dart';
+import 'package:pine_admin_panel/features/shop/controllers/category/category_controller.dart';
 import 'package:pine_admin_panel/routes/routes.dart';
 import 'package:pine_admin_panel/utils/constants/colors.dart';
 import 'package:pine_admin_panel/utils/constants/enums.dart';
@@ -45,7 +45,7 @@ class CategoryRows extends DataTableSource {
         ),
 
         DataCell(Text(parentCategory != null ? parentCategory.name : '')),
-        DataCell(category.isFeatured ? const Icon(Iconsax.heart5, color: PColors.primary) : const Icon(Iconsax.heart)),
+        DataCell(category.isFeatured ? const Icon(Iconsax.star1, color: PColors.primary) : const Icon(Iconsax.star)),
         DataCell(Text(category.createdAt == null ? '' : category.formattedDate)),
         DataCell(
           PTableActionButtons(

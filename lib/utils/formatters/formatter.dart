@@ -7,9 +7,25 @@ class PFormatter {
     // Hoặc sử dụng DateFormat('dd/MM/yyyy') cho định dạng dd/MM/yyyy
   }
 
-  static String formatCurrency(double amount) {
-    final format = NumberFormat.currency(locale: 'vi_VN', symbol: '₫'); // Định dạng tiền tệ Việt Nam
-    return format.format(amount);
+  static String formatCurrencyRange(String priceRange) {
+    if (priceRange.isEmpty) return '0₫'; // Trả về 0₫ nếu chuỗi rỗng
+
+    try {
+      // Loại bỏ ký tự không phải số (vd: "đ") và tách khoảng giá theo "-"
+      List<String> prices = priceRange.replaceAll(RegExp(r'[^0-9\-]'), '').split('-');
+
+      NumberFormat format = NumberFormat.currency(locale: 'vi_VN', symbol: '₫', decimalDigits: 0);
+
+      if (prices.length == 1) {
+        return format.format(double.parse(prices[0].trim()));
+      } else if (prices.length == 2) {
+        return '${format.format(double.parse(prices[0].trim()))} - ${format.format(double.parse(prices[1].trim()))}';
+      }
+    } catch (e) {
+      return '0₫'; // Xử lý lỗi khi không thể định dạng
+    }
+
+    return priceRange; // Trả về nguyên chuỗi nếu không thể xử lý
   }
 
   static String formatPhoneNumber(String phoneNumber) {

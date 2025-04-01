@@ -6,7 +6,7 @@ import '../../../../../../common/widgets/containers/rounded_container.dart';
 import '../../../../../../common/widgets/data_table/table_header.dart';
 import '../../../../../../routes/routes.dart';
 import '../../../../../../utils/constants/sizes.dart';
-import '../../../../controllers/category_controller.dart';
+import '../../../../controllers/category/category_controller.dart';
 import '../table/category_table.dart';
 
 class CategoriesMobileScreen extends StatelessWidget {

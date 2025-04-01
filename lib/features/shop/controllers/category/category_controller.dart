@@ -7,7 +7,7 @@ import 'package:pine_admin_panel/utils/constants/sizes.dart';
 import 'package:pine_admin_panel/utils/popups/full_screen_loader.dart';
 import 'package:pine_admin_panel/utils/popups/loaders.dart';
 
-import '../models/category_model.dart';
+import '../../models/category_model.dart';
 
 class CategoryController extends PBaseController<CategoryModel> {
   static CategoryController get instance => Get.find();

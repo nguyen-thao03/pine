@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:pine_admin_panel/common/widgets/loaders/loader_animation.dart';
 
 import '../../../../../../common/widgets/breadcrumbs/breadcrumb_with_heading.dart';
 import '../../../../../../common/widgets/containers/rounded_container.dart';
 import '../../../../../../common/widgets/data_table/table_header.dart';
 import '../../../../../../routes/routes.dart';
 import '../../../../../../utils/constants/sizes.dart';
+import '../../../../controllers/order/order_controller.dart';
 import '../table/orders_table.dart';
 
 class OrdersDesktopScreen extends StatelessWidget {
@@ -13,6 +15,7 @@ class OrdersDesktopScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final controller = Get.put(OrderController());
     return Scaffold(
       body: SingleChildScrollView(
         child: Padding(
@@ -30,11 +33,19 @@ class OrdersDesktopScreen extends StatelessWidget {
                 child: Column(
                   children: [
                     // Table Header
-                    PTableHeader(showLeftWidget: false),
+                    PTableHeader(
+                        showLeftWidget: false,
+                      searchController: controller.searchTextController,
+                      searchOnChanged: (query) => controller.searchQuery(query),
+                    ),
                     const SizedBox(height: PSizes.spaceBtwItems),
 
                     // Table
-                    OrderTable(),
+                    Obx(() {
+                      if (controller.isLoading.value) return const PLoaderAnimation();
+                      return const OrderTable();
+                    }
+                    ),
                   ],
                 ),
               ),

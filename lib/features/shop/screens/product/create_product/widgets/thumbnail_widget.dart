@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:pine_admin_panel/common/widgets/images/p_rounded_image.dart';
+import 'package:pine_admin_panel/features/shop/controllers/product/product_images_controller.dart';
 import 'package:pine_admin_panel/utils/constants/colors.dart';
 import 'package:pine_admin_panel/utils/constants/enums.dart';
 import 'package:pine_admin_panel/utils/constants/image_strings.dart';
@@ -12,6 +14,8 @@ class ProductThumbnailImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final ProductImagesController controller = Get.put(ProductImagesController());
+
     return PRoundedContainer(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -29,17 +33,27 @@ class ProductThumbnailImage extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   // Thumbnail Image
-                  const Row(
+                  Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Expanded(
-                          child: PRoundedImage(width: 220, height: 220, image: PImages.defaultSingleImageIcon, imageType: ImageType.asset),
+                          child: Obx(
+                                  () => PRoundedImage(
+                                      width: 220,
+                                      height: 220,
+                                      image: controller.selectedThumbnailImageUrl.value ?? PImages.defaultSingleImageIcon,
+                                      imageType: controller.selectedThumbnailImageUrl.value == null ? ImageType.asset : ImageType.network)
+                          ),
                       )
                     ],
                   ),
 
                   // Add Thumbnail Button
-                  SizedBox(width: 200, child: OutlinedButton(onPressed: () {}, child: const Text("Thêm ảnh đại diện"))),
+                  SizedBox(
+                      width: 200,
+                      child: OutlinedButton(
+                          onPressed: () => controller.selectThumbnailImage(),
+                          child: const Text('Thêm ảnh đại diện'))),
                 ],
               ),
             ),

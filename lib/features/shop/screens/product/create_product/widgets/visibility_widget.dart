@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:pine_admin_panel/common/widgets/containers/rounded_container.dart';
+import 'package:pine_admin_panel/features/shop/controllers/product/create_product_controller.dart';
 import 'package:pine_admin_panel/utils/constants/enums.dart';
 import 'package:pine_admin_panel/utils/constants/sizes.dart';
 
@@ -8,6 +10,8 @@ class ProductVisibilityWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final controller = CreateProductController.instance;
+
     return PRoundedContainer(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -17,24 +21,18 @@ class ProductVisibilityWidget extends StatelessWidget {
           const SizedBox(height: PSizes.spaceBtwItems),
 
           // Radio buttons for product visibility
-          Column(
-            children: [
-              _buildVisibilityRadioButton(ProductVisibility.published, 'Công khai'),
-              _buildVisibilityRadioButton(ProductVisibility.hidden, 'Ẩn'),
-            ],
-          )
+          Obx(
+                () => CheckboxMenuButton(
+              value: controller.isFeatured.value,
+              onChanged: (value) => controller.isFeatured.value = value ?? false,
+              child: const Text('Hiển thị'),
+            ),
+          ),
         ],
       ),
     );
   }
 
-  // Helper method to build a radio button for product visibility
-  Widget _buildVisibilityRadioButton(ProductVisibility value, String label) {
-    return RadioMenuButton<ProductVisibility>(
-      value: value,
-      groupValue: ProductVisibility.published,
-      onChanged: (selection) {},
-      child: Text(label),
-    );
-  }
+
+
 }
