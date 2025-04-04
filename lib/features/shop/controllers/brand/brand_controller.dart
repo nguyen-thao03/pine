@@ -33,8 +33,12 @@ class BrandController extends PBaseController<BrandModel> {
 
   @override
   bool containsSearchQuery(BrandModel item, String query) {
-    return item.name.toLowerCase().contains(query.toLowerCase());
+    final normalizedBrandName = removeDiacritics(item.name.toLowerCase());
+    final normalizedQuery = removeDiacritics(query.toLowerCase());
+
+    return normalizedBrandName.contains(normalizedQuery);
   }
+
 
   @override
   Future<void> deleteItem(BrandModel item) async {

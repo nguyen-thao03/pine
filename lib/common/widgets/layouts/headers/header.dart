@@ -9,6 +9,7 @@ import 'package:pine_admin_panel/utils/constants/image_strings.dart';
 import 'package:pine_admin_panel/utils/constants/sizes.dart';
 import 'package:pine_admin_panel/utils/device/device_utility.dart';
 
+import '../../../../features/shop/controllers/dashboard/notification_controller.dart';
 import '../../../../utils/constants/colors.dart';
 
 class PHeader extends StatelessWidget implements PreferredSizeWidget {
@@ -19,6 +20,7 @@ class PHeader extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     final controller = UserController.instance;
+    final notificationController = Get.put(NotificationController());
 
     return Container(
       decoration: const BoxDecoration(
@@ -32,36 +34,94 @@ class PHeader extends StatelessWidget implements PreferredSizeWidget {
             ? IconButton(onPressed: () => scaffoldKey?.currentState?.openDrawer(), icon: const Icon(Iconsax.menu))
             : null,
 
-        /// Search Field
-        // title: PDeviceUtils.isDesktopScreen(context)
-        //     ? SizedBox(
-        //       width: 400,
-        //       child: TextFormField(
-        //         decoration: const InputDecoration(prefixIcon: Icon(Iconsax.search_normal), hintText: 'Search anything...'),
-        //       ),
-        //     ) : null,
-
         /// Actions
-         actions: [
-        //   if (!PDeviceUtils.isDesktopScreen(context)) IconButton(onPressed: () {}, icon: const Icon(Iconsax.search_normal)),
-          
-          // Notification Icon
-          IconButton(onPressed: () {}, icon: const Icon(Iconsax.notification)),
-          const SizedBox(width: PSizes.spaceBtwItems /2),
-          
+        actions: [
+      PopupMenuButton<int>(
+      icon: Stack(
+        clipBehavior: Clip.none, // Allow badge to overlap icon
+        children: [
+          const Icon(Icons.notifications),
+          Obx(() {
+            return notificationController.unreadCount.value > 0
+                ? Positioned(
+              right: 0,
+              top: 0,
+              child: CircleAvatar(
+                radius: 8,
+                backgroundColor: Colors.red,
+                child: Text(
+                  notificationController.unreadCount.value.toString(),
+                  style: const TextStyle(fontSize: 12, color: Colors.white),
+                ),
+              ),
+            )
+                : const SizedBox(); // If no unread notifications, don't show badge
+          }),
+        ],
+      ),
+      onSelected: (value) {
+        if (value == 1) {
+          // Mark all notifications as read
+          notificationController.markAllAsRead();
+        }
+      },
+      itemBuilder: (context) {
+        return [
+          // Header - Title of Popup
+          PopupMenuItem<int>(
+            enabled: false,
+            child: Text(
+              'Thông Báo',
+              style: Theme.of(context).textTheme.titleLarge,
+            ),
+          ),
+          const PopupMenuDivider(),
+
+          // List of Notifications
+          ...List.generate(
+            notificationController.notifications.length,
+                (index) {
+              final notification = notificationController.notifications[index];
+              return PopupMenuItem<int>(
+                value: index,
+                onTap: () {
+                  // Mark this notification as read when tapped
+                  notificationController.notifications[index].isRead = true;
+                  notificationController.updateUnreadCount();
+                },
+                child: ListTile(
+                  title: Text(notification.title),
+                  subtitle: Text(notification.message),
+                  trailing: notification.isRead
+                      ? Icon(Icons.check, color: Colors.green)
+                      : Icon(Icons.new_releases, color: Colors.red),
+                ),
+              );
+            },
+          ),
+
+          // Footer - Mark All as Read
+          PopupMenuItem<int>(
+            value: 1,
+            child: const Text('Đánh dấu tất cả là đã đọc'),
+          ),
+        ];
+      },
+    ),
+          const SizedBox(width: PSizes.spaceBtwItems / 2),
+
           // User Data
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               // Image
               Obx(
-                () => PRoundedImage(
+                    () => PRoundedImage(
                   width: 40,
                   padding: 2,
                   height: 40,
                   imageType: controller.user.value.profilePicture.isNotEmpty ? ImageType.network : ImageType.asset,
                   image: controller.user.value.profilePicture.isNotEmpty ? controller.user.value.profilePicture : PImages.user,
-
                 ),
               ),
               const SizedBox(width: PSizes.sm),
@@ -69,13 +129,13 @@ class PHeader extends StatelessWidget implements PreferredSizeWidget {
               // Name and Email
               if (!PDeviceUtils.isMobileScreen(context))
                 Obx(
-                  () => Column(
+                      () => Column(
                     mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       controller.loading.value
-                        ? const PShimmerEffect(width: 50, height: 13)
-                        : Text(controller.user.value.fullName, style: Theme.of(context).textTheme.titleLarge),
+                          ? const PShimmerEffect(width: 50, height: 13)
+                          : Text(controller.user.value.fullName, style: Theme.of(context).textTheme.titleLarge),
                       controller.loading.value
                           ? const PShimmerEffect(width: 50, height: 13)
                           : Text(controller.user.value.email, style: Theme.of(context).textTheme.labelMedium),
@@ -90,6 +150,5 @@ class PHeader extends StatelessWidget implements PreferredSizeWidget {
   }
 
   @override
-  // TODO: implement preferredSize
   Size get preferredSize => Size.fromHeight(PDeviceUtils.getAppBarHeight() + 15);
 }

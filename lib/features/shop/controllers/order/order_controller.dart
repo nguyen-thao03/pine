@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
 import 'package:pine_admin_panel/data/abstract/base_data_table_controller.dart';
 import 'package:pine_admin_panel/data/repositories/order_repository.dart';
@@ -15,11 +16,7 @@ class OrderController extends PBaseController<OrderModel> {
   @override
   Future<List<OrderModel>> fetchItems() async {
     sortAscending.value = false;
-    final orders = await _orderRepository.getAllOrdersForAllUsers();
-
-    allItems.assignAll(orders);
-
-    return orders;
+    return await _orderRepository.getAllOrdersForAllUsers();
   }
 
 
@@ -31,7 +28,13 @@ class OrderController extends PBaseController<OrderModel> {
 
   @override
   Future<void> deleteItem(OrderModel item) async {
-    await _orderRepository.deleteOrder(item.docId);
+      final userId = item.userId;
+      final orderId = item.docId;
+
+      await _orderRepository.deleteOrder(userId, orderId);
+      await fetchItems();
+
+      update();
   }
 
   void sortById(int sortColumnIndex, bool ascending) {
@@ -45,16 +48,33 @@ class OrderController extends PBaseController<OrderModel> {
   Future<void> updateOrderStatus(OrderModel order, OrderStatus newStatus) async {
     try {
       statusLoader.value = true;
-      order.status = newStatus;
+
       await _orderRepository.updateOrderSpecificValue(order.userId, order.docId, {'status': newStatus.name});
 
-      updateItemFromLists(order);
-      orderStatus.value = newStatus;
-      PLoaders.successSnackBar(title: 'Đã cập nhật', message: 'Đã cập nhật trạng thái đơn hàng');
+      final updatedOrderDoc = await FirebaseFirestore.instance
+          .collection('Users')
+          .doc(order.userId)
+          .collection('Orders')
+          .doc(order.docId)
+          .get();
+
+      if (updatedOrderDoc.exists) {
+        final updatedOrder = OrderModel.fromSnapshot(updatedOrderDoc);
+
+        order.status = updatedOrder.status;
+        orderStatus.value = updatedOrder.status;
+        filteredItems.refresh();
+        update();
+
+        PLoaders.successSnackBar(title: 'Đã cập nhật', message: 'Trạng thái đơn hàng đã được cập nhật');
+      } else {
+        PLoaders.warningSnackBar(title: 'Lỗi', message: 'Không tìm thấy đơn hàng.');
+      }
     } catch (e) {
       PLoaders.warningSnackBar(title: 'Ôi không!', message: e.toString());
     } finally {
       statusLoader.value = false;
     }
   }
+
 }

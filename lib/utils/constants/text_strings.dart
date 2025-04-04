@@ -22,16 +22,6 @@ class PTexts {
   static const String tContinue = "Tiếp tục";
 
 
-  // -- OnBoarding Texts
-  static const String onBoardingTitle1 = "Hãy chọn sản phẩm của bạn";
-  static const String onBoardingTitle2 = "Chọn phương thức thanh toán";
-  static const String onBoardingTitle3 = "Giao hàng tận cửa nhà bạn";
-
-  static const String onBoardingSubTitle1 = "Chào mừng bạn đến với thế giới mua sắm vô tận - Sản phẩm tuyệt vời đang chờ bạn.";
-  static const String onBoardingSubTitle2 = "Chọn phương thức thanh toán dễ dàng - Tiện lợi của bạn là ưu tiên của chúng tôi";
-  static const String onBoardingSubTitle3 = "Giao hàng tận nơi - Nhanh chóng, an toàn và không tiếp xúc";
-
-
   // -- Authentication Forms
   static const String firstName = "Tên";
   static const String lastName = "Họ";
@@ -43,6 +33,7 @@ class PTexts {
   static const String rememberMe = "Nhớ tôi";
   static const String forgotPassword = "Quên mật khẩu?";
   static const String signIn = "Đăng nhập";
+  static const String register = "Đăng ký";
   static const String createAccount = "Tạo tài khoản";
   static const String orSignInWith = "Hoặc đăng nhập với";
   static const String orSignUpWith = "Hoặc đăng ký với";

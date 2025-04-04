@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
-
 import '../../features/personalization/models/address_model.dart';
 import 'authentication_repository.dart';
 
@@ -19,9 +18,8 @@ class AddressRepository extends GetxController {
   }
 
   /// Clear the "selected" field for all addresses
-  Future<void> updateSelectedField(String addressId, bool selected) async {
+  Future<void> updateSelectedField(String userId, String addressId, bool selected) async {
     try {
-      final userId = AuthenticationRepository.instance.authUser?.uid;
       await _db
           .collection('Users')
           .doc(userId)
@@ -33,16 +31,14 @@ class AddressRepository extends GetxController {
     }
   }
 
-  /// Store new user order
-  Future<String> addAddress(AddressModel address) async {
+  /// Store a new address for a user
+  Future<void> addAddress(String userId, AddressModel address) async {
     try {
-      final userId = AuthenticationRepository.instance.authUser?.uid;
-      final currentAddress = await _db
+      await _db
           .collection('Users')
           .doc(userId)
           .collection('Addresses')
           .add(address.toJson());
-      return currentAddress.id;
     } catch (e) {
       throw 'Đã xảy ra lỗi trong quá trình lưu thông tin địa chỉ. Vui lòng thử lại sau.';
     }

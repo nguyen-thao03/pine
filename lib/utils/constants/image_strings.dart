@@ -7,6 +7,7 @@ class PImages {
   // -- App Logos
   static const String darkAppLogo = "assets/logos/pine-logo-dark.png";
   static const String lightAppLogo = "assets/logos/pine-logo-white.png";
+  static const String dashboardAppLogo = "assets/logos/dashboard-icon.png";
 
   // -- Default Images
   static const String defaultImage = "assets/images/content/default_image.png";
@@ -67,7 +68,7 @@ class PImages {
   static String searchAnimation = "assets/images/animations/72785-searching.json";
   static String emptyAnimation = "assets/images/animations/72785-searching.json";
   static String securityAnimation = "assets/images/animations/67263-security-icon-transparent.json";
-  static String successfullyRegisterAnimation = "assets/images/animations/72462-check-register.json";
+  static String successfullyRegisterAnimation = "assets/images/animations/72462-check-signup.json";
   static String thankYouAnimation = "assets/images/animations/104368-thank-you.json";
   static String paymentSuccessfulAnimation = "assets/images/animations/120978-payment-successful.json";
   static String loadingJuggleAnimation = "assets/images/animations/141397-loading-juggle.json";

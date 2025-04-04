@@ -29,25 +29,27 @@ class OrderRows extends DataTableSource {
         DataCell(Text(order.formattedOrderDate)),
         DataCell(Text('${order.items.length} sản phẩm')),
         DataCell(
-          PRoundedContainer(
-            radius: PSizes.cardRadiusSm,
-            padding: const EdgeInsets.symmetric(vertical: PSizes.sm, horizontal: PSizes.md),
-            backgroundColor: PHelperFunctions.getOrderStatusColor(order.status).withValues(alpha: 0.1),
-            child: Text(
-              order.status.name.capitalize.toString(),
-              style: TextStyle(color: PHelperFunctions.getOrderStatusColor(order.status)),
-            ),
-          )
+            PRoundedContainer(
+              radius: PSizes.cardRadiusSm,
+              padding: const EdgeInsets.symmetric(vertical: PSizes.sm, horizontal: PSizes.md),
+              backgroundColor: PHelperFunctions.getOrderStatusColor(order.status).withValues(alpha: 0.1),
+              child: Text(
+                order.status.name.capitalize.toString(),
+                style: TextStyle(color: PHelperFunctions.getOrderStatusColor(order.status)),
+              ),
+            )
         ),
 
-        //DataCell(Text('${order.totalAmount}đ')),
         DataCell(Text(order.formattedCurrency)),
         DataCell(
           PTableActionButtons(
             view: true,
             edit: false,
             onViewPressed: () => Get.toNamed(PRoutes.orderDetails, arguments: order, parameters: {'orderId': order.docId}),
-            onDeletePressed: () => controller.confirmAndDeleteItem(order),
+            onDeletePressed: () {
+              controller.confirmAndDeleteItem(order);
+              controller.filteredItems.refresh();
+            },
           )
         )
       ],

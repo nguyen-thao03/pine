@@ -11,12 +11,12 @@ class SidebarController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    activeItem.value = box.read("activeItem") ?? PRoutes.dashboard; // Đọc giá trị từ bộ nhớ
+    activeItem.value = box.read("activeItem") ?? PRoutes.dashboard;
   }
 
   void changeActiveItem(String route) {
     activeItem.value = route;
-    box.write("activeItem", route); // Lưu giá trị vào bộ nhớ
+    box.write("activeItem", route);
   }
 
   void changeHoverItem(String route) {

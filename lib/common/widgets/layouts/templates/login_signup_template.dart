@@ -5,8 +5,8 @@ import '../../../../utils/constants/colors.dart';
 import '../../../../utils/constants/sizes.dart';
 import '../../../styles/spacing_styles.dart';
 
-class PLoginTemplate extends StatelessWidget {
-  const PLoginTemplate({super.key, required this.child});
+class PLoginSignupTemplate extends StatelessWidget {
+  const PLoginSignupTemplate({super.key, required this.child});
 
   final Widget child;
 

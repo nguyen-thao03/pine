@@ -18,19 +18,33 @@ class DashboardController extends PBaseController<OrderModel> {
   final RxMap<OrderStatus, double> totalAmounts = <OrderStatus, double>{}.obs;
 
   @override
+  void onInit() {
+    fetchData();
+    super.onInit();
+  }
+
+
+  @override
   Future<List<OrderModel>> fetchItems() async {
+
     if (orderController.allItems.isEmpty) {
       await orderController.fetchItems();
     }
+
+    print('Orders Loaded: ${orderController.allItems.length} đơn hàng');
+
     if (customerController.allItems.isEmpty) {
       await customerController.fetchItems();
     }
+
+    print('Orders Loaded: ${customerController.allItems.length} nguoi dung');
 
     _calculateWeeklySales();
     _calculateOrderStatusData();
 
     return orderController.allItems;
   }
+
 
   void _calculateWeeklySales() {
     weeklySales.value = List<double>.filled(7, 0.0);

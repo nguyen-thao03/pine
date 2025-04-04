@@ -6,7 +6,7 @@ import 'package:pine_admin_panel/utils/formatters/formatter.dart';
 
 /// Model class representing user data
 class UserModel {
-  final String? id;
+  late final String? id;
   String firstName;
   String lastName;
   String userName;
@@ -17,9 +17,9 @@ class UserModel {
   DateTime? createdAt;
   DateTime? updatedAt;
   List<OrderModel>? orders;
-  List<AddressModel>? addresses;
+  List<AddressModel>? addresses;  // Add this line
 
-  /// Constructor for UserModel
+  /// Constructor
   UserModel({
     this.id,
     required this.email,
@@ -31,7 +31,9 @@ class UserModel {
     this.role = AppRole.user,
     this.createdAt,
     this.updatedAt,
-});
+    this.orders,
+    this.addresses,  // Add this line to accept addresses
+  });
 
   /// Helper methods
   String get fullName => '$firstName $lastName';
@@ -39,10 +41,10 @@ class UserModel {
   String get formattedUpdatedDate => PFormatter.formatDate(updatedAt);
   String get formattedPhoneNo => PFormatter.formatPhoneNumber(phoneNumber);
 
-  /// Static function to create an empty user model
+  /// Tạo user rỗng
   static UserModel empty() => UserModel(email: '');
 
-  /// Convert model to JSON structure for storing data in Firebase
+  /// Convert model to JSON để lưu vào Firestore
   Map<String, dynamic> toJson() {
     return {
       'FirstName': firstName,
@@ -51,30 +53,37 @@ class UserModel {
       'Email': email,
       'PhoneNumber': phoneNumber.trim().replaceAll(' ', ''),
       'ProfilePicture': profilePicture,
-      'Role': role.name.toString(),
-      'CreatedAt': createdAt,
-      'UpdatedAt': updatedAt = DateTime.now(),
+      'Role': role.name,
+      'CreatedAt': createdAt != null ? Timestamp.fromDate(createdAt!) : FieldValue.serverTimestamp(),
+      'UpdatedAt': FieldValue.serverTimestamp(),
+      'Addresses': addresses?.map((address) => address.toJson()).toList(),  // Serialize addresses if they exist
     };
   }
 
-  /// Factory method to create a UserModel from a Firebase document snapshot
+  /// Tạo `UserModel` từ Firestore document snapshot
   factory UserModel.fromSnapshot(DocumentSnapshot<Map<String, dynamic>> document) {
-    if (document.data() != null) {
-      final data = document.data()!;
-      return UserModel(
-        id: document.id,
-        firstName: data.containsKey('FirstName') ? data['FirstName'] ?? '' : '',
-        lastName: data.containsKey('LastName') ? data['LastName'] ?? '' : '',
-        userName: data.containsKey('Username') ? data['Username'] ?? '' : '',
-        email: data.containsKey('Email') ? data['Email'] ?? '' : '',
-        phoneNumber: data.containsKey('PhoneNumber') ? data['PhoneNumber'] ?? '' : '',
-        profilePicture: data.containsKey('ProfilePicture') ? data['ProfilePicture'] ?? '' : '',
-        role: data.containsKey('Role') ? (data['Role'] ?? AppRole.user) == AppRole.admin.name.toString() ? AppRole.admin : AppRole.user : AppRole.user,
-        createdAt: data.containsKey('CreatedAt') ? data['CreatedAt']?.toDate() ?? DateTime.now() : DateTime.now(),
-        updatedAt: data.containsKey('UpdatedAt') ? data['UpdatedAt']?.toDate() ?? DateTime.now() : DateTime.now(),
-      );
-    } else {
-      return empty();
-    }
+    final data = document.data();
+    if (data == null) return empty();
+
+    return UserModel(
+      id: document.id,
+      firstName: data['FirstName'] ?? '',
+      lastName: data['LastName'] ?? '',
+      userName: data['Username'] ?? '',
+      email: data['Email'] ?? '',
+      phoneNumber: data['PhoneNumber'] ?? '',
+      profilePicture: data['ProfilePicture'] ?? '',
+      role: AppRole.values.firstWhere(
+            (r) => r.name == (data['Role'] ?? 'user'),
+        orElse: () => AppRole.user,
+      ),
+      createdAt: data['CreatedAt'] is Timestamp ? (data['CreatedAt'] as Timestamp).toDate() : null,
+      updatedAt: data['UpdatedAt'] is Timestamp ? (data['UpdatedAt'] as Timestamp).toDate() : null,
+      addresses: (data['Addresses'] as List<dynamic>?)?.map((addressData) {
+        // Map each element in the list (which is a Map) to AddressModel
+        return AddressModel.fromMap(addressData as Map<String, dynamic>);
+      }).toList(), // Deserialize addresses from Firestore
+    );
   }
 }
+

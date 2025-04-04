@@ -2,9 +2,11 @@
 class PRoutes {
 
   static const login = '/login';
+  static const signup = '/signup';
   static const forgotPassword = '/forgot-password/';
   static const resetPassword = '/reset-password';
   static const dashboard = '/dashboard';
+  static const staffDashboard = '/staff-dashboard';
   static const media = '/media';
 
   static const banners = '/banners';
@@ -26,6 +28,9 @@ class PRoutes {
   static const customers = '/customers';
   static const createCustomer = '/createCustomer';
   static const customerDetails = '/customerDetails';
+
+  static const createStaff = '/createStaff';
+  static const editStaff = '/editStaff';
 
   static const orders = '/orders';
   static const orderDetails = '/orderDetails';

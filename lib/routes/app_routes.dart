@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 import 'package:pine_admin_panel/routes/routes.dart';
 import 'package:pine_admin_panel/routes/routes_middleware.dart';
 
+import '../features/authentication/screens/signup/signup.dart';
 import '../features/media/screens/media/media.dart';
 import '../features/personalization/screens/profile/profile.dart';
 import '../features/personalization/screens/settings/settings.dart';
@@ -18,7 +19,9 @@ import '../features/shop/screens/coupon/all_coupons/coupons.dart';
 import '../features/shop/screens/coupon/create_coupon/create_coupon.dart';
 import '../features/shop/screens/coupon/edit_coupon/edit_coupon.dart';
 import '../features/shop/screens/customer/all_customers/customers.dart';
+import '../features/shop/screens/customer/create_staff/create_staff.dart';
 import '../features/shop/screens/customer/customer_detail/customer.dart';
+import '../features/shop/screens/customer/edit_staff/edit_staff.dart';
 import '../features/shop/screens/dashboard/dashboard.dart';
 import '../features/authentication/screens/forgot_password/forgot_password.dart';
 import '../features/authentication/screens/login/login.dart';
@@ -33,9 +36,11 @@ class PAppRoute {
   static final List<GetPage> pages = [
 
      GetPage(name: PRoutes.login, page: () => const LoginScreen()),
+     GetPage(name: PRoutes.signup, page: () => const SignupScreen()),
      GetPage(name: PRoutes.forgotPassword, page: () => const ForgotPasswordScreen()),
      GetPage(name: PRoutes.resetPassword, page: () => const ResetPasswordScreen()),
      GetPage(name: PRoutes.dashboard, page: () => const DashboardScreen(), middlewares: [PRouteMiddleware()]),
+     //GetPage(name: PRoutes.staffDashboard, page: () => const StaffDashboardScreen(), middlewares: [PRouteMiddleware()]),
      GetPage(name: PRoutes.media, page: () => const MediaScreen(), middlewares: [PRouteMiddleware()]),
 
     //Banners
@@ -66,6 +71,9 @@ class PAppRoute {
      //Customers
       GetPage(name: PRoutes.customers, page: () => const CustomersScreen(), middlewares: [PRouteMiddleware()]),
       GetPage(name: PRoutes.customerDetails, page: () => const CustomerDetailScreen(), middlewares: [PRouteMiddleware()]),
+
+      GetPage(name: PRoutes.createStaff, page: () => const CreateStaffScreen(), middlewares: [PRouteMiddleware()]),
+      GetPage(name: PRoutes.editStaff, page: () => const EditStaffScreen(), middlewares: [PRouteMiddleware()]),
 
       //Orders
       GetPage(name: PRoutes.orders, page: () => const OrdersScreen(), middlewares: [PRouteMiddleware()]),

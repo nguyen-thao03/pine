@@ -91,8 +91,8 @@ class ProductModel {
       stock: data['Stock'] ?? 0,
       isFeatured: data['IsFeatured'] ?? false,
       soldQuantity: data.containsKey('SoldQuantity') ? data['SoldQuantity'] ?? 0 : 0,
-      price: (data['Price'] ?? 0).toDouble(), // ✅ Sửa lỗi parse double
-      salePrice: (data['SalePrice'] ?? 0).toDouble(), // ✅ Sửa lỗi parse double
+      price: double.parse((data['Price'] ?? 0).toString()),
+      salePrice:  double.parse((data['SalePrice'] ?? 0).toString()),
       thumbnail: data['Thumbnail'] ?? '',
       categoryId: data['CategoryId'] ?? '',
       description: data['Description'] ?? '',
@@ -123,13 +123,13 @@ class ProductModel {
       stock: data['Stock'] ?? 0,
       soldQuantity: data.containsKey('SoldQuantity') ? data['SoldQuantity'] ?? 0 : 0,
       isFeatured: data['IsFeatured'] ?? false,
-      price: (data['Price'] ?? 0).toDouble(), // ✅ Sửa lỗi parse double
-      salePrice: (data['SalePrice'] ?? 0).toDouble(), // ✅ Sửa lỗi parse double
+      price: double.parse((data['Price'] ?? 0).toString()),
+      salePrice:  double.parse((data['SalePrice'] ?? 0).toString()),
       thumbnail: data['Thumbnail'] ?? '',
       categoryId: data['CategoryId'] ?? '',
       description: data['Description'] ?? '',
       productType: data['ProductType'] ?? '',
-      brand: data['Brand'] != null ? BrandModel.fromJson(data['Brand']) : null, // ✅ Kiểm tra null
+      brand: data['Brand'] != null ? BrandModel.fromJson(data['Brand']) : null,
       images: data['Images'] != null ? List<String>.from(data['Images']) : [],
       productAttributes: data['ProductAttributes'] != null
           ? (data['ProductAttributes'] as List<dynamic>)

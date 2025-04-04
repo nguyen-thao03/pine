@@ -31,24 +31,36 @@ class PDashboardCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return PRoundedContainer(
-        onTap: onTap,
-        padding: const EdgeInsets.all(PSizes.lg),
-        child: Column(
-          children: [
-            Row(
-              children: [
-                PCircularIcon(
-                  icon: headingIcon,
-                  backgroundColor: headingIconBgColor,
-                  color: headingIconColor,
-                  size: PSizes.md,
-                ),
-                const SizedBox(width: PSizes.spaceBtwItems),
-                PSectionHeading(title: title, textColor: PColors.textSecondary),
-              ],
+      onTap: onTap,
+      padding: const EdgeInsets.all(PSizes.lg),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              PCircularIcon(
+                icon: headingIcon,
+                backgroundColor: headingIconBgColor,
+                color: headingIconColor,
+                size: PSizes.md,
+              ),
+              const SizedBox(width: PSizes.spaceBtwItems),
+              PSectionHeading(title: title, textColor: PColors.textSecondary),
+            ],
+          ),
+          const SizedBox(height: PSizes.spaceBtwSections),
+
+          Text(
+            subTitle,
+            style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+              color: Colors.black,
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
             ),
-            const SizedBox(height: PSizes.spaceBtwSections),
-          ],
-        ));
+          ),
+        ],
+      ),
+    );
   }
+
 }

@@ -3,7 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:pine_admin_panel/features/shop/models/order_model.dart';
-
+import '../../features/shop/controllers/dashboard/notification_controller.dart';
 import '../../utils/exceptions/firebase_exceptions.dart';
 import '../../utils/exceptions/format_exceptions.dart';
 import '../../utils/exceptions/platform_exceptions.dart';
@@ -13,6 +13,9 @@ class OrderRepository extends GetxController {
 
   final FirebaseFirestore _db = FirebaseFirestore.instance;
 
+  final NotificationController _notificationController = Get.put(NotificationController());
+
+  // Lấy tất cả đơn hàng của người dùng hiện tại
   Future<List<OrderModel>> getAllOrders() async {
     final userId = FirebaseAuth.instance.currentUser?.uid;
     if (userId == null) return [];
@@ -31,7 +34,7 @@ class OrderRepository extends GetxController {
     }
   }
 
-
+  // Lấy tất cả đơn hàng của tất cả người dùng
   Future<List<OrderModel>> getAllOrdersForAllUsers() async {
     List<OrderModel> allOrders = [];
 
@@ -62,10 +65,25 @@ class OrderRepository extends GetxController {
     }
   }
 
-
+  // Hàm thêm đơn hàng và gửi thông báo khi có đơn hàng mới
   Future<void> addOrder(OrderModel order) async {
-    try{
-      await _db.collection("Orders").add(order.toJson());
+    try {
+      // Lưu đơn hàng vào Firestore
+      await _db.collection("Users").doc(order.userId).collection("Orders").add(order.toJson());
+
+      // Lưu thông báo vào Firestore (Collection "Notifications")
+      await _db.collection("Notifications").add({
+        'title': 'Đơn hàng mới',
+        'message': 'Khách hàng ${order.userId} đã đặt một đơn hàng mới!',
+        'isRead': false,
+        'timestamp': FieldValue.serverTimestamp(), // Thời gian server
+      });
+
+      // Cập nhật thông báo mới trong ứng dụng
+      _notificationController.addNotification(
+        'Đơn hàng mới',
+        'Khách hàng ${order.userId} đã đặt một đơn hàng mới!',
+      );
     } on FirebaseException catch (e) {
       throw PFirebaseException(e.code).message;
     } on FormatException catch (_) {
@@ -77,24 +95,35 @@ class OrderRepository extends GetxController {
     }
   }
 
+  // Cập nhật giá trị cụ thể cho đơn hàng
   Future<void> updateOrderSpecificValue(String userId, String orderId, Map<String, dynamic> data) async {
     try {
+      if (userId.isEmpty || orderId.isEmpty) {
+        throw '⚠️ User ID hoặc Order ID không hợp lệ!';
+      }
+
+      print("🔥 Firestore Update: User ID: $userId, Order ID: $orderId, Data: $data");
+
+      // Cập nhật thông tin vào Firestore
       await _db.collection("Users").doc(userId).collection("Orders").doc(orderId).update(data);
     } on FirebaseException catch (e) {
-      throw PFirebaseException(e.code).message;
-    } on FormatException catch (_) {
-      throw const PFormatException();
-    } on PlatformException catch (e) {
-      throw PPlatformException(e.code).message;
+      throw 'Firebase Error: ${e.code}';
     } catch (e) {
-      throw 'Có lỗi xảy ra. Vui lòng thử lại';
+      throw 'Lỗi không xác định khi cập nhật đơn hàng! Lỗi: $e';
     }
   }
 
+  Future<void> deleteOrder(String userId, String orderId) async {
+    try {
+      // Đảm bảo bạn xóa đúng đơn hàng trong collection Orders của user
+      await _db
+          .collection("Users") // Collection chính của user
+          .doc(userId) // ID của người dùng
+          .collection("Orders") // Collection con chứa các đơn hàng
+          .doc(orderId) // ID đơn hàng cần xóa
+          .delete(); // Xóa document của đơn hàng
 
-  Future<void> deleteOrder(String orderId) async {
-    try{
-      await _db.collection("Orders").doc(orderId).delete();
+      print("🚀 Đơn hàng đã được xóa khỏi Firestore!");
     } on FirebaseException catch (e) {
       throw PFirebaseException(e.code).message;
     } on FormatException catch (_) {
@@ -102,7 +131,8 @@ class OrderRepository extends GetxController {
     } on PlatformException catch (e) {
       throw PPlatformException(e.code).message;
     } catch (e) {
-      throw 'Có lỗi xảy ra. Vui lòng thử lại';
+      throw 'Có lỗi khi xóa đơn hàng';
     }
   }
+
 }

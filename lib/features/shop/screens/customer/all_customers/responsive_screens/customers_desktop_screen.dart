@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pine_admin_panel/common/widgets/loaders/loader_animation.dart';
 import 'package:pine_admin_panel/features/shop/controllers/customer/customer_controller.dart';
+import 'package:pine_admin_panel/features/shop/screens/customer/all_customers/table/staff_table.dart';
+import 'package:pine_admin_panel/utils/constants/colors.dart';
 
 import '../../../../../../common/widgets/breadcrumbs/breadcrumb_with_heading.dart';
 import '../../../../../../common/widgets/containers/rounded_container.dart';
@@ -26,24 +28,73 @@ class CustomersDesktopScreen extends StatelessWidget {
               // Breadcrumbs
               const PBreadcrumbsWithHeading(heading: 'Người dùng', breadcrumbItems: ['Người dùng']),
               const SizedBox(height: PSizes.spaceBtwSections),
+              Obx(() => Container(
+                padding: const EdgeInsets.symmetric(vertical: 8),
+                decoration: BoxDecoration(
+                  border: Border(bottom: BorderSide(color: Colors.grey.shade300)),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    TextButton(
+                      onPressed: () {
+                        controller.changeCategory('Khách hàng');
+                      },
+                      child: Text(
+                        'Khách hàng',
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: controller.currentCategory.value == 'Khách hàng'
+                              ? PColors.primary
+                              : Colors.black,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 20),
+
+                    TextButton(
+                      onPressed: () {
+                        controller.changeCategory('Nhân viên');
+                      },
+                      child: Text(
+                        'Nhân viên',
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: controller.currentCategory.value == 'Nhân viên'
+                              ? PColors.primary
+                              : Colors.black,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              )),
+              const SizedBox(height: PSizes.spaceBtwSections),
 
               // Table Body
-              // Show Loader
               PRoundedContainer(
                 child: Column(
                   children: [
                     // Table Header
-                    PTableHeader(
-                        showLeftWidget: false,
-                      searchController: controller.searchTextController,
-                      searchOnChanged: (query) => controller.searchQuery(query),
-                    ),
+                    Obx(() {
+                      return PTableHeader(
+                        showLeftWidget: controller.currentCategory.value == 'Nhân viên',
+                        buttonText: 'Thêm nhân viên',
+                        onPressed: () => Get.toNamed(PRoutes.createStaff),
+                        searchController: controller.searchTextController,
+                        searchOnChanged: (query) => controller.searchQuery(query),
+                      );
+                    }),
                     const SizedBox(height: PSizes.spaceBtwItems),
 
-                    // Table
+                    // Table Content
                     Obx(() {
                       if (controller.isLoading.value) return const PLoaderAnimation();
-                      return const CustomerTable();
+                      if (controller.currentCategory.value == 'Khách hàng') {
+                        return const CustomerTable();  // Bảng dành cho Khách hàng
+                      } else {
+                        return const StaffTable();  // Bảng dành cho Nhân viên
+                      }
                     }),
                   ],
                 ),
@@ -55,3 +106,5 @@ class CustomersDesktopScreen extends StatelessWidget {
     );
   }
 }
+
+

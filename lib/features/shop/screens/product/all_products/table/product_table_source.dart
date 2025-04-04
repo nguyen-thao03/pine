@@ -45,8 +45,13 @@ class ProductsRows extends DataTableSource {
                         .apply(color: PColors.primary))),
           ],
         )),
-        DataCell(Text(controller.getProductStockTotal(product))),
-        DataCell(Text(controller.getProductSoldQuantity(product))),
+        DataCell(
+            Obx(() => Text(controller.getUpdatedStock(product).toString()))
+        ),
+        DataCell(
+            Obx(() => Text(controller.getProductSoldQuantity(product).toString()))
+        ),
+
         DataCell(Text(product.brand != null ? product.brand!.name : '',
             style: Theme.of(Get.context!)
                 .textTheme

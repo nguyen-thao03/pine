@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:pine_admin_panel/common/widgets/layouts/templates/login_template.dart';
+import 'package:pine_admin_panel/common/widgets/layouts/templates/login_signup_template.dart';
 import 'package:pine_admin_panel/features/authentication/screens/forgot_password/widgets/header_form.dart';
 
 class ForgotPasswordScreenDesktopTablet extends StatelessWidget {
@@ -7,7 +7,7 @@ class ForgotPasswordScreenDesktopTablet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return PLoginTemplate(
+    return PLoginSignupTemplate(
         child: HeaderAndForm(),
     );
   }

@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pine_admin_panel/utils/popups/full_screen_loader.dart';
@@ -30,11 +29,10 @@ abstract class PBaseController<P> extends GetxController {
     try{
       isLoading.value = true;
       List<P> fetchedItems = [];
-      if(allItems.isEmpty){
-        fetchedItems = await fetchItems();
-      }
+      fetchedItems = await fetchItems();
       allItems.assignAll(fetchedItems);
       filteredItems.assignAll(allItems);
+
     }catch(e){
       isLoading.value = false;
       PFullScreenLoader.stopLoading();

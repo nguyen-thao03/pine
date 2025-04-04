@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:intl/intl.dart';  // Import intl package
+
 import 'package:pine_admin_panel/common/widgets/containers/rounded_container.dart';
 import 'package:pine_admin_panel/features/shop/controllers/dashboard/dashboard_controller.dart';
 import 'package:pine_admin_panel/features/shop/screens/dashboard/table/dashboard_table.dart';
@@ -16,6 +18,13 @@ class DashboardDesktopScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = Get.put(DashboardController());
+
+    // Hàm format tiền tệ Việt Nam
+    String formatCurrency(double value) {
+      final formatter = NumberFormat("#,##0", "vi_VN");
+      return "${formatter.format(value)} đ";
+    }
+
     return Scaffold(
       body: SingleChildScrollView(
         child: Padding(
@@ -30,58 +39,69 @@ class DashboardDesktopScreen extends StatelessWidget {
               // Cards
               Row(
                 children: [
-                  Expanded(
-                      child: Obx(
-                        () => PDashboardCard(
-                            headingIcon: Iconsax.note,
-                            headingIconColor: Colors.blue,
-                            headingIconBgColor: Colors.blue.withValues(alpha: 0.1),
-                            context: context,
-                            title: 'Tổng doanh số',
-                            subTitle: '${controller.orderController.allItems.fold(0.0, (previousValue, element) => previousValue + element.totalAmount)}',
-                            stats: 25),
-                      )),
+                  Flexible(
+                    child: Obx(
+                          () => PDashboardCard(
+                        headingIcon: Iconsax.note,
+                        headingIconColor: Colors.blue,
+                        headingIconBgColor: Colors.blue.withValues(alpha: 0.1),
+                        context: context,
+                        title: 'Tổng doanh số',
+                        subTitle: formatCurrency(
+                          controller.orderController.allItems.fold(0.0, (previousValue, element) => previousValue + element.totalAmount),
+                        ),
+                        stats: 25,
+                      ),
+                    ),
+                  ),
                   const SizedBox(width: PSizes.spaceBtwItems),
                   Expanded(
-                      child: Obx(
-                        () => PDashboardCard(
-                          headingIcon: Iconsax.external_drive,
-                            headingIconColor: Colors.green,
-                            headingIconBgColor: Colors.green.withValues(alpha: 0.1),
-                            context: context,
-                            title: 'Giá trị đơn hàng trung bình',
-                            subTitle: controller.orderController.allItems.isNotEmpty
-                                ? '${(controller.orderController.allItems.fold(0.0, (previousValue, element) => previousValue + element.totalAmount) / controller.orderController.allItems.length).toStringAsFixed(2)}đ'
-                                : '0.00đ',
-                            stats: 15,
-                          icon: Iconsax.arrow_down,
-                          color: PColors.error,
-                        ),
-                      )),
+                    child: Obx(
+                          () => PDashboardCard(
+                        headingIcon: Iconsax.external_drive,
+                        headingIconColor: Colors.green,
+                        headingIconBgColor: Colors.green.withValues(alpha: 0.1),
+                        context: context,
+                        title: 'Giá trị đơn hàng trung bình',
+                        subTitle: controller.orderController.allItems.isNotEmpty
+                            ? formatCurrency(
+                            controller.orderController.allItems.fold(0.0, (previousValue, element) => previousValue + element.totalAmount) /
+                                controller.orderController.allItems.length)
+                            : '0.00 đ',
+                        stats: 15,
+                        icon: Iconsax.arrow_down,
+                        color: PColors.error,
+                      ),
+                    ),
+                  ),
                   SizedBox(width: PSizes.spaceBtwItems),
                   Expanded(
-                      child: Obx(
-                        () => PDashboardCard(
-                            headingIcon: Iconsax.box,
-                            headingIconColor: Colors.deepPurple,
-                            headingIconBgColor: Colors.deepPurple.withValues(alpha: 0.1),
-                            context: context,
-                            title: 'Tổng đơn hàng',
-                            subTitle: '${controller.orderController.allItems.length}',
-                            stats: 44),
-                      )),
+                    child: Obx(
+                          () => PDashboardCard(
+                        headingIcon: Iconsax.box,
+                        headingIconColor: Colors.deepPurple,
+                        headingIconBgColor: Colors.deepPurple.withValues(alpha: 0.1),
+                        context: context,
+                        title: 'Tổng đơn hàng',
+                        subTitle: '${controller.orderController.allItems.length}',
+                        stats: 44,
+                      ),
+                    ),
+                  ),
                   SizedBox(width: PSizes.spaceBtwItems),
                   Expanded(
-                      child: Obx(
-                        () => PDashboardCard(
-                            headingIcon: Iconsax.user,
-                            headingIconColor: Colors.deepOrange,
-                            headingIconBgColor: Colors.deepOrange.withValues(alpha: 0.1),
-                            context: context,
-                            title: 'Người dùng',
-                            subTitle: '${controller.customerController.allItems.length}',
-                            stats: 2),
-                      )),
+                    child: Obx(
+                          () => PDashboardCard(
+                        headingIcon: Iconsax.user,
+                        headingIconColor: Colors.deepOrange,
+                        headingIconBgColor: Colors.deepOrange.withValues(alpha: 0.1),
+                        context: context,
+                        title: 'Người dùng',
+                        subTitle: '${controller.customerController.allItems.length}',
+                        stats: 2,
+                      ),
+                    ),
+                  ),
                 ],
               ),
               const SizedBox(height: PSizes.spaceBtwSections),
@@ -103,10 +123,7 @@ class DashboardDesktopScreen extends StatelessWidget {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text('Đơn hàng gần đây',
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .headlineSmall),
+                              Text('Đơn hàng gần đây', style: Theme.of(context).textTheme.headlineSmall),
                               const SizedBox(height: PSizes.spaceBtwSections),
                               const DashboardOrderTable(),
                             ],
@@ -120,7 +137,7 @@ class DashboardDesktopScreen extends StatelessWidget {
                   /// Pie Chart
                   const Expanded(child: OrderStatusPieChart()),
                 ],
-              )
+              ),
             ],
           ),
         ),

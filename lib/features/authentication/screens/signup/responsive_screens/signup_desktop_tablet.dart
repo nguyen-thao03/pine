@@ -3,8 +3,11 @@ import 'package:pine_admin_panel/common/widgets/layouts/templates/login_signup_t
 import 'package:pine_admin_panel/features/authentication/screens/login/widgets/login_form.dart';
 import 'package:pine_admin_panel/features/authentication/screens/login/widgets/login_header.dart';
 
-class LoginScreenDesktopTablet extends StatelessWidget {
-  const LoginScreenDesktopTablet({super.key});
+import '../widgets/signup_form.dart';
+import '../widgets/signup_header.dart';
+
+class SignupScreenDesktopTablet extends StatelessWidget {
+  const SignupScreenDesktopTablet({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -12,10 +15,10 @@ class LoginScreenDesktopTablet extends StatelessWidget {
         child: Column(
         children: [
         // Header
-        PLoginHeader(),
+        PSignupHeader(),
 
         // Form
-        PLoginForm(),
+        PSignupForm(),
         ],
       ),
     );
