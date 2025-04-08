@@ -6,10 +6,10 @@ import 'package:pine_admin_panel/common/widgets/shimmers/shimmer.dart';
 import 'package:pine_admin_panel/utils/constants/sizes.dart';
 import 'package:pine_admin_panel/utils/validators/validation.dart';
 
-import '../../../../../../utils/constants/enums.dart';
-import '../../../../../../utils/constants/text_strings.dart';
-import '../../../../controllers/customer/edit_staff_controller.dart';
+import '../../../../../../../utils/constants/enums.dart';
+import '../../../../../../../utils/constants/text_strings.dart';
 import '../../../../../personalization/models/user_model.dart';
+import '../../../../controllers/customer/edit_staff_controller.dart';
 
 class EditStaffForm extends StatelessWidget {
   const EditStaffForm({super.key, required this.staff});

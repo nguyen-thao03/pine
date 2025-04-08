@@ -3,8 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pine_admin_panel/common/widgets/data_table/paginated_data_table.dart';
 import 'package:pine_admin_panel/features/shop/controllers/customer/customer_detail_controller.dart';
-import 'package:pine_admin_panel/features/shop/screens/customer/customer_detail/table/customer_detail_table_source.dart';
 import 'package:pine_admin_panel/utils/device/device_utility.dart';
+
+import 'customer_detail_table_source.dart';
 
 class CustomerOrderTable extends StatelessWidget {
   const CustomerOrderTable({super.key});

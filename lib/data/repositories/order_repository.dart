@@ -15,7 +15,6 @@ class OrderRepository extends GetxController {
 
   final NotificationController _notificationController = Get.put(NotificationController());
 
-  // Lấy tất cả đơn hàng của người dùng hiện tại
   Future<List<OrderModel>> getAllOrders() async {
     final userId = FirebaseAuth.instance.currentUser?.uid;
     if (userId == null) return [];
@@ -29,12 +28,10 @@ class OrderRepository extends GetxController {
           .get();
       return result.docs.map((querySnapshot) => OrderModel.fromSnapshot(querySnapshot)).toList();
     } catch (e) {
-      print("🚨 Lỗi khi lấy đơn hàng: $e");
       return [];
     }
   }
 
-  // Lấy tất cả đơn hàng của tất cả người dùng
   Future<List<OrderModel>> getAllOrdersForAllUsers() async {
     List<OrderModel> allOrders = [];
 
@@ -60,23 +57,20 @@ class OrderRepository extends GetxController {
 
       return allOrders;
     } catch (e) {
-      print("🚨 Lỗi khi lấy tất cả đơn hàng: $e");
       return [];
     }
   }
 
-  // Hàm thêm đơn hàng và gửi thông báo khi có đơn hàng mới
   Future<void> addOrder(OrderModel order) async {
     try {
-      // Lưu đơn hàng vào Firestore
       await _db.collection("Users").doc(order.userId).collection("Orders").add(order.toJson());
 
-      // Lưu thông báo vào Firestore (Collection "Notifications")
+
       await _db.collection("Notifications").add({
         'title': 'Đơn hàng mới',
         'message': 'Khách hàng ${order.userId} đã đặt một đơn hàng mới!',
         'isRead': false,
-        'timestamp': FieldValue.serverTimestamp(), // Thời gian server
+        'timestamp': FieldValue.serverTimestamp(),
       });
 
       // Cập nhật thông báo mới trong ứng dụng
@@ -95,16 +89,11 @@ class OrderRepository extends GetxController {
     }
   }
 
-  // Cập nhật giá trị cụ thể cho đơn hàng
   Future<void> updateOrderSpecificValue(String userId, String orderId, Map<String, dynamic> data) async {
     try {
       if (userId.isEmpty || orderId.isEmpty) {
         throw '⚠️ User ID hoặc Order ID không hợp lệ!';
       }
-
-      print("🔥 Firestore Update: User ID: $userId, Order ID: $orderId, Data: $data");
-
-      // Cập nhật thông tin vào Firestore
       await _db.collection("Users").doc(userId).collection("Orders").doc(orderId).update(data);
     } on FirebaseException catch (e) {
       throw 'Firebase Error: ${e.code}';
@@ -115,15 +104,8 @@ class OrderRepository extends GetxController {
 
   Future<void> deleteOrder(String userId, String orderId) async {
     try {
-      // Đảm bảo bạn xóa đúng đơn hàng trong collection Orders của user
-      await _db
-          .collection("Users") // Collection chính của user
-          .doc(userId) // ID của người dùng
-          .collection("Orders") // Collection con chứa các đơn hàng
-          .doc(orderId) // ID đơn hàng cần xóa
-          .delete(); // Xóa document của đơn hàng
 
-      print("🚀 Đơn hàng đã được xóa khỏi Firestore!");
+      await _db.collection("Users").doc(userId).collection("Orders").doc(orderId).delete();
     } on FirebaseException catch (e) {
       throw PFirebaseException(e.code).message;
     } on FormatException catch (_) {

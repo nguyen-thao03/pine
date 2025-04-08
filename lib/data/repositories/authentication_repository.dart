@@ -1,6 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:pine_admin_panel/routes/routes.dart';
 import 'package:pine_admin_panel/utils/exceptions/firebase_auth_exceptions.dart';
 import 'package:pine_admin_panel/utils/exceptions/format_exceptions.dart';
@@ -28,19 +30,45 @@ class AuthenticationRepository extends GetxController {
   void screenRedirect() async {
     final user = _auth.currentUser;
 
-    // If the user is logged in
     if (user != null) {
-      //Navigate to the Home
-      Get.offAllNamed(PRoutes.dashboard);
+      final userDoc = await FirebaseFirestore.instance.collection('Users').doc(user.uid).get();
+      if (userDoc.exists) {
+        final userData = userDoc.data();
+        if (userData != null) {
+          String role = userData['Role'] ?? 'user';
+          GetStorage().write('Role', role);
+          if (role == 'admin') {
+            Get.offAllNamed(PRoutes.dashboard);
+          } else if (role == 'staff') {
+            Get.offAllNamed(PRoutes.staffDashboard);
+          } else {
+            Get.offAllNamed(PRoutes.login);
+          }
+        }
+      }
     } else {
       Get.offAllNamed(PRoutes.login);
     }
   }
 
+
   // LOGIN
   Future<UserCredential> loginWithEmailAndPassword(String email, String password) async {
     try {
-      return await _auth.signInWithEmailAndPassword(email: email, password: password);
+      UserCredential userCredential = await _auth.signInWithEmailAndPassword(email: email, password: password);
+      final userId = userCredential.user?.uid;
+      if (userId != null) {
+        final userDoc = await FirebaseFirestore.instance.collection('Users').doc(userId).get();
+        if (userDoc.exists) {
+          final userData = userDoc.data();
+          if (userData != null) {
+            String role = userData['Role'] ?? 'user';
+            print("User role: $role");
+            GetStorage().write('Role', role);
+          }
+        }
+      }
+      return userCredential;
     } on FirebaseAuthException catch (e) {
       throw PFirebaseAuthException(e.code).message;
     } on FirebaseException catch (e) {
@@ -53,6 +81,7 @@ class AuthenticationRepository extends GetxController {
       throw 'Đã có lỗi xảy ra. Vui lòng thử lại';
     }
   }
+
 
   // REGISTER
   Future<UserCredential> registerWithEmailAndPassword(String email, String password) async {
@@ -84,6 +113,7 @@ class AuthenticationRepository extends GetxController {
     try {
       await FirebaseAuth.instance.signOut();
       Get.offAllNamed(PRoutes.login);
+      GetStorage().remove('activeItem');
     } on FirebaseAuthException catch (e) {
       throw PFirebaseAuthException(e.code).message;
     } on FirebaseException catch (e) {

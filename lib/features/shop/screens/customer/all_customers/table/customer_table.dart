@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pine_admin_panel/common/widgets/data_table/paginated_data_table.dart';
 import 'package:pine_admin_panel/features/shop/controllers/customer/customer_controller.dart';
-import 'package:pine_admin_panel/features/shop/screens/category/all_categories/table/category_table_source.dart';
-import 'package:pine_admin_panel/features/shop/screens/customer/all_customers/table/customer_table_source.dart';
+
+import 'customer_table_source.dart';
 
 class CustomerTable extends StatelessWidget {
   const CustomerTable({super.key});

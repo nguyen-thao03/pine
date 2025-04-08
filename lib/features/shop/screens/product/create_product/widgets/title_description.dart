@@ -4,7 +4,8 @@ import 'package:pine_admin_panel/common/widgets/containers/rounded_container.dar
 import 'package:pine_admin_panel/features/shop/controllers/product/create_product_controller.dart';
 import 'package:pine_admin_panel/utils/validators/validation.dart';
 
-import '../../../../../../utils/constants/sizes.dart';
+import '../../../../../../../utils/constants/sizes.dart';
+
 
 class ProductTitleAndDescription extends StatelessWidget {
   const ProductTitleAndDescription({super.key});

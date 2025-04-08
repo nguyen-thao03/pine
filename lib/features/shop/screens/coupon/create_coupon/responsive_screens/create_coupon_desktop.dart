@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:pine_admin_panel/common/widgets/breadcrumbs/breadcrumb_with_heading.dart';
 import 'package:pine_admin_panel/utils/constants/sizes.dart';
 
-import '../../../../../../routes/routes.dart';
+import '../../../../../../../routes/routes.dart';
 import '../widgets/create_coupon_form.dart';
 
 class CreateCouponDesktopScreen extends StatelessWidget {

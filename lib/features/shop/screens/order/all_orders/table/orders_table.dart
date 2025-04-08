@@ -5,8 +5,9 @@ import 'package:pine_admin_panel/common/widgets/data_table/paginated_data_table.
 import 'package:pine_admin_panel/features/shop/screens/order/all_orders/table/order_table_source.dart';
 import 'package:pine_admin_panel/utils/device/device_utility.dart';
 
-import '../../../../../../utils/constants/sizes.dart';
 import '../../../../controllers/order/order_controller.dart';
+
+
 
 class OrderTable extends StatelessWidget {
   const OrderTable({super.key});
@@ -24,9 +25,8 @@ class OrderTable extends StatelessWidget {
           sortColumnIndex: controller.sortColumnIndex.value,
           columns: [
             const DataColumn2(label: Text('ID Đơn hàng')),
-            DataColumn2(label: const Text('Ngày'),
-                onSort: (columnIndex, ascending) =>
-                    controller.sortByDate(columnIndex, ascending)),
+            DataColumn2(label: const Text('Ngày đặt'), onSort: (columnIndex, ascending) => controller.sortByDate(columnIndex, ascending)),
+            DataColumn2(label: const Text('Ngày giao'), onSort: (columnIndex, ascending) => controller.sortByDate(columnIndex, ascending)),
             const DataColumn2(label: Text('Sản phẩm')),
             DataColumn2(label: Text('Trạng thái'),
                 fixedWidth: PDeviceUtils.isMobileScreen(context) ? 120 : null),

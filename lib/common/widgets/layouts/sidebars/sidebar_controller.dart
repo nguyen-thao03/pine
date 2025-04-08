@@ -8,10 +8,31 @@ class SidebarController extends GetxController {
   final activeItem = "".obs;
   final hoverItem = ''.obs;
 
+  late String userRole;
+  final allowedStaffRoutes = [
+    PRoutes.staffDashboard,
+    PRoutes.media,
+    PRoutes.categories, PRoutes.createCategory, PRoutes.editCategory,
+    PRoutes.brands, PRoutes.createBrand, PRoutes.editBrand,
+    PRoutes.products, PRoutes.createProduct, PRoutes.editProduct,
+    PRoutes.orders, PRoutes.orderDetails,
+    PRoutes.profile, PRoutes.login
+  ];
+
   @override
   void onInit() {
     super.onInit();
-    activeItem.value = box.read("activeItem") ?? PRoutes.dashboard;
+    userRole = box.read("Role") ?? 'staff';
+    final savedRoute = box.read("activeItem");
+    if (userRole == 'staff' && !allowedStaffRoutes.contains(savedRoute)) {
+      activeItem.value = PRoutes.staffDashboard;
+    } else {
+      activeItem.value = savedRoute ?? _defaultRouteForRole();
+    }
+  }
+
+  String _defaultRouteForRole() {
+    return userRole == 'admin' ? PRoutes.dashboard : PRoutes.staffDashboard;
   }
 
   void changeActiveItem(String route) {
@@ -27,6 +48,11 @@ class SidebarController extends GetxController {
   bool isHovering(String route) => hoverItem.value == route;
 
   void menuOnTap(String route) {
+    if (userRole == 'staff' && !allowedStaffRoutes.contains(route)) {
+      Get.snackbar('Không được phép', 'Bạn không có quyền truy cập đường dẫn này');
+      return;
+    }
+
     if (!isActive(route)) {
       changeActiveItem(route);
 

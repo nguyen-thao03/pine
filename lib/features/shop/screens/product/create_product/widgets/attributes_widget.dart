@@ -9,10 +9,11 @@ import 'package:pine_admin_panel/utils/constants/sizes.dart';
 import 'package:pine_admin_panel/utils/device/device_utility.dart';
 import 'package:pine_admin_panel/utils/validators/validation.dart';
 
-import '../../../../../../utils/constants/colors.dart';
+import '../../../../../../../utils/constants/colors.dart';
 import '../../../../controllers/product/create_product_controller.dart';
 import '../../../../controllers/product/product_attributes_controller.dart';
 import '../../../../controllers/product/product_variations_controller.dart';
+
 
 class ProductAttributes extends StatelessWidget {
   const ProductAttributes({super.key});

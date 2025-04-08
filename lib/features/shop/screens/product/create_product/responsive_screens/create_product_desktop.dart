@@ -7,7 +7,7 @@ import 'package:pine_admin_panel/utils/constants/enums.dart';
 import 'package:pine_admin_panel/utils/constants/sizes.dart';
 import 'package:pine_admin_panel/utils/device/device_utility.dart';
 
-import '../../../../../../routes/routes.dart';
+import '../../../../../../../routes/routes.dart';
 import '../widgets/additional_images.dart';
 import '../widgets/attributes_widget.dart';
 import '../widgets/bottom_navigation_widget.dart';

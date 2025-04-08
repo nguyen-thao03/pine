@@ -28,7 +28,7 @@ class UserModel {
     this.userName = '',
     this.phoneNumber = '',
     this.profilePicture = '',
-    this.role = AppRole.user,
+    this.role = AppRole.staff,
     this.createdAt,
     this.updatedAt,
     this.orders,

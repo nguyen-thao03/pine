@@ -7,9 +7,9 @@ import 'package:pine_admin_panel/common/widgets/loaders/loader_animation.dart';
 import 'package:pine_admin_panel/features/shop/controllers/customer/customer_detail_controller.dart';
 import 'package:pine_admin_panel/utils/constants/image_strings.dart';
 
-import '../../../../../../common/widgets/containers/rounded_container.dart';
-import '../../../../../../utils/constants/colors.dart';
-import '../../../../../../utils/constants/sizes.dart';
+import '../../../../../../../common/widgets/containers/rounded_container.dart';
+import '../../../../../../../utils/constants/colors.dart';
+import '../../../../../../../utils/constants/sizes.dart';
 import '../table/customer_data_table.dart';
 
 class CustomerOrders extends StatelessWidget {

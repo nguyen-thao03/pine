@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:pine_admin_panel/common/widgets/breadcrumbs/breadcrumb_with_heading.dart';
 
-import '../../../../../../routes/routes.dart';
-import '../../../../../../utils/constants/sizes.dart';
+import '../../../../../../../routes/routes.dart';
+import '../../../../../../../utils/constants/sizes.dart';
 import '../../../../../personalization/models/user_model.dart';
 import '../widgets/edit_profile_picture.dart';
 import '../widgets/edit_staff_form.dart';

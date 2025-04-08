@@ -8,6 +8,8 @@ import 'package:pine_admin_panel/utils/helpers/network_manager.dart';
 import 'package:pine_admin_panel/utils/popups/full_screen_loader.dart';
 import 'package:pine_admin_panel/utils/popups/loaders.dart';
 
+import '../../../data/repositories/authentication_repository.dart';
+
 class UserController extends GetxController {
   static UserController get instance => Get.find();
 
@@ -40,8 +42,26 @@ class UserController extends GetxController {
       PLoaders.errorSnackBar(title: 'Đã xảy ra lỗi.', message: e.toString());
       return UserModel.empty();
     }
-    
+
   }
+
+  Future<UserModel> fetchStaffDetails() async {
+    try {
+      loading.value = true;
+      UserModel user = UserModel.empty();
+      String userId = AuthenticationRepository.instance.authUser!.uid;
+      user = await userRepository.fetchAllStaffDetails(userId);
+      this.user.value = user;
+      loading.value = false;
+
+      return user;
+    } catch (e) {
+      loading.value = false;
+      PLoaders.errorSnackBar(title: 'Đã xảy ra lỗi.', message: e.toString());
+      return UserModel.empty();
+    }
+  }
+
 
   void updateProfilePicture() async {
     try {
@@ -64,16 +84,19 @@ class UserController extends GetxController {
     }
   }
 
-  void updateUserInformation() async {
+  void updateAdminInformation() async {
     try {
       loading.value = true;
+
       final isConnected = await NetworkManager.instance.isConnected();
       if (!isConnected) {
+        loading.value = false;
         PFullScreenLoader.stopLoading();
         return;
       }
 
       if (!formKey.currentState!.validate()) {
+        loading.value = false;
         PFullScreenLoader.stopLoading();
         return;
       }
@@ -92,4 +115,5 @@ class UserController extends GetxController {
       PLoaders.errorSnackBar(title: 'Ôi không', message: e.toString());
     }
   }
+
 }

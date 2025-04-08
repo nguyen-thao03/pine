@@ -2,15 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pine_admin_panel/common/widgets/loaders/loader_animation.dart';
 import 'package:pine_admin_panel/features/shop/controllers/customer/customer_controller.dart';
-import 'package:pine_admin_panel/features/shop/screens/customer/all_customers/table/staff_table.dart';
 import 'package:pine_admin_panel/utils/constants/colors.dart';
 
-import '../../../../../../common/widgets/breadcrumbs/breadcrumb_with_heading.dart';
-import '../../../../../../common/widgets/containers/rounded_container.dart';
-import '../../../../../../common/widgets/data_table/table_header.dart';
-import '../../../../../../routes/routes.dart';
-import '../../../../../../utils/constants/sizes.dart';
+import '../../../../../../../common/widgets/breadcrumbs/breadcrumb_with_heading.dart';
+import '../../../../../../../common/widgets/containers/rounded_container.dart';
+import '../../../../../../../common/widgets/data_table/table_header.dart';
+import '../../../../../../../routes/routes.dart';
+import '../../../../../../../utils/constants/sizes.dart';
 import '../table/customer_table.dart';
+import '../table/staff_table.dart';
 
 class CustomersDesktopScreen extends StatelessWidget {
   const CustomersDesktopScreen({super.key});

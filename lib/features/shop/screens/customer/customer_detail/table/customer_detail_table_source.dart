@@ -10,7 +10,8 @@ import 'package:pine_admin_panel/utils/constants/colors.dart';
 import 'package:pine_admin_panel/utils/constants/enums.dart';
 import 'package:pine_admin_panel/utils/helpers/helper_functions.dart';
 
-import '../../../../../../utils/constants/sizes.dart';
+import '../../../../../../../utils/constants/sizes.dart';
+
 
 class CustomerOrdersRows extends DataTableSource {
   final controller = CustomerDetailController.instance;

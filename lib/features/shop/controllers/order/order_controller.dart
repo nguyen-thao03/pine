@@ -19,8 +19,6 @@ class OrderController extends PBaseController<OrderModel> {
     return await _orderRepository.getAllOrdersForAllUsers();
   }
 
-
-
   @override
   bool containsSearchQuery(OrderModel item, String query) {
     return item.id.toLowerCase().contains(query.toLowerCase());
@@ -28,13 +26,13 @@ class OrderController extends PBaseController<OrderModel> {
 
   @override
   Future<void> deleteItem(OrderModel item) async {
-      final userId = item.userId;
-      final orderId = item.docId;
+    final userId = item.userId;
+    final orderId = item.docId;
 
-      await _orderRepository.deleteOrder(userId, orderId);
-      await fetchItems();
+    await _orderRepository.deleteOrder(userId, orderId);
+    await fetchItems();
 
-      update();
+    update();
   }
 
   void sortById(int sortColumnIndex, bool ascending) {
@@ -49,7 +47,19 @@ class OrderController extends PBaseController<OrderModel> {
     try {
       statusLoader.value = true;
 
-      await _orderRepository.updateOrderSpecificValue(order.userId, order.docId, {'status': newStatus.name});
+      final Map<String, dynamic> updateData = {
+        'status': newStatus.toString(),
+      };
+
+      if (newStatus == OrderStatus.delivered) {
+        updateData['deliveryDate'] = DateTime.now();
+      }
+
+      await _orderRepository.updateOrderSpecificValue(
+        order.userId,
+        order.docId,
+        updateData,
+      );
 
       final updatedOrderDoc = await FirebaseFirestore.instance
           .collection('Users')
@@ -61,7 +71,11 @@ class OrderController extends PBaseController<OrderModel> {
       if (updatedOrderDoc.exists) {
         final updatedOrder = OrderModel.fromSnapshot(updatedOrderDoc);
 
-        order.status = updatedOrder.status;
+        final index = filteredItems.indexWhere((e) => e.docId == order.docId);
+        if (index != -1) {
+          filteredItems[index] = updatedOrder;
+        }
+
         orderStatus.value = updatedOrder.status;
         filteredItems.refresh();
         update();

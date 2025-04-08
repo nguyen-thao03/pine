@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:multi_select_flutter/multi_select_flutter.dart';
 import 'package:pine_admin_panel/common/widgets/containers/rounded_container.dart';
-import 'package:pine_admin_panel/common/widgets/shimmers/shimmer.dart';
 import 'package:pine_admin_panel/features/shop/controllers/category/category_controller.dart';
 import 'package:pine_admin_panel/features/shop/controllers/product/edit_product_controller.dart';
 import 'package:pine_admin_panel/features/shop/models/category_model.dart';
@@ -10,7 +9,6 @@ import 'package:pine_admin_panel/features/shop/models/product_model.dart';
 import 'package:pine_admin_panel/utils/constants/sizes.dart';
 import 'package:pine_admin_panel/utils/helpers/cloud_helper_functions.dart';
 
-import '../../../../controllers/product/create_product_controller.dart';
 
 class ProductCategories extends StatelessWidget {
   const ProductCategories({super.key, required this.product});

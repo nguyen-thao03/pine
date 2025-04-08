@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pine_admin_panel/features/personalization/models/user_model.dart';
-import '../../../../../../common/widgets/containers/rounded_container.dart';
-import '../../../../../../common/widgets/images/p_rounded_image.dart';
-import '../../../../../../utils/constants/colors.dart';
-import '../../../../../../utils/constants/enums.dart';
-import '../../../../../../utils/constants/image_strings.dart';
-import '../../../../../../utils/constants/sizes.dart';
+
+import '../../../../../../../common/widgets/containers/rounded_container.dart';
+import '../../../../../../../common/widgets/images/p_rounded_image.dart';
+import '../../../../../../../utils/constants/colors.dart';
+import '../../../../../../../utils/constants/enums.dart';
+import '../../../../../../../utils/constants/image_strings.dart';
+import '../../../../../../../utils/constants/sizes.dart';
 import '../../../../controllers/customer/edit_staff_controller.dart';
 
 class EditProfilePicture extends StatelessWidget {

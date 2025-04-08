@@ -4,8 +4,9 @@ import 'package:pine_admin_panel/common/widgets/containers/rounded_container.dar
 import 'package:pine_admin_panel/common/widgets/icons/p_circular_icon.dart';
 import 'package:pine_admin_panel/common/widgets/texts/section_heading.dart';
 
-import '../../../../../utils/constants/colors.dart';
-import '../../../../../utils/constants/sizes.dart';
+import '../../../../../../utils/constants/colors.dart';
+import '../../../../../../utils/constants/sizes.dart';
+
 
 class PDashboardCard extends StatelessWidget {
   const PDashboardCard(

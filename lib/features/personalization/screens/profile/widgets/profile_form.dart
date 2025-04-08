@@ -27,7 +27,7 @@ class ProfileForm extends StatelessWidget {
                   style: Theme.of(context).textTheme.headlineSmall),
               const SizedBox(height: PSizes.spaceBtwSections),
 
-              // Form
+// Form
               Form(
                 key: controller.formKey,
                 child: Column(
@@ -75,7 +75,7 @@ class ProfileForm extends StatelessWidget {
                               prefixIcon: Icon(Iconsax.forward),
                               enabled: false,
                             ),
-                            initialValue: UserController.instance.user.value.email,
+                            initialValue: controller.user.value.email,
                           ),
                         ),
                         const SizedBox(width: PSizes.spaceBtwItems),
@@ -101,8 +101,8 @@ class ProfileForm extends StatelessWidget {
               SizedBox(
                 width: double.infinity,
                 child: Obx(
-                  () => ElevatedButton(
-                    onPressed: () => controller.loading.value ? () {} : controller.updateUserInformation(),
+                      () => ElevatedButton(
+                    onPressed: () => controller.loading.value ? () {} : controller.updateAdminInformation(),
                     child: controller.loading.value
                         ? const CircularProgressIndicator(color: Colors.white, strokeWidth: 2)
                         : const Text('Cập nhật tài khoản'),
@@ -116,3 +116,4 @@ class ProfileForm extends StatelessWidget {
     );
   }
 }
+

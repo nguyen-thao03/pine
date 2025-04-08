@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:pine_admin_panel/common/widgets/images/p_rounded_image.dart';
 import 'package:pine_admin_panel/utils/constants/enums.dart';
 import 'package:pine_admin_panel/utils/constants/image_strings.dart';
-import 'package:pine_admin_panel/utils/constants/text_strings.dart';
 
 import '../../../../routes/routes.dart';
 import '../../../../utils/constants/colors.dart';
@@ -15,18 +15,25 @@ class PSidebar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final userRole = GetStorage().read('Role') ?? 'staff';
+
     return Drawer(
       shape: const BeveledRectangleBorder(),
       child: Container(
         decoration: const BoxDecoration(
           color: PColors.white,
-          border: Border(right: BorderSide(color: PColors.grey, width: 1))
+          border: Border(right: BorderSide(color: PColors.grey, width: 1)),
         ),
         child: SingleChildScrollView(
           child: Column(
             children: [
-              // Image
-              const PRoundedImage(width: 100, height: 100, image: PImages.lightAppLogo, backgroundColor: Colors.transparent, imageType: ImageType.asset),
+              const PRoundedImage(
+                width: 100,
+                height: 100,
+                image: PImages.lightAppLogo,
+                backgroundColor: Colors.transparent,
+                imageType: ImageType.asset,
+              ),
               const SizedBox(height: PSizes.spaceBtwSections),
               Padding(
                 padding: const EdgeInsets.all(PSizes.md),
@@ -36,22 +43,27 @@ class PSidebar extends StatelessWidget {
                   children: [
                     Text('Menu', style: Theme.of(context).textTheme.bodySmall!.apply(letterSpacingDelta: 1.2)),
 
-                    // Menu Items
-                    const PMenuItem(route: PRoutes.dashboard, icon: Iconsax.status, itemName: 'Bảng điều khiển'),
+                    // Menu shared by all
+                    PMenuItem(
+                      route: userRole == 'staff' ? PRoutes.staffDashboard : PRoutes.dashboard,
+                      icon: Iconsax.status,
+                      itemName: 'Bảng điều khiển',
+                    ),
+                    const PMenuItem(route: PRoutes.orders, icon: Iconsax.box, itemName: 'Đơn hàng'),
                     const PMenuItem(route: PRoutes.media, icon: Iconsax.image, itemName: 'Hình ảnh'),
                     const PMenuItem(route: PRoutes.categories, icon: Iconsax.category_2, itemName: 'Danh mục'),
                     const PMenuItem(route: PRoutes.brands, icon: Iconsax.dcube, itemName: 'Thương hiệu'),
-                    const PMenuItem(route: PRoutes.banners, icon: Iconsax.picture_frame, itemName: 'Banner'),
                     const PMenuItem(route: PRoutes.products, icon: Iconsax.shopping_bag, itemName: 'Sản phẩm'),
-                    const PMenuItem(route: PRoutes.coupons, icon: Iconsax.ticket_discount, itemName: 'Mã giảm giá'),
-                    const PMenuItem(route: PRoutes.customers, icon: Iconsax.profile_2user, itemName: 'Người dùng'),
-                    const PMenuItem(route: PRoutes.orders, icon: Iconsax.box, itemName: 'Đơn hàng'),
-
-                    // Other Menu Items
+// Others
                     Text('Khác', style: Theme.of(context).textTheme.bodySmall!.apply(letterSpacingDelta: 1.2)),
                     const PMenuItem(route: PRoutes.profile, icon: Iconsax.user, itemName: 'Tài khoản'),
-                    //const PMenuItem(route: PRoutes.settings, icon: Iconsax.setting_2, itemName: 'Cài đặt'),
                     const PMenuItem(route: PRoutes.login, icon: Iconsax.logout, itemName: 'Đăng xuất'),
+                    // Admin-only menu
+                    if (userRole == 'admin') ...[
+                      const PMenuItem(route: PRoutes.banners, icon: Iconsax.picture_frame, itemName: 'Banner'),
+                      const PMenuItem(route: PRoutes.coupons, icon: Iconsax.ticket_discount, itemName: 'Mã giảm giá'),
+                      const PMenuItem(route: PRoutes.customers, icon: Iconsax.profile_2user, itemName: 'Người dùng'),
+                    ],
                   ],
                 ),
               )

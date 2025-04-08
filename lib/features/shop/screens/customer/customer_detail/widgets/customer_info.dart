@@ -7,8 +7,9 @@ import 'package:pine_admin_panel/features/shop/controllers/customer/customer_det
 import 'package:pine_admin_panel/utils/constants/enums.dart';
 import 'package:pine_admin_panel/utils/constants/image_strings.dart';
 
-import '../../../../../../utils/constants/colors.dart';
-import '../../../../../../utils/constants/sizes.dart';
+import '../../../../../../../utils/constants/colors.dart';
+import '../../../../../../../utils/constants/sizes.dart';
+
 
 class CustomerInfo extends StatelessWidget {
   const CustomerInfo({super.key, required this.customer});

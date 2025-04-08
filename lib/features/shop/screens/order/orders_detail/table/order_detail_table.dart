@@ -1,7 +1,6 @@
 import 'package:data_table_2/data_table_2.dart';
 import 'package:flutter/material.dart';
 import 'package:pine_admin_panel/common/widgets/data_table/paginated_data_table.dart';
-import 'package:pine_admin_panel/features/shop/screens/customer/customer_detail/table/customer_detail_table_source.dart';
 import 'package:pine_admin_panel/features/shop/screens/order/orders_detail/table/order_detail_table_source.dart';
 import 'package:pine_admin_panel/utils/device/device_utility.dart';
 

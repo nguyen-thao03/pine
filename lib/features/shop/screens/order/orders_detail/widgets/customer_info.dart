@@ -9,7 +9,8 @@ import 'package:pine_admin_panel/utils/constants/enums.dart';
 import 'package:pine_admin_panel/utils/constants/image_strings.dart';
 import 'package:pine_admin_panel/utils/constants/sizes.dart';
 
-import '../../../../../../utils/constants/colors.dart';
+import '../../../../../../../utils/constants/colors.dart';
+
 
 class OrderCustomer extends StatelessWidget {
   const OrderCustomer({super.key, required this.order});

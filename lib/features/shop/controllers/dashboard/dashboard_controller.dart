@@ -6,12 +6,14 @@ import 'package:pine_admin_panel/utils/helpers/helper_functions.dart';
 import '../../../../utils/constants/enums.dart';
 import '../../models/order_model.dart';
 import '../order/order_controller.dart';
+import '../product/product_controller.dart';
 
 class DashboardController extends PBaseController<OrderModel> {
   static DashboardController get instance => Get.find();
 
   final orderController = Get.put(OrderController());
   final customerController = Get.put(CustomerController());
+  final productController = Get.put(ProductController());
 
   final RxList<double> weeklySales = <double>[].obs;
   final RxMap<OrderStatus, int> orderStatusData = <OrderStatus, int>{}.obs;
@@ -35,6 +37,10 @@ class DashboardController extends PBaseController<OrderModel> {
 
     if (customerController.allItems.isEmpty) {
       await customerController.fetchItems();
+    }
+
+    if (productController.allItems.isEmpty) {
+      await productController.fetchItems();
     }
 
     print('Orders Loaded: ${customerController.allItems.length} nguoi dung');

@@ -9,7 +9,10 @@ import 'package:pine_admin_panel/utils/constants/colors.dart';
 import 'package:pine_admin_panel/utils/constants/sizes.dart';
 import 'package:pine_admin_panel/utils/helpers/helper_functions.dart';
 
+import '../../../../../../utils/constants/enums.dart';
 import '../../../../controllers/order/order_controller.dart';
+
+
 
 class OrderRows extends DataTableSource {
   final controller = OrderController.instance;
@@ -27,6 +30,17 @@ class OrderRows extends DataTableSource {
           ),
         ),
         DataCell(Text(order.formattedOrderDate)),
+        DataCell(
+          Text(
+            order.status == OrderStatus.delivered
+                ? order.formattedDeliveryDate
+                : 'Chưa giao',
+            style: TextStyle(
+              color: order.status == OrderStatus.delivered ? Colors.green : Colors.grey,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+        ),
         DataCell(Text('${order.items.length} sản phẩm')),
         DataCell(
             PRoundedContainer(

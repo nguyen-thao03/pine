@@ -6,9 +6,10 @@ import 'package:pine_admin_panel/utils/constants/colors.dart';
 import 'package:pine_admin_panel/utils/constants/enums.dart';
 import 'package:pine_admin_panel/utils/constants/image_strings.dart';
 
-import '../../../../../../common/widgets/containers/rounded_container.dart';
-import '../../../../../../utils/constants/sizes.dart';
+import '../../../../../../../common/widgets/containers/rounded_container.dart';
+import '../../../../../../../utils/constants/sizes.dart';
 import '../../../../models/product_model.dart';
+
 
 class ProductThumbnailImage extends StatelessWidget {
   const ProductThumbnailImage({super.key, required this.product});

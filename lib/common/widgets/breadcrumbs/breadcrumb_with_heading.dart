@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:pine_admin_panel/common/widgets/texts/page_heading.dart';
 import 'package:pine_admin_panel/routes/routes.dart';
@@ -25,7 +26,7 @@ class PBreadcrumbsWithHeading extends StatelessWidget {
         Row(
           children: [
             InkWell(
-              onTap: () => Get.offAllNamed(PRoutes.dashboard),
+              onTap: _navigateToDashboard,
               child: Padding(
                 padding: const EdgeInsets.all(PSizes.xs),
                 child: Text(
@@ -34,19 +35,16 @@ class PBreadcrumbsWithHeading extends StatelessWidget {
                 ),
               ),
             ),
-
             for (int i = 0; i < breadcrumbItems.length; i++)
               Row(
                 children: [
                   const Text(' / '),
-                  _buildBreadcrumbItem(breadcrumbItems[i], i == breadcrumbItems.length - 1)
+                  _buildBreadcrumbItem(breadcrumbItems[i], i == breadcrumbItems.length - 1),
                 ],
               ),
           ],
         ),
-
         const SizedBox(height: PSizes.sm),
-
         Row(
           children: [
             if (returnToPreviousScreen) ...[
@@ -58,6 +56,12 @@ class PBreadcrumbsWithHeading extends StatelessWidget {
         )
       ],
     );
+  }
+
+  void _navigateToDashboard() {
+    final role = GetStorage().read('userRole') ?? 'staff';
+    final route = role == 'admin' ? PRoutes.dashboard : PRoutes.staffDashboard;
+    Get.offAllNamed(route);
   }
 
   Widget _buildBreadcrumbItem(dynamic item, bool isLast) {

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pine_admin_panel/features/shop/screens/product/edit_product/widgets/additional_images.dart';
 import 'package:pine_admin_panel/features/shop/screens/product/edit_product/widgets/attributes_widget.dart';
-import 'package:pine_admin_panel/features/shop/screens/product/edit_product/widgets/bottom_navigation_widget.dart';
 import 'package:pine_admin_panel/features/shop/screens/product/edit_product/widgets/brand_widget.dart';
 import 'package:pine_admin_panel/features/shop/screens/product/edit_product/widgets/categories_widget.dart';
 import 'package:pine_admin_panel/features/shop/screens/product/edit_product/widgets/product_type_widget.dart';
@@ -11,12 +10,13 @@ import 'package:pine_admin_panel/features/shop/screens/product/edit_product/widg
 import 'package:pine_admin_panel/features/shop/screens/product/edit_product/widgets/title_description.dart';
 import 'package:pine_admin_panel/features/shop/screens/product/edit_product/widgets/variations_widget.dart';
 import 'package:pine_admin_panel/features/shop/screens/product/edit_product/widgets/visibility_widget.dart';
+import 'package:pine_admin_panel/features/shop/screens/product/edit_product/widgets/bottom_navigation_widget.dart';
 
-import '../../../../../../common/widgets/breadcrumbs/breadcrumb_with_heading.dart';
-import '../../../../../../common/widgets/containers/rounded_container.dart';
-import '../../../../../../routes/routes.dart';
-import '../../../../../../utils/constants/sizes.dart';
-import '../../../../../../utils/device/device_utility.dart';
+import '../../../../../../../common/widgets/breadcrumbs/breadcrumb_with_heading.dart';
+import '../../../../../../../common/widgets/containers/rounded_container.dart';
+import '../../../../../../../routes/routes.dart';
+import '../../../../../../../utils/constants/sizes.dart';
+import '../../../../../../../utils/device/device_utility.dart';
 import '../../../../controllers/product/product_images_controller.dart';
 import '../../../../models/product_model.dart';
 

@@ -10,7 +10,6 @@ class CustomerController extends PBaseController<UserModel> {
 
   var currentCategory = 'Khách hàng'.obs;
 
-  /// ✅ Cập nhật filteredItems ngay sau khi tải dữ liệu
   @override
   Future<List<UserModel>> fetchItems() async {
     List<UserModel> users;
@@ -20,7 +19,7 @@ class CustomerController extends PBaseController<UserModel> {
       users = await _customerRepository.getAllStaff();
     }
 
-    filteredItems.assignAll(users); // ✅ Cập nhật danh sách ngay
+    filteredItems.assignAll(users);
     return users;
   }
 
@@ -38,16 +37,14 @@ class CustomerController extends PBaseController<UserModel> {
     return item.fullName.toLowerCase().contains(query.toLowerCase());
   }
 
-  /// ✅ Xóa nhân viên và cập nhật danh sách ngay lập tức
   @override
   Future<void> deleteItem(UserModel item) async {
     await _customerRepository.deleteUser(item.id ?? '');
-    fetchData(); // ✅ Gọi fetchData() để cập nhật danh sách
+    fetchData();
   }
 
-  /// ✅ Hàm này sẽ được gọi sau khi thêm nhân viên mới
   void addNewStaff(UserModel newStaff) {
     filteredItems.add(newStaff);
-    update(); // ✅ Cập nhật UI ngay
+    update();
   }
 }

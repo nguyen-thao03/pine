@@ -6,12 +6,10 @@ import 'package:pine_admin_panel/features/shop/controllers/coupon/coupon_control
 import 'package:pine_admin_panel/utils/constants/sizes.dart';
 import 'package:pine_admin_panel/utils/validators/validation.dart';
 
-import '../../../../../../common/widgets/images/image_uploader.dart';
-import '../../../../../../common/widgets/shimmers/shimmer.dart';
-import '../../../../../../utils/constants/enums.dart';
-import '../../../../../../utils/constants/image_strings.dart';
+import '../../../../../../../common/widgets/shimmers/shimmer.dart';
 import '../../../../controllers/coupon/edit_coupon_controller.dart';
 import '../../../../models/coupon_model.dart';
+
 
 class EditCouponForm extends StatelessWidget {
   const EditCouponForm({super.key, required this.coupon});

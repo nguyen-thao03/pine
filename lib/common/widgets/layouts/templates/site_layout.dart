@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:pine_admin_panel/common/widgets/responsive/screens/desktop_layout.dart';
-import 'package:pine_admin_panel/common/widgets/responsive/screens/mobile_layout.dart';
-import 'package:pine_admin_panel/common/widgets/responsive/screens/tablet_layout.dart';
+import 'package:pine_admin_panel/common/widgets/responsive/screens/admin_layout/desktop_layout.dart';
 
 import '../../responsive/responsive_design.dart';
+import '../../responsive/screens/admin_layout/mobile_layout.dart';
+import '../../responsive/screens/admin_layout/tablet_layout.dart';
 
 class PSiteTemplate extends StatelessWidget {
   const PSiteTemplate({super.key, this.desktop, this.tablet, this.mobile, this.useLayout = true});

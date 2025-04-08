@@ -82,7 +82,7 @@ class OrderModel {
       userId: data.containsKey('userId') ? data['userId'] as String : '',
       status: data.containsKey('status')
           ? OrderStatus.values.firstWhere(
-            (e) => e.name == data['status'],
+            (e) => e.toString() == data['status'],
         orElse: () => OrderStatus.pending,
       )
           : OrderStatus.pending,
@@ -98,9 +98,9 @@ class OrderModel {
       address: data.containsKey('address')
           ? AddressModel.fromMap(data['address'] as Map<String, dynamic>)
           : AddressModel.empty(),
-      deliveryDate: data.containsKey('deliveryDate') && data['deliveryDate'] != null
-          ? (data['deliveryDate'] as Timestamp).toDate()
-          : null,
+      deliveryDate: data['deliveryDate'] == null
+          ? null
+          : (data['deliveryDate'] as Timestamp).toDate(),
       items: data.containsKey('items')
           ? (data['items'] as List<dynamic>)
           .map((itemData) => CartItemModel.fromJson(itemData as Map<String, dynamic>))

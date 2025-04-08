@@ -12,6 +12,10 @@ import 'package:pine_admin_panel/utils/helpers/network_manager.dart';
 import 'package:pine_admin_panel/utils/popups/full_screen_loader.dart';
 import 'package:pine_admin_panel/utils/popups/loaders.dart';
 
+import '../../shop/screens/dashboard/dashboard.dart';
+import '../../shop/screens/staff_dashboard/dashboard.dart';
+
+
 class LoginController extends GetxController {
   static LoginController get instance => Get.find();
 
@@ -52,18 +56,20 @@ class LoginController extends GetxController {
 
       await AuthenticationRepository.instance.loginWithEmailAndPassword(email.text.trim(), password.text.trim());
 
-      final user = await UserController.instance.fetchUserDetails();
+      final user = await UserController.instance.fetchStaffDetails();
 
       PFullScreenLoader.stopLoading();
 
-
-      if (user.role != AppRole.admin) {
-        await AuthenticationRepository.instance.logout();
-        PLoaders.errorSnackBar(title: 'Không được ủy quyền', message: 'Bạn không được ủy quyền hoặc có quyền truy cập. Liên hệ với quản trị viên');
-      } else {
-        // Redirect
-        AuthenticationRepository.instance.screenRedirect();
+      if (user.role == AppRole.admin) {
+        print("Admin login");
+        localStorage.write('activeItem', '/dashboard'); // 👈 Reset menu active
+        Get.offAll(() => DashboardScreen());
+      } else if (user.role == AppRole.staff) {
+        print("Staff login");
+        localStorage.write('activeItem', '/staff-dashboard'); // 👈 Reset menu active
+        Get.offAll(() => StaffDashboardScreen());
       }
+
     } catch (e) {
       PFullScreenLoader.stopLoading();
       PLoaders.errorSnackBar(title: 'ôi trời ơi', message: e.toString());

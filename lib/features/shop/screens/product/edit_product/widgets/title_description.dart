@@ -6,7 +6,8 @@ import 'package:pine_admin_panel/features/shop/controllers/product/edit_product_
 import 'package:pine_admin_panel/features/shop/models/product_model.dart';
 import 'package:pine_admin_panel/utils/validators/validation.dart';
 
-import '../../../../../../utils/constants/sizes.dart';
+import '../../../../../../../utils/constants/sizes.dart';
+
 
 class ProductTitleAndDescription extends StatelessWidget {
   const ProductTitleAndDescription({super.key, required this.product});

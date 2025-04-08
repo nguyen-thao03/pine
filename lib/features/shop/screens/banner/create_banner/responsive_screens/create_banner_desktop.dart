@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:pine_admin_panel/features/shop/screens/banner/create_banner/widgets/create_banner_form.dart';
 
-import '../../../../../../common/widgets/breadcrumbs/breadcrumb_with_heading.dart';
-import '../../../../../../routes/routes.dart';
-import '../../../../../../utils/constants/sizes.dart';
+import '../../../../../../../common/widgets/breadcrumbs/breadcrumb_with_heading.dart';
+import '../../../../../../../routes/routes.dart';
+import '../../../../../../../utils/constants/sizes.dart';
+import '../widgets/create_banner_form.dart';
 
 class CreateBannerDesktopScreen extends StatelessWidget {
   const CreateBannerDesktopScreen({super.key});

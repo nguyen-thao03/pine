@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:pine_admin_panel/features/shop/models/banner_model.dart';
 
-import '../../../../../../common/widgets/breadcrumbs/breadcrumb_with_heading.dart';
-import '../../../../../../routes/routes.dart';
-import '../../../../../../utils/constants/sizes.dart';
+import '../../../../../../../common/widgets/breadcrumbs/breadcrumb_with_heading.dart';
+import '../../../../../../../routes/routes.dart';
+import '../../../../../../../utils/constants/sizes.dart';
 import '../widgets/edit_banner_from.dart';
 
 class EditBannerDesktopScreen extends StatelessWidget {

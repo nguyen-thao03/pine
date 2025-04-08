@@ -7,7 +7,8 @@ import 'package:pine_admin_panel/features/shop/models/product_model.dart';
 import 'package:pine_admin_panel/utils/constants/enums.dart';
 import 'package:pine_admin_panel/utils/validators/validation.dart';
 
-import '../../../../../../utils/constants/sizes.dart';
+import '../../../../../../../utils/constants/sizes.dart';
+
 
 class ProductStockAndPricing extends StatelessWidget {
   const ProductStockAndPricing({super.key, required this.product});

@@ -12,7 +12,8 @@ import 'package:pine_admin_panel/utils/constants/colors.dart';
 import 'package:pine_admin_panel/utils/constants/enums.dart';
 import 'package:pine_admin_panel/utils/constants/image_strings.dart';
 
-import '../../../../../../utils/constants/sizes.dart';
+import '../../../../../../../utils/constants/sizes.dart';
+
 
 class ProductVariations extends StatelessWidget {
   const ProductVariations({super.key});

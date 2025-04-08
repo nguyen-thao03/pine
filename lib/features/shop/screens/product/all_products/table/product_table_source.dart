@@ -2,17 +2,14 @@ import 'package:data_table_2/data_table_2.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:intl/intl.dart';
 import 'package:pine_admin_panel/common/widgets/icons/table_action_icon_buttons.dart';
 import 'package:pine_admin_panel/common/widgets/images/p_rounded_image.dart';
 import 'package:pine_admin_panel/features/shop/controllers/product/product_controller.dart';
 import 'package:pine_admin_panel/routes/routes.dart';
 import 'package:pine_admin_panel/utils/constants/colors.dart';
 import 'package:pine_admin_panel/utils/constants/enums.dart';
-import 'package:pine_admin_panel/utils/constants/image_strings.dart';
 import 'package:pine_admin_panel/utils/constants/sizes.dart';
 
-import '../../../../models/product_model.dart';
 
 class ProductsRows extends DataTableSource {
   final controller = ProductController.instance;

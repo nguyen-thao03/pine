@@ -5,7 +5,9 @@ import 'package:pine_admin_panel/routes/routes_middleware.dart';
 import '../features/authentication/screens/signup/signup.dart';
 import '../features/media/screens/media/media.dart';
 import '../features/personalization/screens/profile/profile.dart';
-import '../features/personalization/screens/settings/settings.dart';
+import '../features/authentication/screens/forgot_password/forgot_password.dart';
+import '../features/authentication/screens/login/login.dart';
+import '../features/authentication/screens/reset_password/reset_password.dart';
 import '../features/shop/screens/banner/all_banners/banners.dart';
 import '../features/shop/screens/banner/create_banner/create_banner.dart';
 import '../features/shop/screens/banner/edit_banner/edit_banner.dart';
@@ -23,14 +25,12 @@ import '../features/shop/screens/customer/create_staff/create_staff.dart';
 import '../features/shop/screens/customer/customer_detail/customer.dart';
 import '../features/shop/screens/customer/edit_staff/edit_staff.dart';
 import '../features/shop/screens/dashboard/dashboard.dart';
-import '../features/authentication/screens/forgot_password/forgot_password.dart';
-import '../features/authentication/screens/login/login.dart';
-import '../features/authentication/screens/reset_password/reset_password.dart';
 import '../features/shop/screens/order/all_orders/orders.dart';
 import '../features/shop/screens/order/orders_detail/order_detail.dart';
 import '../features/shop/screens/product/all_products/products.dart';
 import '../features/shop/screens/product/create_product/create_product.dart';
 import '../features/shop/screens/product/edit_product/edit_product.dart';
+import '../features/shop/screens/staff_dashboard/dashboard.dart';
 
 class PAppRoute {
   static final List<GetPage> pages = [
@@ -40,7 +40,7 @@ class PAppRoute {
      GetPage(name: PRoutes.forgotPassword, page: () => const ForgotPasswordScreen()),
      GetPage(name: PRoutes.resetPassword, page: () => const ResetPasswordScreen()),
      GetPage(name: PRoutes.dashboard, page: () => const DashboardScreen(), middlewares: [PRouteMiddleware()]),
-     //GetPage(name: PRoutes.staffDashboard, page: () => const StaffDashboardScreen(), middlewares: [PRouteMiddleware()]),
+     GetPage(name: PRoutes.staffDashboard, page: () => const StaffDashboardScreen(), middlewares: [PRouteMiddleware()]),
      GetPage(name: PRoutes.media, page: () => const MediaScreen(), middlewares: [PRouteMiddleware()]),
 
     //Banners

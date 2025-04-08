@@ -1,20 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:multi_select_flutter/dialog/multi_select_dialog_field.dart';
-import 'package:multi_select_flutter/util/multi_select_item.dart';
-import 'package:multi_select_flutter/util/multi_select_list_type.dart';
 import 'package:pine_admin_panel/common/widgets/containers/rounded_container.dart';
 import 'package:pine_admin_panel/common/widgets/shimmers/shimmer.dart';
-import 'package:pine_admin_panel/features/shop/controllers/category/category_controller.dart';
 import 'package:pine_admin_panel/features/shop/controllers/coupon/create_coupon_controller.dart';
-import 'package:pine_admin_panel/features/shop/controllers/product/product_controller.dart';
 import 'package:pine_admin_panel/utils/constants/sizes.dart';
 import 'package:pine_admin_panel/utils/validators/validation.dart';
 
 import '../../../../controllers/coupon/coupon_controller.dart';
-import '../../../../models/category_model.dart';
-import '../../../../models/product_model.dart';
+
+
 
 class CreateCouponForm extends StatelessWidget {
   const CreateCouponForm({super.key});

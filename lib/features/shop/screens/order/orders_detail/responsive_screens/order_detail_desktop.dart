@@ -4,7 +4,7 @@ import 'package:pine_admin_panel/features/personalization/models/user_model.dart
 import 'package:pine_admin_panel/features/shop/models/order_model.dart';
 import 'package:pine_admin_panel/utils/constants/sizes.dart';
 
-import '../../../../../../routes/routes.dart';
+import '../../../../../../../routes/routes.dart';
 import '../widgets/customer_info.dart';
 import '../widgets/order_info.dart';
 import '../widgets/order_items.dart';

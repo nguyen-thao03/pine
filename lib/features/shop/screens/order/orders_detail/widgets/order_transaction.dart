@@ -4,11 +4,12 @@ import 'package:intl/intl.dart';
 import 'package:pine_admin_panel/features/shop/models/order_model.dart';
 import 'package:pine_admin_panel/utils/device/device_utility.dart';
 
-import '../../../../../../common/widgets/containers/rounded_container.dart';
-import '../../../../../../common/widgets/images/p_rounded_image.dart';
-import '../../../../../../utils/constants/enums.dart';
-import '../../../../../../utils/constants/image_strings.dart';
-import '../../../../../../utils/constants/sizes.dart';
+import '../../../../../../../common/widgets/containers/rounded_container.dart';
+import '../../../../../../../common/widgets/images/p_rounded_image.dart';
+import '../../../../../../../utils/constants/enums.dart';
+import '../../../../../../../utils/constants/image_strings.dart';
+import '../../../../../../../utils/constants/sizes.dart';
+
 
 class OrderTransaction extends StatelessWidget {
   const OrderTransaction({super.key, required this.order});
@@ -18,7 +19,6 @@ class OrderTransaction extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final currencyFormatter = NumberFormat.simpleCurrency(locale: 'vi_VN', decimalDigits: 0);
-    final formattedDate = DateFormat('dd/MM/yyyy').format(order.orderDate);
 
     return PRoundedContainer(
       padding: const EdgeInsets.all(PSizes.defaultSpace),
@@ -28,7 +28,6 @@ class OrderTransaction extends StatelessWidget {
           Text('Giao dịch', style: Theme.of(context).textTheme.headlineMedium),
           const SizedBox(height: PSizes.spaceBtwSections),
 
-          // Chi tiết giao dịch
           Row(
             children: [
               Expanded(
@@ -62,11 +61,8 @@ class OrderTransaction extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('Ngày', style: Theme.of(context).textTheme.labelMedium),
-                    Text(
-                      formattedDate,
-                      style: Theme.of(context).textTheme.bodyLarge,
-                    ),
+                    Text('Ngày giao hàng', style: Theme.of(context).textTheme.labelMedium),
+                    Text(order.formattedDeliveryDate, style: Theme.of(context).textTheme.bodyLarge,),
                   ],
                 ),
               ),

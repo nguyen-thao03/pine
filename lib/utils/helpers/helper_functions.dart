@@ -119,7 +119,7 @@ class PHelperFunctions {
     return MediaQuery.of(Get.context!).size.width;
   }
 
-  static String getFormattedDate(DateTime date, {String format = 'dd/MM/yyyy'}) {
+  static String getFormattedDate(DateTime date, {String format = 'dd/MM/yyyy – HH:mm'}) {
     return DateFormat(format).format(date);
   }
 

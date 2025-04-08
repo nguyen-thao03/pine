@@ -9,6 +9,8 @@ import 'package:pine_admin_panel/utils/constants/sizes.dart';
 
 import '../../../../controllers/product/create_product_controller.dart';
 
+
+
 class ProductCategories extends StatelessWidget {
   const ProductCategories({super.key});
 

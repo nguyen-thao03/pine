@@ -5,7 +5,7 @@ import 'package:pine_admin_panel/features/personalization/models/user_model.dart
 import 'package:pine_admin_panel/features/shop/controllers/customer/customer_detail_controller.dart';
 import 'package:pine_admin_panel/utils/constants/sizes.dart';
 
-import '../../../../../../routes/routes.dart';
+import '../../../../../../../routes/routes.dart';
 import '../widgets/customer_info.dart';
 import '../widgets/customer_orders.dart';
 import '../widgets/shipping_address.dart';

@@ -6,13 +6,13 @@ import 'package:pine_admin_panel/features/shop/controllers/category/category_con
 import 'package:pine_admin_panel/utils/constants/sizes.dart';
 import 'package:pine_admin_panel/utils/validators/validation.dart';
 
-import '../../../../../../common/widgets/chips/rounded_choice_chips.dart';
-import '../../../../../../common/widgets/images/image_uploader.dart';
-import '../../../../../../utils/constants/enums.dart';
-import '../../../../../../utils/constants/image_strings.dart';
+import '../../../../../../../common/widgets/chips/rounded_choice_chips.dart';
+import '../../../../../../../common/widgets/images/image_uploader.dart';
+import '../../../../../../../utils/constants/enums.dart';
+import '../../../../../../../utils/constants/image_strings.dart';
 import '../../../../controllers/brand/edit_brand_controller.dart';
 import '../../../../models/brand_model.dart';
-import '../../../../models/category_model.dart';
+
 
 class EditBrandForm extends StatelessWidget {
   const EditBrandForm({super.key, required this.brand});

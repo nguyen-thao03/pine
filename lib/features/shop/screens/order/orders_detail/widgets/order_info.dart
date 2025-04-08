@@ -1,17 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pine_admin_panel/common/widgets/containers/rounded_container.dart';
-import 'package:pine_admin_panel/common/widgets/images/p_rounded_image.dart';
 import 'package:pine_admin_panel/common/widgets/shimmers/shimmer.dart';
 import 'package:pine_admin_panel/features/shop/models/order_model.dart';
 import 'package:pine_admin_panel/utils/constants/enums.dart';
-import 'package:pine_admin_panel/utils/constants/image_strings.dart';
 import 'package:pine_admin_panel/utils/device/device_utility.dart';
 import 'package:pine_admin_panel/utils/helpers/helper_functions.dart';
 
-import '../../../../../../utils/constants/colors.dart';
-import '../../../../../../utils/constants/sizes.dart';
+import '../../../../../../../utils/constants/sizes.dart';
 import '../../../../controllers/order/order_controller.dart';
+
 
 class OrderInfo extends StatelessWidget {
   const OrderInfo({super.key, required this.order});
@@ -35,7 +33,7 @@ class OrderInfo extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text('Ngày'),
+                      const Text('Ngày đặt hàng'),
                       Text(order.formattedOrderDate, style: Theme.of(context).textTheme.bodyLarge),
                     ],
                   )

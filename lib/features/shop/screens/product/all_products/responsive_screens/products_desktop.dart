@@ -7,8 +7,8 @@ import 'package:pine_admin_panel/features/shop/controllers/product/product_contr
 import 'package:pine_admin_panel/routes/routes.dart';
 import 'package:pine_admin_panel/utils/constants/sizes.dart';
 
+import '../../../../../../../common/widgets/data_table/table_header.dart';
 import '../table/products_table.dart';
-import '../../../../../../common/widgets/data_table/table_header.dart';
 
 class ProductsDesktopScreen extends StatelessWidget {
   const ProductsDesktopScreen({super.key});
