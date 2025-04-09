@@ -40,6 +40,7 @@ class BrandModel {
       'Image': image,
       'IsFeatured': isFeatured,
       'ProductsCount': productsCount = 0,
+      'CreatedAt': createdAt,
       'UpdatedAt': updatedAt = DateTime.now(),
     };
   }

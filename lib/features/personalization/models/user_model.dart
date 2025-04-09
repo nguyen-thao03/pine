@@ -35,16 +35,13 @@ class UserModel {
     this.addresses,  // Add this line to accept addresses
   });
 
-  /// Helper methods
   String get fullName => '$firstName $lastName';
   String get formattedDate => PFormatter.formatDate(createdAt);
   String get formattedUpdatedDate => PFormatter.formatDate(updatedAt);
   String get formattedPhoneNo => PFormatter.formatPhoneNumber(phoneNumber);
 
-  /// Tạo user rỗng
   static UserModel empty() => UserModel(email: '');
 
-  /// Convert model to JSON để lưu vào Firestore
   Map<String, dynamic> toJson() {
     return {
       'FirstName': firstName,
@@ -60,7 +57,6 @@ class UserModel {
     };
   }
 
-  /// Tạo `UserModel` từ Firestore document snapshot
   factory UserModel.fromSnapshot(DocumentSnapshot<Map<String, dynamic>> document) {
     final data = document.data();
     if (data == null) return empty();
@@ -80,9 +76,8 @@ class UserModel {
       createdAt: data['CreatedAt'] is Timestamp ? (data['CreatedAt'] as Timestamp).toDate() : null,
       updatedAt: data['UpdatedAt'] is Timestamp ? (data['UpdatedAt'] as Timestamp).toDate() : null,
       addresses: (data['Addresses'] as List<dynamic>?)?.map((addressData) {
-        // Map each element in the list (which is a Map) to AddressModel
         return AddressModel.fromMap(addressData as Map<String, dynamic>);
-      }).toList(), // Deserialize addresses from Firestore
+      }).toList(),
     );
   }
 }

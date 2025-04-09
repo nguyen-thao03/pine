@@ -26,23 +26,33 @@ class ProductBrand extends StatelessWidget {
       brandController.fetchItems();
     }
 
+    if (editController.selectedBrand.value == null && product.brand != null) {
+      editController.selectedBrand.value = product.brand;
+      editController.brandTextField.text = product.brand!.name;
+    }
+
     return PRoundedContainer(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Brand label
           Text('Thương hiệu', style: Theme.of(context).textTheme.headlineSmall),
           const SizedBox(height: PSizes.spaceBtwItems),
 
-          // TypeAheadField for brand selection
-          Obx(
-            () => brandController.isLoading.value
-              ? const PShimmerEffect(width: double.infinity, height: 50)
-              : TypeAheadField(
+          Obx(() {
+            if (brandController.isLoading.value) {
+              return const PShimmerEffect(width: double.infinity, height: 50);
+            }
+
+            return TypeAheadField<BrandModel>(
               builder: (context, ctr, focusNode) {
+                if (editController.brandTextField != ctr) {
+                  editController.brandTextField = ctr;
+                  editController.brandTextField.text = editController.selectedBrand.value?.name ?? '';
+                }
+
                 return TextFormField(
+                  controller: ctr,
                   focusNode: focusNode,
-                  controller: editController.brandTextField = ctr,
                   decoration: const InputDecoration(
                     border: OutlineInputBorder(),
                     labelText: 'Chọn thương hiệu',
@@ -50,21 +60,23 @@ class ProductBrand extends StatelessWidget {
                   ),
                 );
               },
-                itemBuilder: (context, suggestion) {
+              suggestionsCallback: (pattern) {
+                return brandController.allItems
+                    .where((brand) => brand.name.toLowerCase().contains(pattern.toLowerCase()))
+                    .toList();
+              },
+              itemBuilder: (context, BrandModel suggestion) {
                 return ListTile(title: Text(suggestion.name));
-                },
-                onSelected: (suggestion) {
-                  editController.selectedBrand.value = suggestion;
-                  editController.brandTextField.text = suggestion.name;
-                },
-                suggestionsCallback: (pattern) {
-                // Return filtered brand suggestions based on the search pattern
-                  return brandController.allItems.where((brand) => brand.name.contains(pattern)).toList();
-                }
-            ),
-          )
+              },
+              onSelected: (BrandModel suggestion) {
+                editController.selectedBrand.value = suggestion;
+                editController.brandTextField.text = suggestion.name;
+              },
+            );
+          }),
         ],
       ),
     );
   }
 }
+

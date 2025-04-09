@@ -28,6 +28,12 @@ class PFormatter {
     return priceRange; // Trả về nguyên chuỗi nếu không thể xử lý
   }
 
+  static String formatCurrency(double value) {
+    final formatter = NumberFormat.currency(locale: 'vi_VN', symbol: '₫', decimalDigits: 0);
+    return formatter.format(value);
+  }
+
+
   static String formatPhoneNumber(String phoneNumber) {
     // Loại bỏ các ký tự không phải là số
     String cleanedPhoneNumber = phoneNumber.replaceAll(RegExp(r'[^\d]'), '');

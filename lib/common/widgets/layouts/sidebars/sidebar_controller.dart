@@ -5,10 +5,11 @@ import 'package:pine_admin_panel/utils/device/device_utility.dart';
 
 class SidebarController extends GetxController {
   final box = GetStorage();
+
   final activeItem = "".obs;
   final hoverItem = ''.obs;
+  final userRole = 'staff'.obs;
 
-  late String userRole;
   final allowedStaffRoutes = [
     PRoutes.staffDashboard,
     PRoutes.media,
@@ -16,15 +17,30 @@ class SidebarController extends GetxController {
     PRoutes.brands, PRoutes.createBrand, PRoutes.editBrand,
     PRoutes.products, PRoutes.createProduct, PRoutes.editProduct,
     PRoutes.orders, PRoutes.orderDetails,
-    PRoutes.profile, PRoutes.login
+    PRoutes.profile, PRoutes.login,
   ];
 
   @override
   void onInit() {
     super.onInit();
-    userRole = box.read("Role") ?? 'staff';
+    _loadUserRole();
+    _loadInitialRoute();
+  }
+
+  @override
+  void onReady() {
+    super.onReady();
+    // đảm bảo load lại role sau khi đăng nhập/logout
+    _loadUserRole();
+  }
+
+  void _loadUserRole() {
+    userRole.value = box.read("Role") ?? 'staff';
+  }
+
+  void _loadInitialRoute() {
     final savedRoute = box.read("activeItem");
-    if (userRole == 'staff' && !allowedStaffRoutes.contains(savedRoute)) {
+    if (userRole.value == 'staff' && !allowedStaffRoutes.contains(savedRoute)) {
       activeItem.value = PRoutes.staffDashboard;
     } else {
       activeItem.value = savedRoute ?? _defaultRouteForRole();
@@ -32,7 +48,7 @@ class SidebarController extends GetxController {
   }
 
   String _defaultRouteForRole() {
-    return userRole == 'admin' ? PRoutes.dashboard : PRoutes.staffDashboard;
+    return userRole.value == 'admin' ? PRoutes.dashboard : PRoutes.staffDashboard;
   }
 
   void changeActiveItem(String route) {
@@ -48,7 +64,7 @@ class SidebarController extends GetxController {
   bool isHovering(String route) => hoverItem.value == route;
 
   void menuOnTap(String route) {
-    if (userRole == 'staff' && !allowedStaffRoutes.contains(route)) {
+    if (userRole.value == 'staff' && !allowedStaffRoutes.contains(route)) {
       Get.snackbar('Không được phép', 'Bạn không có quyền truy cập đường dẫn này');
       return;
     }
@@ -61,4 +77,11 @@ class SidebarController extends GetxController {
       Get.toNamed(route);
     }
   }
+
+  void logout() {
+    box.remove("Role");
+    _loadUserRole(); // đảm bảo role cập nhật
+    _loadInitialRoute(); // cập nhật lại activeItem phù hợp
+  }
+
 }

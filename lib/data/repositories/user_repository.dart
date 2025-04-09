@@ -126,32 +126,23 @@ class UserRepository extends GetxController {
 
   Future<UserModel> fetchAllStaffDetails(String userId) async {
     try {
-      // Kiểm tra xem userId có hợp lệ không
       if (userId.isEmpty) {
         throw 'User ID is empty';
       }
-
-      // Lấy thông tin người dùng theo userId (uid)
       final documentSnapshot = await _db.collection("Users").doc(userId).get();
 
       if (documentSnapshot.exists) {
-        // Nếu có dữ liệu, tạo đối tượng UserModel từ snapshot
         return UserModel.fromSnapshot(documentSnapshot);
       } else {
-        // Trả về đối tượng rỗng nếu không tìm thấy dữ liệu
         return UserModel.empty();
       }
     } on FirebaseAuthException catch (e) {
-      // Xử lý lỗi Firebase Auth
       throw PFirebaseAuthException(e.code).message;
     } on FormatException catch (_) {
-      // Xử lý lỗi FormatException
       throw const PFormatException();
     } on PlatformException catch (e) {
-      // Xử lý lỗi PlatformException
       throw PPlatformException(e.code).message;
     } catch (e) {
-      // Bắt lỗi chung
       throw 'Đã có lỗi xảy ra: $e';
     }
   }

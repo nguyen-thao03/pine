@@ -85,6 +85,34 @@ class EditProductController extends GetxController {
     }
   }
 
+  // Chọn nhiều ảnh bổ sung
+  void selectAdditionalImages(List<String> images) {
+    final imagesController = ProductImagesController.instance;
+    imagesController.additionalProductImagesUrls.addAll(images);
+    update();
+  }
+
+// Xoá ảnh bổ sung theo index
+  void removeAdditionalImage(int index) {
+    final imagesController = ProductImagesController.instance;
+    if (index >= 0 && index < imagesController.additionalProductImagesUrls.length) {
+      imagesController.additionalProductImagesUrls.removeAt(index);
+      update();
+    }
+  }
+
+  Future<void> pickAdditionalImages() async {
+    final imagesController = ProductImagesController.instance;
+    // 👉 Giả sử bạn đã có logic chọn ảnh (ví dụ FilePicker hoặc imageUploader riêng)
+    // Dưới đây là mô phỏng thêm ảnh URL (giả lập)
+    List<String> newImages = [
+      'https://via.placeholder.com/150', // Thay bằng ảnh thực tế khi chọn
+      'https://via.placeholder.com/200'
+    ];
+
+    imagesController.additionalProductImagesUrls.addAll(newImages);
+    update(); // để UI cập nhật
+  }
 
   Future<List<CategoryModel>> loadSelectedCategories(String productId) async {
     selectedCategoriesLoader.value = true;

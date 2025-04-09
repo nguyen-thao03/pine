@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:pine_admin_panel/features/shop/controllers/product/edit_product_controller.dart';
 import 'package:pine_admin_panel/features/shop/screens/product/edit_product/widgets/additional_images.dart';
 import 'package:pine_admin_panel/features/shop/screens/product/edit_product/widgets/attributes_widget.dart';
 import 'package:pine_admin_panel/features/shop/screens/product/edit_product/widgets/brand_widget.dart';
@@ -28,6 +29,8 @@ class EditProductDesktopScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = Get.put(ProductImagesController());
+    final editController = Get.put(EditProductController());
+
     return Scaffold(
       bottomNavigationBar: ProductBottomNavigationButtons(product: product),
       body: SingleChildScrollView(
@@ -101,9 +104,13 @@ class EditProductDesktopScreen extends StatelessWidget {
                                 Text('Tất cả ảnh sản phẩm', style: Theme.of(context).textTheme.headlineSmall),
                                 const SizedBox(height: PSizes.spaceBtwItems),
                                 ProductAdditionalImages(
-                                  additionalProductImagesURLs: RxList<String>.empty(),
-                                  onTapToAddImages: () => controller.selectMultipleProductImages(),
-                                  onTapToRemoveImage: (index) => controller.removeImage(index),
+                                  additionalProductImagesURLs: ProductImagesController.instance.additionalProductImagesUrls,
+                                  onTapToAddImages: () {
+                                    editController.pickAdditionalImages();
+                                  },
+                                  onTapToRemoveImage: (index) {
+                                    editController.removeAdditionalImage(index);
+                                  },
                                 ),
                               ],
                             ),

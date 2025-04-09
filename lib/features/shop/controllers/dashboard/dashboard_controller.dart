@@ -2,7 +2,6 @@ import 'package:get/get.dart';
 import 'package:pine_admin_panel/data/abstract/base_data_table_controller.dart';
 import 'package:pine_admin_panel/features/shop/controllers/customer/customer_controller.dart';
 import 'package:pine_admin_panel/utils/helpers/helper_functions.dart';
-
 import '../../../../utils/constants/enums.dart';
 import '../../models/order_model.dart';
 import '../order/order_controller.dart';
@@ -19,21 +18,21 @@ class DashboardController extends PBaseController<OrderModel> {
   final RxMap<OrderStatus, int> orderStatusData = <OrderStatus, int>{}.obs;
   final RxMap<OrderStatus, double> totalAmounts = <OrderStatus, double>{}.obs;
 
+  final RxString salesViewType = 'week'.obs;
+  final Rx<DateTime?> startDate = Rx<DateTime?>(null);
+  final Rx<DateTime?> endDate = Rx<DateTime?>(null);
+
   @override
   void onInit() {
     fetchData();
     super.onInit();
   }
 
-
   @override
   Future<List<OrderModel>> fetchItems() async {
-
     if (orderController.allItems.isEmpty) {
       await orderController.fetchItems();
     }
-
-    print('Orders Loaded: ${orderController.allItems.length} đơn hàng');
 
     if (customerController.allItems.isEmpty) {
       await customerController.fetchItems();
@@ -43,29 +42,123 @@ class DashboardController extends PBaseController<OrderModel> {
       await productController.fetchItems();
     }
 
-    print('Orders Loaded: ${customerController.allItems.length} nguoi dung');
-
-    _calculateWeeklySales();
+    _calculateSalesGraphData();
     _calculateOrderStatusData();
 
     return orderController.allItems;
   }
 
+  void changeSalesViewType(String type) {
+    if (salesViewType.value == type) return;
+    salesViewType.value = type;
+    _calculateSalesGraphData();
+  }
 
-  void _calculateWeeklySales() {
-    weeklySales.value = List<double>.filled(7, 0.0);
+  void _calculateSalesGraphData() {
+    final now = DateTime.now();
+    switch (salesViewType.value) {
+      case 'day':
+        _calculateDailySales(now);
+        break;
+      case 'month':
+        _calculateMonthlySales(now);
+        break;
+      case 'year':
+        _calculateYearlySales(now);
+        break;
+      case 'range':
+        _calculateSalesInRange();
+        break;
+      case 'week':
+      default:
+        _calculateWeeklySales(now);
+    }
+  }
 
-    for (var order in orderController.allItems) {
-      final DateTime orderWeekStart = PHelperFunctions.getStartOfWeek(order.orderDate);
+  void _calculateWeeklySales(DateTime now) {
+    final updated = List<double>.filled(7, 0.0);
+    final startOfWeek = PHelperFunctions.getStartOfWeek(now);
+    final endOfWeek = startOfWeek.add(const Duration(days: 7));
 
-      if (orderWeekStart.isBefore(DateTime.now()) &&
-          orderWeekStart.add(const Duration(days: 7)).isAfter(DateTime.now())) {
-        int index = (order.orderDate.weekday - 1) % 7;
-        index = index < 0 ? index + 7 : index;
+    final orders = orderController.allItems.where((o) =>
+    o.orderDate.isAfter(startOfWeek.subtract(const Duration(seconds: 1))) &&
+        o.orderDate.isBefore(endOfWeek));
 
-        weeklySales[index] += order.totalAmount;
+    for (var order in orders) {
+      int index = (order.orderDate.weekday - 1) % 7;
+      updated[index] += order.totalAmount;
+    }
+
+    weeklySales.assignAll(updated);
+  }
+
+  void _calculateDailySales(DateTime now) {
+    final updated = List<double>.filled(24, 0.0);
+    final today = DateTime(now.year, now.month, now.day);
+
+    final orders = orderController.allItems.where((o) =>
+    o.orderDate.year == today.year &&
+        o.orderDate.month == today.month &&
+        o.orderDate.day == today.day);
+
+    for (var order in orders) {
+      updated[order.orderDate.hour] += order.totalAmount;
+    }
+
+    weeklySales.assignAll(updated);
+  }
+
+  void _calculateMonthlySales(DateTime now) {
+    final daysInMonth = DateTime(now.year, now.month + 1, 0).day;
+    final updated = List<double>.filled(daysInMonth, 0.0);
+
+    final orders = orderController.allItems.where((o) =>
+    o.orderDate.year == now.year && o.orderDate.month == now.month);
+
+    for (var order in orders) {
+      int dayIndex = order.orderDate.day - 1;
+      updated[dayIndex] += order.totalAmount;
+    }
+
+    weeklySales.assignAll(updated);
+  }
+
+  void _calculateYearlySales(DateTime now) {
+    final updated = List<double>.filled(12, 0.0);
+
+    final orders = orderController.allItems
+        .where((o) => o.orderDate.year == now.year);
+
+    for (var order in orders) {
+      updated[order.orderDate.month - 1] += order.totalAmount;
+    }
+
+    weeklySales.assignAll(updated);
+  }
+
+  void _calculateSalesInRange() {
+    if (startDate.value == null || endDate.value == null) {
+      weeklySales.clear();
+      return;
+    }
+
+    final start = startDate.value!;
+    final end = endDate.value!.add(const Duration(days: 1));
+    final daysCount = end.difference(start).inDays;
+    final updated = List<double>.filled(daysCount, 0.0);
+
+    final orders = orderController.allItems.where((o) =>
+    o.orderDate.isAfter(start.subtract(const Duration(seconds: 1))) &&
+        o.orderDate.isBefore(end));
+
+    for (var order in orders) {
+      int index = order.orderDate.difference(start).inDays;
+      if (index >= 0 && index < daysCount) {
+        updated[index] += order.totalAmount;
       }
     }
+
+    weeklySales.assignAll(updated);
   }
 
   void _calculateOrderStatusData() {
@@ -77,6 +170,13 @@ class DashboardController extends PBaseController<OrderModel> {
       orderStatusData[status] = (orderStatusData[status] ?? 0) + 1;
       totalAmounts[status] = (totalAmounts[status] ?? 0) + order.totalAmount;
     }
+  }
+
+  void updateDateRange(DateTime? start, DateTime? end) {
+    startDate.value = start;
+    endDate.value = end;
+    salesViewType.value = 'range';
+    _calculateSalesInRange();
   }
 
   String getDisplayStatusName(OrderStatus status) {
@@ -94,6 +194,41 @@ class DashboardController extends PBaseController<OrderModel> {
       default:
         return 'Không xác định';
     }
+  }
+
+  double get todayRevenue {
+    final now = DateTime.now();
+    return orderController.allItems
+        .where((o) =>
+    o.orderDate.year == now.year &&
+        o.orderDate.month == now.month &&
+        o.orderDate.day == now.day)
+        .fold(0.0, (sum, o) => sum + o.totalAmount);
+  }
+
+  double get weekRevenue {
+    final start = PHelperFunctions.getStartOfWeek(DateTime.now());
+    final end = start.add(const Duration(days: 7));
+    return orderController.allItems
+        .where((o) =>
+    o.orderDate.isAfter(start.subtract(const Duration(seconds: 1))) &&
+        o.orderDate.isBefore(end))
+        .fold(0.0, (sum, o) => sum + o.totalAmount);
+  }
+
+  double get monthRevenue {
+    final now = DateTime.now();
+    return orderController.allItems
+        .where((o) =>
+    o.orderDate.year == now.year && o.orderDate.month == now.month)
+        .fold(0.0, (sum, o) => sum + o.totalAmount);
+  }
+
+  double get yearRevenue {
+    final now = DateTime.now();
+    return orderController.allItems
+        .where((o) => o.orderDate.year == now.year)
+        .fold(0.0, (sum, o) => sum + o.totalAmount);
   }
 
   @override

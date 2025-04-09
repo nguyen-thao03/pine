@@ -56,7 +56,7 @@ class ProductsRows extends DataTableSource {
                 .apply(color: PColors.primary))),
         DataCell(Text(product.formattedCurrency)),
         DataCell(product.isFeatured ? const Icon(Iconsax.eye, color: PColors.primary) : const Icon(Iconsax.eye_slash)),
-        DataCell(Text(product.formattedDate)),
+        DataCell(Text(product.date == null ? '' : product.formattedDate)),
         DataCell(PTableActionButtons(
           onEditPressed: () =>
               Get.toNamed(PRoutes.editProduct, arguments: product),

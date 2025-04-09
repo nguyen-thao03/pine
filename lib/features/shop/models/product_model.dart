@@ -4,6 +4,8 @@ import 'package:pine_admin_panel/features/shop/models/product_attribute_model.da
 import 'package:pine_admin_panel/features/shop/models/product_variation_model.dart';
 import 'package:pine_admin_panel/utils/formatters/formatter.dart';
 
+import '../../../utils/constants/enums.dart';
+
 class ProductModel {
   String id;
   int stock;
@@ -67,7 +69,8 @@ class ProductModel {
       'SalePrice': salePrice,
       'IsFeatured': isFeatured,
       'CategoryId': categoryId,
-      'Brand': brand?.toJson(), // Kiểm tra null trước khi gọi .toJson()
+      'Brand': brand?.toJson(),
+      'Date': date,
       'Description': description,
       'ProductType': productType,
       'SoldQuantity': soldQuantity,
@@ -97,18 +100,19 @@ class ProductModel {
       categoryId: data['CategoryId'] ?? '',
       description: data['Description'] ?? '',
       productType: data['ProductType'] ?? '',
-      brand: data['Brand'] != null ? BrandModel.fromJson(data['Brand']) : null, // ✅ Kiểm tra null
+      brand: data['Brand'] != null ? BrandModel.fromJson(data['Brand']) : null,
+      date: data['Date'] is Timestamp ? (data['Date'] as Timestamp).toDate() : null,
       images: data['Images'] != null ? List<String>.from(data['Images']) : [],
       productAttributes: data['ProductAttributes'] != null
           ? (data['ProductAttributes'] as List<dynamic>)
           .map((e) => ProductAttributeModel.fromJson(e))
           .toList()
-          : [], // ✅ Kiểm tra null
+          : [],
       productVariations: data['ProductVariations'] != null
           ? (data['ProductVariations'] as List<dynamic>)
           .map((e) => ProductVariationModel.fromJson(e))
           .toList()
-          : [], // ✅ Kiểm tra null
+          : [],
     );
   }
 
@@ -130,17 +134,18 @@ class ProductModel {
       description: data['Description'] ?? '',
       productType: data['ProductType'] ?? '',
       brand: data['Brand'] != null ? BrandModel.fromJson(data['Brand']) : null,
+      date: data['Date'] is Timestamp ? (data['Date'] as Timestamp).toDate() : null,
       images: data['Images'] != null ? List<String>.from(data['Images']) : [],
       productAttributes: data['ProductAttributes'] != null
           ? (data['ProductAttributes'] as List<dynamic>)
           .map((e) => ProductAttributeModel.fromJson(e))
           .toList()
-          : [], // ✅ Kiểm tra null
+          : [],
       productVariations: data['ProductVariations'] != null
           ? (data['ProductVariations'] as List<dynamic>)
           .map((e) => ProductVariationModel.fromJson(e))
           .toList()
-          : [], // ✅ Kiểm tra null
+          : [],
     );
   }
 }

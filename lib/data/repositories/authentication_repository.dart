@@ -112,20 +112,18 @@ class AuthenticationRepository extends GetxController {
   Future<void> logout() async {
     try {
       await FirebaseAuth.instance.signOut();
+
+      // Xoá hết thông tin cũ
+      final box = GetStorage();
+      box.remove('Role');
+      box.remove('activeItem');
+
       Get.offAllNamed(PRoutes.login);
-      GetStorage().remove('activeItem');
-    } on FirebaseAuthException catch (e) {
-      throw PFirebaseAuthException(e.code).message;
-    } on FirebaseException catch (e) {
-      throw PFirebaseAuthException(e.code).message;
-    } on FormatException catch (_) {
-      throw const PFormatException();
-    } on PlatformException catch (e) {
-      throw PPlatformException(e.code).message;
     } catch (e) {
       throw 'Đã có lỗi xảy ra. Vui lòng thử lại';
     }
   }
 
-  // DELETE USER
+
+// DELETE USER
 }

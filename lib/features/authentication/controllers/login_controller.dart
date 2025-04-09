@@ -29,8 +29,8 @@ class LoginController extends GetxController {
 
   @override
   void onInit() {
-    email.text = localStorage.read('REMEMBER_ME_EMAIL') ?? '';
-    password.text = localStorage.read('REMEMBER_ME_PASSWORD') ?? '';
+    email.text = localStorage.read('REMEMBER_ME-EMAIL') ?? '';
+    password.text = localStorage.read('REMEMBER_ME-PASSWORD') ?? '';
     super.onInit();
   }
 
@@ -62,13 +62,16 @@ class LoginController extends GetxController {
 
       if (user.role == AppRole.admin) {
         print("Admin login");
-        localStorage.write('activeItem', '/dashboard'); // 👈 Reset menu active
+        localStorage.write('Role', 'admin'); // 👈 Lưu role vào storage
+        localStorage.write('activeItem', '/dashboard');
         Get.offAll(() => DashboardScreen());
       } else if (user.role == AppRole.staff) {
         print("Staff login");
-        localStorage.write('activeItem', '/staff-dashboard'); // 👈 Reset menu active
+        localStorage.write('Role', 'staff'); // 👈 Lưu role vào storage
+        localStorage.write('activeItem', '/staff-dashboard');
         Get.offAll(() => StaffDashboardScreen());
       }
+
 
     } catch (e) {
       PFullScreenLoader.stopLoading();
