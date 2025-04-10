@@ -29,11 +29,18 @@ class PRoutes {
   static const createCustomer = '/createCustomer';
   static const customerDetails = '/customerDetails';
 
+  static const reviews = '/reviews';
+  static const reviewDetails = '/reviewDetails';
+
   static const createStaff = '/createStaff';
   static const editStaff = '/editStaff';
 
   static const orders = '/orders';
   static const orderDetails = '/orderDetails';
+
+  static const suppliers = '/suppliers';
+  static const createSupplier = '/createSupplier';
+  static const supplierDetails = '/supplierDetails';
 
   static const coupons = '/coupons';
   static const createCoupon = '/createCoupon';
@@ -42,5 +49,5 @@ class PRoutes {
   static const profile = '/profile';
 
   // Sidebar Menu Items List
-  static List sidebarMenuItems = [dashboard, media, categories, brands, banners, products, coupons, customers, orders, profile];
+  static List sidebarMenuItems = [dashboard, media, categories, brands, banners, products, coupons, customers, reviews, orders, suppliers, profile];
 }

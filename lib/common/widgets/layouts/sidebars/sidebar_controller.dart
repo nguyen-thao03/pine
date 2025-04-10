@@ -17,6 +17,7 @@ class SidebarController extends GetxController {
     PRoutes.brands, PRoutes.createBrand, PRoutes.editBrand,
     PRoutes.products, PRoutes.createProduct, PRoutes.editProduct,
     PRoutes.orders, PRoutes.orderDetails,
+    PRoutes.suppliers, PRoutes.createSupplier, PRoutes.supplierDetails,
     PRoutes.profile, PRoutes.login,
   ];
 

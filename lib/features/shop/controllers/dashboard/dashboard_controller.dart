@@ -22,6 +22,10 @@ class DashboardController extends PBaseController<OrderModel> {
   final Rx<DateTime?> startDate = Rx<DateTime?>(null);
   final Rx<DateTime?> endDate = Rx<DateTime?>(null);
 
+  int get totalProductInStock => productController.allItems.fold(0, (sum, p) => sum + (p.stock ?? 0));
+  int get totalProductSold => productController.allItems.fold(0, (sum, p) => sum + (p.soldQuantity ?? 0));
+
+
   @override
   void onInit() {
     fetchData();

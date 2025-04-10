@@ -11,7 +11,7 @@ import 'package:pine_admin_panel/utils/constants/colors.dart';
 class CouponRows extends DataTableSource {
   final controller = CouponController.instance;
   final currencyFormat = NumberFormat.currency(locale: 'vi_VN', symbol: '₫');
-  final percentFormat = NumberFormat.percentPattern(); // Định dạng phần trăm
+  final percentFormat = NumberFormat.percentPattern();
 
   @override
   DataRow? getRow(int index) {

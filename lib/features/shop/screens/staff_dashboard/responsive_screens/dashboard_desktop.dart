@@ -40,12 +40,26 @@ class StaffDashboardDesktopScreen extends StatelessWidget {
                         headingIconBgColor: Colors.blue.withValues(alpha: 0.1),
                         context: context,
                         title: 'Tổng sản phẩm',
-                        subTitle: '${controller.productController.allItems.length}',
+                        subTitle: '${controller.totalProductInStock}',
                         stats: 25,
                       ),
                     ),
                   ),
                   const SizedBox(width: PSizes.spaceBtwItems),
+                  Expanded(
+                    child: Obx(
+                          () => PDashboardCard(
+                        headingIcon: Iconsax.box_tick,
+                        headingIconColor: Colors.deepOrange,
+                        headingIconBgColor: Colors.deepOrange.withValues(alpha: 0.1),
+                        context: context,
+                        title: 'Tổng sản phẩm đã bán',
+                        subTitle: '${controller.totalProductSold}',
+                        stats: 2,
+                      ),
+                    ),
+                  ),
+                  SizedBox(width: PSizes.spaceBtwItems),
                   Expanded(
                     child: Obx(
                           () => PDashboardCard(
@@ -56,20 +70,6 @@ class StaffDashboardDesktopScreen extends StatelessWidget {
                         title: 'Tổng đơn hàng',
                         subTitle: '${controller.orderController.allItems.length}',
                         stats: 44,
-                      ),
-                    ),
-                  ),
-                  SizedBox(width: PSizes.spaceBtwItems),
-                  Expanded(
-                    child: Obx(
-                          () => PDashboardCard(
-                        headingIcon: Iconsax.user,
-                        headingIconColor: Colors.deepOrange,
-                        headingIconBgColor: Colors.deepOrange.withValues(alpha: 0.1),
-                        context: context,
-                        title: 'Sản phẩm bán chạy',
-                        subTitle: '${controller.customerController.allItems.length}',
-                        stats: 2,
                       ),
                     ),
                   ),

@@ -148,4 +148,35 @@ class ProductModel {
           : [],
     );
   }
+
+  factory ProductModel.fromJson(Map<String, dynamic> json) {
+    return ProductModel(
+      id: json['id'] ?? '',
+      sku: json['SKU'] ?? '',
+      title: json['Title'] ?? '',
+      stock: json['Stock'] ?? 0,
+      isFeatured: json['IsFeatured'] ?? false,
+      soldQuantity: json['SoldQuantity'] ?? 0,
+      price: double.tryParse(json['Price']?.toString() ?? '0') ?? 0,
+      salePrice: double.tryParse(json['SalePrice']?.toString() ?? '0') ?? 0,
+      thumbnail: json['Thumbnail'] ?? '',
+      categoryId: json['CategoryId'],
+      description: json['Description'] ?? '',
+      productType: json['ProductType'] ?? '',
+      brand: json['Brand'] != null ? BrandModel.fromJson(json['Brand']) : null,
+      date: json['Date'] is Timestamp ? (json['Date'] as Timestamp).toDate() : null,
+      images: json['Images'] != null ? List<String>.from(json['Images']) : [],
+      productAttributes: json['ProductAttributes'] != null
+          ? (json['ProductAttributes'] as List<dynamic>)
+          .map((e) => ProductAttributeModel.fromJson(e))
+          .toList()
+          : [],
+      productVariations: json['ProductVariations'] != null
+          ? (json['ProductVariations'] as List<dynamic>)
+          .map((e) => ProductVariationModel.fromJson(e))
+          .toList()
+          : [],
+    );
+  }
+
 }

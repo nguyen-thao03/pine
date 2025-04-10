@@ -1,4 +1,8 @@
 import 'package:get/get.dart';
+import 'package:pine_admin_panel/features/shop/screens/review/reviews_detail/review_detail.dart';
+import 'package:pine_admin_panel/features/shop/screens/supplier/all_suppliers/suppliers.dart';
+import 'package:pine_admin_panel/features/shop/screens/supplier/create_supplier/create_supplier.dart';
+import 'package:pine_admin_panel/features/shop/screens/supplier/suppliers_detail/supplier_detail.dart';
 import 'package:pine_admin_panel/routes/routes.dart';
 import 'package:pine_admin_panel/routes/routes_middleware.dart';
 
@@ -30,6 +34,7 @@ import '../features/shop/screens/order/orders_detail/order_detail.dart';
 import '../features/shop/screens/product/all_products/products.dart';
 import '../features/shop/screens/product/create_product/create_product.dart';
 import '../features/shop/screens/product/edit_product/edit_product.dart';
+import '../features/shop/screens/review/all_reviews/reviews.dart';
 import '../features/shop/screens/staff_dashboard/dashboard.dart';
 
 class PAppRoute {
@@ -72,12 +77,19 @@ class PAppRoute {
       GetPage(name: PRoutes.customers, page: () => const CustomersScreen(), middlewares: [PRouteMiddleware()]),
       GetPage(name: PRoutes.customerDetails, page: () => const CustomerDetailScreen(), middlewares: [PRouteMiddleware()]),
 
+      GetPage(name: PRoutes.reviews, page: () => const ReviewsScreen(), middlewares: [PRouteMiddleware()]),
+      GetPage(name: PRoutes.reviewDetails, page: () => const ReviewDetailScreen(), middlewares: [PRouteMiddleware()]),
+
       GetPage(name: PRoutes.createStaff, page: () => const CreateStaffScreen(), middlewares: [PRouteMiddleware()]),
       GetPage(name: PRoutes.editStaff, page: () => const EditStaffScreen(), middlewares: [PRouteMiddleware()]),
 
       //Orders
       GetPage(name: PRoutes.orders, page: () => const OrdersScreen(), middlewares: [PRouteMiddleware()]),
       GetPage(name: PRoutes.orderDetails, page: () => const OrderDetailScreen(), middlewares: [PRouteMiddleware()]),
+
+      GetPage(name: PRoutes.suppliers, page: () => const SuppliersScreen(), middlewares: [PRouteMiddleware()]),
+      GetPage(name: PRoutes.createSupplier, page: () => const CreateSupplierScreen(), middlewares: [PRouteMiddleware()]),
+      GetPage(name: PRoutes.supplierDetails, page: () => const SupplierDetailScreen(), middlewares: [PRouteMiddleware()]),
 
     GetPage(name: PRoutes.profile, page: () => const ProfileScreen(), middlewares: [PRouteMiddleware()]),
   ];
