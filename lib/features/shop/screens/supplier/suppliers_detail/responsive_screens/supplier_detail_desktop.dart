@@ -2,32 +2,33 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pine_admin_panel/common/widgets/breadcrumbs/breadcrumb_with_heading.dart';
 import 'package:pine_admin_panel/features/personalization/models/user_model.dart';
-import 'package:pine_admin_panel/features/shop/controllers/customer/customer_detail_controller.dart';
+import 'package:pine_admin_panel/features/shop/controllers/supplier/supplier_detail_controller.dart';
+import 'package:pine_admin_panel/features/shop/models/supplier_model.dart';
 import 'package:pine_admin_panel/utils/constants/sizes.dart';
 
 import '../../../../../../../routes/routes.dart';
-import '../widgets/customer_info.dart';
-import '../widgets/customer_orders.dart';
-import '../widgets/shipping_address.dart';
+import '../../../../controllers/supplier/supplier_detail_controller.dart';
+import '../widgets/supplier_info.dart';
+import '../widgets/supplier_orders.dart';
 
-class CustomerDetailDesktopScreen extends StatefulWidget {
-  const CustomerDetailDesktopScreen({super.key, required this.customer});
+class SupplierDetailDesktopScreen extends StatefulWidget {
+  const SupplierDetailDesktopScreen({super.key, required this.supplier});
 
-  final UserModel customer;
+  final SupplierModel supplier;
 
   @override
-  _CustomerDetailDesktopScreenState createState() => _CustomerDetailDesktopScreenState();
+  _SupplierDetailDesktopScreenState createState() => _SupplierDetailDesktopScreenState();
 }
 
-class _CustomerDetailDesktopScreenState
-    extends State<CustomerDetailDesktopScreen> {
-  late CustomerDetailController controller;
+class _SupplierDetailDesktopScreenState
+    extends State<SupplierDetailDesktopScreen> {
+  late SupplierDetailController controller;
 
   @override
   void initState() {
     super.initState();
-    controller = Get.put(CustomerDetailController());
-    controller.customer.value = widget.customer;
+    controller = Get.put(SupplierDetailController());
+    controller.supplier.value = widget.supplier;
   }
 
   @override
@@ -42,9 +43,9 @@ class _CustomerDetailDesktopScreenState
               // Breadcrumbs
               PBreadcrumbsWithHeading(
                 returnToPreviousScreen: true,
-                heading: widget.customer.fullName,
+                heading: widget.supplier.name,
                 breadcrumbItems: [
-                  {'label': 'Danh sách người dùng', 'path': PRoutes.customers},
+                  {'label': 'Danh sách đơn nhập hàng', 'path': PRoutes.suppliers},
                   'Chi tiết'
                 ],
               ),
@@ -54,22 +55,19 @@ class _CustomerDetailDesktopScreenState
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Left Side Customer Information
+                  // Left Side Supplier Information
                   Expanded(
                       child: Column(
                         children: [
-                          // Customer Info
-                          CustomerInfo(customer: widget.customer),
+                          // Supplier Info
+                          SupplierInfo(supplier: widget.supplier),
                           const SizedBox(height: PSizes.spaceBtwSections),
-
-                          // Shipping Address
-                          const ShippingAddress(),
                         ],
                       )),
                   const SizedBox(width: PSizes.spaceBtwSections),
 
-                  // Right Side Customer Orders
-                  const Expanded(flex: 2, child: CustomerOrders()),
+                  // Right Side Supplier Orders
+                  const Expanded(flex: 2, child: SupplierProducts()),
                 ],
               )
             ],

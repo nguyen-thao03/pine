@@ -27,7 +27,8 @@ class SupplierTable extends StatelessWidget {
             DataColumn2(label: const Text('Nhà cung cấp')),
             const DataColumn2(label: Text('Số điện thoại')),
             const DataColumn2(label: Text('Tổng tiền')),
-            const DataColumn2(label: Text('Ngày nhập')),
+            DataColumn2(label: Text('Ngày nhập'), onSort: (columnIndex, ascending) =>
+                controller.sortByDate(columnIndex, ascending)),
             const DataColumn2(label: Text('Hành động'), fixedWidth: 100),
           ],
           source: SupplierRows(),

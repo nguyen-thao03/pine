@@ -34,7 +34,7 @@ class UserRepository extends GetxController {
 
   Future<void> createUser(UserModel user) async {
     try {
-      await _db.collection("Users").add(user.toJson());
+      await _db.collection("Users").doc(user.id).set(user.toJson()); // dùng doc(user.id)
     } on FirebaseAuthException catch (e) {
       throw PFirebaseAuthException(e.code).message;
     } on FormatException catch (_) {
@@ -45,8 +45,6 @@ class UserRepository extends GetxController {
       throw 'Đã có lỗi xảy ra. Vui lòng thử lại';
     }
   }
-
-
 
   Future<List<UserModel>> getAllUsers() async {
     try {

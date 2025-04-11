@@ -20,6 +20,7 @@ class EditCouponController extends GetxController {
   final discountAmount = TextEditingController();
   final minimumPurchaseAmount = TextEditingController();
   final endDate = TextEditingController();
+  final description = TextEditingController(); // 🔹 THÊM MỚI
   final Rxn<DateTime> selectedEndDate = Rxn<DateTime>();
 
   final formKey = GlobalKey<FormState>();
@@ -31,6 +32,7 @@ class EditCouponController extends GetxController {
     discountAmount.text = coupon.discountAmount.toString();
     minimumPurchaseAmount.text = coupon.minimumPurchaseAmount.toString();
     status.value = coupon.status;
+    description.text = coupon.description ?? ''; // 🔹 THÊM MỚI
 
     if (coupon.endDate != null) {
       selectedEndDate.value = coupon.endDate;
@@ -74,6 +76,7 @@ class EditCouponController extends GetxController {
       coupon.minimumPurchaseAmount = double.tryParse(minimumPurchaseAmount.text.trim()) ?? 0;
       coupon.endDate = selectedEndDate.value;
       coupon.status = status.value;
+      coupon.description = description.text.trim(); // 🔹 THÊM MỚI
       coupon.updatedAt = DateTime.now();
 
       // Gửi dữ liệu cập nhật lên server
@@ -101,5 +104,7 @@ class EditCouponController extends GetxController {
     discountAmount.clear();
     minimumPurchaseAmount.clear();
     endDate.clear();
+    description.clear(); // 🔹 THÊM MỚI
   }
 }
+

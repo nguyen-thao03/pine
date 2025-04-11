@@ -6,6 +6,7 @@ import 'package:pine_admin_panel/utils/exceptions/format_exceptions.dart';
 import 'package:pine_admin_panel/utils/exceptions/platform_exceptions.dart';
 
 import '../../features/shop/models/supplier_model.dart';
+import '../../features/shop/models/supplier_product_model.dart';
 
 class SupplierRepository extends GetxController {
   static SupplierRepository get instance => Get.find();
@@ -69,6 +70,28 @@ class SupplierRepository extends GetxController {
       throw PPlatformException(e.code).message;
     } catch (e) {
       throw 'Có lỗi xảy ra. Vui lòng thử lại';
+    }
+  }
+
+  Future<List<SupplierProductModel>> fetchSupplierProducts(String supplierId) async {
+    try {
+      final doc = await _db.collection("Suppliers").doc(supplierId).get();
+
+      if (!doc.exists) throw 'Không tìm thấy nhà cung cấp.';
+
+      final data = doc.data();
+      if (data == null || data['products'] == null) return [];
+
+      final productsJson = List<Map<String, dynamic>>.from(data['products']);
+      return productsJson.map((item) => SupplierProductModel.fromJson(item)).toList();
+    } on FirebaseException catch (e) {
+      throw PFirebaseException(e.code).message;
+    } on FormatException {
+      throw const PFormatException();
+    } on PlatformException catch (e) {
+      throw PPlatformException(e.code).message;
+    } catch (e) {
+      throw 'Có lỗi xảy ra khi tải sản phẩm. Vui lòng thử lại.';
     }
   }
 }

@@ -23,9 +23,9 @@ class CreateCouponController extends GetxController {
   final discountAmount = TextEditingController();
   final minimumPurchaseAmount = TextEditingController();
   final endDate = TextEditingController();
+  final description = TextEditingController(); // 👈 Thêm field mô tả
 
   final formKey = GlobalKey<FormState>();
-
   final Rxn<DateTime> selectedEndDate = Rxn<DateTime>();
 
   Future<void> pickEndDate(BuildContext context) async {
@@ -42,10 +42,10 @@ class CreateCouponController extends GetxController {
     }
   }
 
-
   Future<void> createCoupon() async {
     try {
       PFullScreenLoader.popUpCircular();
+
       final isConnected = await NetworkManager.instance.isConnected();
       if (!isConnected) {
         PFullScreenLoader.stopLoading();
@@ -65,18 +65,10 @@ class CreateCouponController extends GetxController {
         endDate: selectedEndDate.value,
         status: status.value,
         createdAt: DateTime.now(),
+        description: description.text.trim(), // 👈 Gán mô tả
       );
 
       newRecord.id = await CouponRepository.instance.createCoupon(newRecord);
-
-      // Format discountAmount based on type
-      if (newRecord.type == 'Cố định') {
-        // Format as currency (VND or USD or whatever currency you prefer)
-        newRecord.discountAmount = double.tryParse(discountAmount.text.trim()) ?? 0;
-      } else if (newRecord.type == 'Phần trăm') {
-        // Keep discountAmount as percentage
-        newRecord.discountAmount = double.tryParse(discountAmount.text.trim()) ?? 0;
-      }
 
       CouponController.instance.addItemToLists(newRecord);
 
@@ -84,21 +76,19 @@ class CreateCouponController extends GetxController {
 
       PFullScreenLoader.stopLoading();
 
-      // Show success message with proper formatting
       String formattedDiscount = newRecord.type == 'Cố định'
           ? NumberFormat.currency(locale: 'vi_VN', symbol: '₫').format(newRecord.discountAmount)
           : '${newRecord.discountAmount}%';
 
       PLoaders.successSnackBar(
-          title: 'Thành công',
-          message: 'Đã thêm mã giảm giá thành công. Giảm giá: $formattedDiscount'
+        title: 'Thành công',
+        message: 'Đã thêm mã giảm giá thành công. Giảm giá: $formattedDiscount',
       );
     } catch (e) {
       PFullScreenLoader.stopLoading();
       PLoaders.errorSnackBar(title: 'Ôi không', message: e.toString());
     }
   }
-
 
   /// 🧹 Reset dữ liệu sau khi tạo mã giảm giá
   void resetFields() {
@@ -109,5 +99,7 @@ class CreateCouponController extends GetxController {
     discountAmount.clear();
     minimumPurchaseAmount.clear();
     endDate.clear();
+    description.clear(); // 👈 Reset description luôn
   }
 }
+

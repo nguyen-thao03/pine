@@ -83,6 +83,20 @@ class EditCouponForm extends StatelessWidget {
                         ),
                         keyboardType: TextInputType.number,
                       ),
+                      const SizedBox(height: PSizes.spaceBtwInputFields),
+
+                      // 🆕 Description Text Field
+                      TextFormField(
+                        controller: editController.description,
+                        validator: (value) => PValidator.validateEmptyText('Mô tả', value),
+                        maxLines: 3,
+                        decoration: const InputDecoration(
+                          labelText: 'Mô tả mã giảm giá',
+                          prefixIcon: Icon(Iconsax.message),
+                          contentPadding: EdgeInsets.symmetric(vertical: 15),
+                        ),
+                      ),
+                      const SizedBox(height: PSizes.spaceBtwInputFields),
                     ],
                   ),
                 ),
@@ -146,7 +160,7 @@ class EditCouponForm extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(vertical: 15),
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
                 ),
-                child: const Text('Tạo mã giảm giá'),
+                child: const Text('Cập nhật mã giảm giá'),
               ),
             ),
             const SizedBox(height: PSizes.spaceBtwInputFields),

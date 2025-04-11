@@ -12,27 +12,37 @@ class ProfileForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = UserController.instance;
+
     controller.firstNameController.text = controller.user.value.firstName;
     controller.lastNameController.text = controller.user.value.lastName;
     controller.phoneController.text = controller.user.value.phoneNumber;
+
+    final RxBool showPassword = false.obs;
+    final RxBool showCurrentPassword = false.obs;
+    final RxBool isTypingNewPassword = false.obs;
+
     return Column(
       children: [
         PRoundedContainer(
           padding: const EdgeInsets.symmetric(
-              vertical: PSizes.lg, horizontal: PSizes.md),
+            vertical: PSizes.lg,
+            horizontal: PSizes.md,
+          ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('Thông tin tài khoản',
-                  style: Theme.of(context).textTheme.headlineSmall),
+              Text(
+                'Thông tin tài khoản',
+                style: Theme.of(context).textTheme.headlineSmall,
+              ),
               const SizedBox(height: PSizes.spaceBtwSections),
 
-// Form
+              /// Form
               Form(
                 key: controller.formKey,
                 child: Column(
                   children: [
-                    // First and Last Name
+                    /// Họ và Tên
                     Row(
                       children: [
                         Expanded(
@@ -64,7 +74,7 @@ class ProfileForm extends StatelessWidget {
                     ),
                     const SizedBox(height: PSizes.spaceBtwInputFields),
 
-                    // Email and Phone
+                    /// Email và Số điện thoại
                     Row(
                       children: [
                         Expanded(
@@ -93,18 +103,89 @@ class ProfileForm extends StatelessWidget {
                         ),
                       ],
                     ),
+                    const SizedBox(height: PSizes.spaceBtwInputFields),
+
+                    /// Mật khẩu mới
+                    Obx(() => TextFormField(
+                      controller: controller.passwordController,
+                      obscureText: !showPassword.value,
+                      onChanged: (value) {
+                        isTypingNewPassword.value =
+                            value.trim().isNotEmpty;
+                      },
+                      decoration: InputDecoration(
+                        hintText: 'Nhập mật khẩu mới',
+                        labelText: 'Mật khẩu mới',
+                        prefixIcon: const Icon(Iconsax.lock),
+                        suffixIcon: IconButton(
+                          icon: Icon(showPassword.value
+                              ? Iconsax.eye
+                              : Iconsax.eye_slash),
+                          onPressed: () => showPassword.toggle(),
+                        ),
+                      ),
+                      validator: (value) {
+                        if (value != null &&
+                            value.isNotEmpty &&
+                            value.length < 6) {
+                          return 'Mật khẩu phải có ít nhất 6 ký tự';
+                        }
+                        return null;
+                      },
+                    )),
+                    const SizedBox(height: PSizes.spaceBtwInputFields),
+
+                    /// Mật khẩu hiện tại (chỉ khi nhập mật khẩu mới)
+                    Obx(() {
+                      if (!isTypingNewPassword.value) {
+                        return const SizedBox.shrink();
+                      }
+
+                      return Column(
+                        children: [
+                          TextFormField(
+                            controller: controller.currentPasswordController,
+                            obscureText: !showCurrentPassword.value,
+                            decoration: InputDecoration(
+                              hintText: 'Nhập mật khẩu hiện tại',
+                              labelText: 'Mật khẩu hiện tại',
+                              prefixIcon: const Icon(Iconsax.key),
+                              suffixIcon: IconButton(
+                                icon: Icon(showCurrentPassword.value
+                                    ? Iconsax.eye
+                                    : Iconsax.eye_slash),
+                                onPressed: () => showCurrentPassword.toggle(),
+                              ),
+                            ),
+                            validator: (value) {
+                              if (isTypingNewPassword.value &&
+                                  (value == null || value.isEmpty)) {
+                                return 'Vui lòng nhập mật khẩu hiện tại';
+                              }
+                              return null;
+                            },
+                          ),
+                          const SizedBox(height: PSizes.spaceBtwInputFields),
+                        ],
+                      );
+                    }),
                   ],
                 ),
               ),
 
               const SizedBox(height: PSizes.spaceBtwSections),
+
+              /// Nút cập nhật
               SizedBox(
                 width: double.infinity,
                 child: Obx(
                       () => ElevatedButton(
-                    onPressed: () => controller.loading.value ? () {} : controller.updateAdminInformation(),
+                    onPressed: controller.loading.value
+                        ? null
+                        : controller.updateAdminInformation,
                     child: controller.loading.value
-                        ? const CircularProgressIndicator(color: Colors.white, strokeWidth: 2)
+                        ? const CircularProgressIndicator(
+                        color: Colors.white, strokeWidth: 2)
                         : const Text('Cập nhật tài khoản'),
                   ),
                 ),
@@ -116,4 +197,3 @@ class ProfileForm extends StatelessWidget {
     );
   }
 }
-

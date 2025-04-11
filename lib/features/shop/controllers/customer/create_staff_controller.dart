@@ -67,6 +67,8 @@ class CreateStaffController extends GetxController {
           .registerWithEmailAndPassword(
           emailController.text.trim(), password.text.trim());
 
+      final uid = userCredential.user?.uid;
+
       final newAddress = AddressModel(
         id: '',
         name: nameController.text.trim(),
@@ -78,7 +80,7 @@ class CreateStaffController extends GetxController {
       );
 
       final newStaff = UserModel(
-        id: '',
+        id: uid,
         firstName: firstNameController.text.trim(),
         lastName: lastNameController.text.trim(),
         email: emailController.text.trim(),

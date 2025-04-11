@@ -12,6 +12,8 @@ import 'package:pine_admin_panel/features/shop/screens/dashboard/widgets/weekly_
 import 'package:pine_admin_panel/utils/constants/colors.dart';
 import 'package:pine_admin_panel/utils/constants/sizes.dart';
 
+import '../../../../../utils/constants/enums.dart';
+
 class DashboardDesktopScreen extends StatelessWidget {
   const DashboardDesktopScreen({super.key});
 
@@ -40,19 +42,23 @@ class DashboardDesktopScreen extends StatelessWidget {
               Row(
                 children: [
                   Flexible(
-                    child: Obx(
-                          () => PDashboardCard(
+                    child: Obx(() {
+                      final filteredOrders = controller.orderController.allItems
+                          .where((order) => order.status != OrderStatus.cancelled)
+                          .toList();
+
+                      final totalRevenue = filteredOrders.fold(0.0, (previousValue, element) => previousValue + element.totalAmount);
+
+                      return PDashboardCard(
                         headingIcon: Iconsax.note,
                         headingIconColor: Colors.blue,
                         headingIconBgColor: Colors.blue.withValues(alpha: 0.1),
                         context: context,
                         title: 'Tổng doanh số',
-                        subTitle: formatCurrency(
-                          controller.orderController.allItems.fold(0.0, (previousValue, element) => previousValue + element.totalAmount),
-                        ),
+                        subTitle: formatCurrency(totalRevenue),
                         stats: 25,
-                      ),
-                    ),
+                      );
+                    }),
                   ),
                   const SizedBox(width: PSizes.spaceBtwItems),
                   Expanded(

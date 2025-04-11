@@ -100,6 +100,41 @@ class AuthenticationRepository extends GetxController {
     }
   }
 
+  Future<void> updatePassword(String newPassword) async {
+    try {
+      final user = _auth.currentUser;
+
+      if (user != null) {
+        await user.updatePassword(newPassword);
+        await user.reload();
+      } else {
+        throw 'Không tìm thấy người dùng.';
+      }
+    } on FirebaseAuthException catch (e) {
+      throw PFirebaseAuthException(e.code).message;
+    } on FirebaseException catch (e) {
+      throw PFirebaseAuthException(e.code).message;
+    } on FormatException catch (_) {
+      throw const PFormatException();
+    } on PlatformException catch (e) {
+      throw PPlatformException(e.code).message;
+    } catch (e) {
+      throw 'Đã có lỗi xảy ra khi cập nhật mật khẩu.';
+    }
+  }
+
+  Future<bool> reAuthenticateUser(String email, String currentPassword) async {
+    try {
+      final credential = EmailAuthProvider.credential(email: email, password: currentPassword);
+      await FirebaseAuth.instance.currentUser!.reauthenticateWithCredential(credential);
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
+
+
   // REGISTER USER BY ADMIN
 
   // EMAIL VERIFICATION

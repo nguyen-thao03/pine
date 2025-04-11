@@ -82,6 +82,20 @@ class CreateCouponForm extends StatelessWidget {
                         ),
                         keyboardType: TextInputType.number,
                       ),
+                      const SizedBox(height: PSizes.spaceBtwInputFields),
+
+                      // 🆕 Description Text Field
+                      TextFormField(
+                        controller: createController.description,
+                        validator: (value) => PValidator.validateEmptyText('Mô tả', value),
+                        maxLines: 3,
+                        decoration: const InputDecoration(
+                          labelText: 'Mô tả mã giảm giá',
+                          prefixIcon: Icon(Iconsax.message),
+                          contentPadding: EdgeInsets.symmetric(vertical: 15),
+                        ),
+                      ),
+                      const SizedBox(height: PSizes.spaceBtwInputFields),
                     ],
                   ),
                 ),

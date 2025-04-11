@@ -3,7 +3,7 @@ import 'product_model.dart';
 class SupplierProductModel {
   final ProductModel product;
   final int quantity;
-  final double price; // giá nhập, có thể khác giá bán
+  final double price;
 
   SupplierProductModel({
     required this.product,

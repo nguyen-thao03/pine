@@ -11,6 +11,7 @@ class CouponModel {
   bool status;
   DateTime? createdAt;
   DateTime? updatedAt;
+  String description;
 
   CouponModel({
     required this.id,
@@ -22,6 +23,7 @@ class CouponModel {
     this.status = false,
     this.createdAt,
     this.updatedAt,
+    this.description = '',
   });
 
   String get formattedDate => PFormatter.formatDate(createdAt);
@@ -36,6 +38,7 @@ class CouponModel {
     discountAmount: 0,
     minimumPurchaseAmount: 0,
     status: false,
+    description: '',
   );
 
   /// Convert model to Json structure so that you can store data in Firebase
@@ -49,6 +52,7 @@ class CouponModel {
       'Status': status,
       'CreatedAt': createdAt,
       'UpdatedAt': updatedAt = DateTime.now(),
+      'Description': description,
     };
   }
 
@@ -67,6 +71,7 @@ class CouponModel {
         status: data['Status'] ?? true,
         createdAt: data.containsKey('CreatedAt') ? data['CreatedAt']?.toDate() : null,
         updatedAt: data.containsKey('UpdatedAt') ? data['UpdatedAt']?.toDate() : null,
+        description: data['Description'] ?? '',
       );
     } else {
       return CouponModel.empty();

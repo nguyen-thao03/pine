@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pine_admin_panel/common/widgets/loaders/loader_animation.dart';
+import 'package:pine_admin_panel/features/shop/controllers/review/review_controller.dart';
 
 import '../../../../../../../common/widgets/breadcrumbs/breadcrumb_with_heading.dart';
 import '../../../../../../../common/widgets/containers/rounded_container.dart';
 import '../../../../../../../common/widgets/data_table/table_header.dart';
 import '../../../../../../../utils/constants/sizes.dart';
-import '../../../../controllers/order/order_controller.dart';
 import '../table/reviews_table.dart';
 
 class ReviewsDesktopScreen extends StatelessWidget {
@@ -14,7 +14,8 @@ class ReviewsDesktopScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(OrderController());
+    final controller = Get.put(ReviewController());
+
     return Scaffold(
       body: SingleChildScrollView(
         child: Padding(
@@ -23,19 +24,43 @@ class ReviewsDesktopScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // Breadcrumbs
-              const PBreadcrumbsWithHeading(heading: 'Đơn hàng', breadcrumbItems: ['Đơn hàng']),
+              const PBreadcrumbsWithHeading(heading: 'Đánh giá', breadcrumbItems: ['Đánh giá']),
               const SizedBox(height: PSizes.spaceBtwSections),
 
               // Table Body
-              // Show Loader
               PRoundedContainer(
                 child: Column(
                   children: [
-                    // Table Header
-                    PTableHeader(
-                        showLeftWidget: false,
-                      searchController: controller.searchTextController,
-                      searchOnChanged: (query) => controller.searchQuery(query),
+                    // Table Header có cả Search và Dropdown lọc sao
+                    Row(
+                      children: [
+                        // Dropdown lọc số sao
+                        Obx(() => DropdownButton<int>(
+                          value: controller.selectedStar.value,
+                          onChanged: (value) {
+                            if (value != null) {
+                              controller.selectedStar.value = value;
+                              controller.filterByStar();
+                            }
+                          },
+                          items: [
+                            const DropdownMenuItem(value: 0, child: Text("Tất cả")),
+                            for (int i = 1; i <= 5; i++)
+                              DropdownMenuItem(value: i, child: Text("$i sao")),
+                          ],
+                        )),
+
+                        const SizedBox(width: PSizes.spaceBtwItems),
+
+                        // Search
+                        Expanded(
+                          child: PTableHeader(
+                            showLeftWidget: false,
+                            searchController: controller.searchTextController,
+                            searchOnChanged: (query) => controller.searchQuery(query),
+                          ),
+                        ),
+                      ],
                     ),
                     const SizedBox(height: PSizes.spaceBtwItems),
 
@@ -43,8 +68,7 @@ class ReviewsDesktopScreen extends StatelessWidget {
                     Obx(() {
                       if (controller.isLoading.value) return const PLoaderAnimation();
                       return const ReviewTable();
-                    }
-                    ),
+                    }),
                   ],
                 ),
               ),
