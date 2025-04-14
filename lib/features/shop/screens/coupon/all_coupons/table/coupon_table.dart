@@ -27,6 +27,7 @@ class CouponTable extends StatelessWidget {
             DataColumn2(label: const Text('Loại')),
             const DataColumn2(label: Text('Giảm')),
             const DataColumn2(label: Text('Trạng thái')),
+            DataColumn2(label: const Text('Đã sử dụng')),
             const DataColumn2(label: Text('Ngày hết hạn')),
             const DataColumn2(label: Text('Hành động'), fixedWidth: 100),
           ],

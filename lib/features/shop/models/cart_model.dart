@@ -1,4 +1,4 @@
-class CartItemModel {
+class CartModel {
   String productId;
   String title;
   double price;
@@ -9,7 +9,7 @@ class CartItemModel {
   Map<String, String>? selectedVariation;
 
   /// Constructor
-  CartItemModel({
+  CartModel({
     required this.productId,
     required this.quantity,
     this.variationId = '',
@@ -23,7 +23,7 @@ class CartItemModel {
   /// Calculate Total Amount
   double get totalAmount => price * quantity;
 
-  static CartItemModel empty() => CartItemModel(productId: '', quantity: 0);
+  static CartModel empty() => CartModel(productId: '', quantity: 0);
 
   /// Convert a CartItem to a JSON Map
   Map<String, dynamic> toJson() {
@@ -40,8 +40,8 @@ class CartItemModel {
   }
 
   /// Create a CartItem form a JSON Map
-  factory CartItemModel.fromJson(Map<String, dynamic> json) {
-    return CartItemModel(
+  factory CartModel.fromJson(Map<String, dynamic> json) {
+    return CartModel(
       productId: json['productId'],
       title: json['title'],
       price: json['price']?.toDouble(),
