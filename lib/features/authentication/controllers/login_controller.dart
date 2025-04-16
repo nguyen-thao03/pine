@@ -62,12 +62,12 @@ class LoginController extends GetxController {
 
       if (user.role == AppRole.admin) {
         print("Admin login");
-        localStorage.write('Role', 'admin'); // 👈 Lưu role vào storage
+        localStorage.write('Role', 'admin');
         localStorage.write('activeItem', '/dashboard');
         Get.offAll(() => DashboardScreen());
       } else if (user.role == AppRole.staff) {
         print("Staff login");
-        localStorage.write('Role', 'staff'); // 👈 Lưu role vào storage
+        localStorage.write('Role', 'staff');
         localStorage.write('activeItem', '/staff-dashboard');
         Get.offAll(() => StaffDashboardScreen());
       }

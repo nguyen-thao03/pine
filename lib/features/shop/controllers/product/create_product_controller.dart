@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -70,6 +71,7 @@ class CreateProductController extends GetxController {
       if (productType.value == ProductType.variable && ProductVariationController.instance.productVariations.isEmpty) {
         throw 'Không có thể loại nào cho Thể Loại Sản phẩm. Tạo một số thể loại hoặc thay đổi Loại Sản phẩm.';
       }
+
       if (productType.value == ProductType.variable) {
         final variationCheckFailed = ProductVariationController.instance.productVariations.any((element) =>
         element.price.isNaN ||
@@ -115,6 +117,18 @@ class CreateProductController extends GetxController {
 
       productDataUploader.value = true;
       newRecord.id = await ProductRepository.instance.createProduct(newRecord);
+      if (selectedBrand.value != null) {
+        final brandRef = FirebaseFirestore.instance.collection('Brands').doc(selectedBrand.value!.id);
+        final brandDoc = await brandRef.get();
+        int currentProductsCount = brandDoc['ProductsCount'] ?? 0;
+
+        // Chỉ tăng khi ProductsCount > 0, tránh số âm
+        if (currentProductsCount >= 0) {
+          await brandRef.update({
+            'ProductsCount': FieldValue.increment(1),
+          });
+        }
+      }
 
       if (selectedCategories.isNotEmpty) {
         if (newRecord.id.isEmpty) throw 'Lỗi lưu dữ liệu. Vui lòng thử lại';
@@ -136,6 +150,7 @@ class CreateProductController extends GetxController {
       PLoaders.errorSnackBar(title: 'Ôi không', message: e.toString());
     }
   }
+
 
   void resetValues() {
     isLoading.value = false;

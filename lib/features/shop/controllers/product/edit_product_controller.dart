@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -103,10 +104,9 @@ class EditProductController extends GetxController {
 
   Future<void> pickAdditionalImages() async {
     final imagesController = ProductImagesController.instance;
-    // 👉 Giả sử bạn đã có logic chọn ảnh (ví dụ FilePicker hoặc imageUploader riêng)
-    // Dưới đây là mô phỏng thêm ảnh URL (giả lập)
+
     List<String> newImages = [
-      'https://via.placeholder.com/150', // Thay bằng ảnh thực tế khi chọn
+      'https://via.placeholder.com/150',
       'https://via.placeholder.com/200'
     ];
 
@@ -153,6 +153,7 @@ class EditProductController extends GetxController {
       if (productType.value == ProductType.variable && ProductVariationController.instance.productVariations.isEmpty) {
         throw 'Không có thể loại nào cho Thể Loại Sản phẩm. Tạo một số thể loại hoặc thay đổi Loại Sản phẩm.';
       }
+
       if (productType.value == ProductType.variable) {
         final variationCheckFailed = ProductVariationController.instance.productVariations.any((element) =>
         element.price.isNaN ||
@@ -160,7 +161,7 @@ class EditProductController extends GetxController {
             element.salePrice.isNaN ||
             element.salePrice < 0 ||
             element.stock.isNaN ||
-            element.stock < 0,
+            element.stock < 0
         );
         if (variationCheckFailed) throw 'Dữ liệu thể loại không chính xác. Vui lòng kiểm tra lại các thể loại';
       }
@@ -170,55 +171,52 @@ class EditProductController extends GetxController {
         throw 'Chọn ảnh đại diện sản phẩm';
       }
 
-        var variations = ProductVariationController.instance.productVariations;
-        if (productType.value == ProductType.single && variations.isNotEmpty) {
-          ProductVariationController.instance.resetAllValues();
-          variations.value = [];
+      var variations = ProductVariationController.instance.productVariations;
+      if (productType.value == ProductType.single && variations.isNotEmpty) {
+        ProductVariationController.instance.resetAllValues();
+        variations.value = [];
+      }
+
+      product.sku = '';
+      product.isFeatured = isFeatured.value;
+      product.title = title.text.trim();
+      product.brand = selectedBrand.value;
+      product.productVariations = variations;
+      product.description = description.text.trim();
+      product.productType = productType.value.toString();
+      product.stock = int.tryParse(stock.text.trim()) ?? 0;
+      product.price = double.tryParse(price.text.trim()) ?? 0;
+      product.images = imagesController.additionalProductImagesUrls;
+      product.salePrice = double.tryParse(salePrice.text.trim()) ?? 0;
+      product.thumbnail = imagesController.selectedThumbnailImageUrl.value ?? '';
+      product.productAttributes = ProductAttributesController.instance.productAttributes;
+
+      productDataUploader.value = true;
+      await ProductRepository.instance.updateProduct(product);
+
+      if (selectedCategories.isNotEmpty) {
+        categoriesRelationshipUploader.value = true;
+        List<String> existingCategoryIds = alreadyAddedCategories.map((category) => category.id).toList();
+
+        for (var category in selectedCategories) {
+          if (!existingCategoryIds.contains(category.id)) {
+            final productCategory = ProductCategoryModel(productId: product.id, categoryId: category.id);
+            await ProductRepository.instance.createProductCategory(productCategory);
+          }
         }
 
-          product.sku = '';
-          product.isFeatured = isFeatured.value;
-          product.title = title.text.trim();
-          product.brand = selectedBrand.value;
-          product.productVariations = variations;
-          product.description = description.text.trim();
-          product.productType = productType.value.toString();
-          product.stock = int.tryParse(stock.text.trim()) ?? 0;
-          product.price = double.tryParse(price.text.trim()) ?? 0;
-          product.images = imagesController.additionalProductImagesUrls;
-          product.salePrice = double.tryParse(salePrice.text.trim()) ?? 0;
-          product.thumbnail = imagesController.selectedThumbnailImageUrl.value ?? '';
-          product.productAttributes = ProductAttributesController.instance.productAttributes;
-
-          productDataUploader.value = true;
-          await ProductRepository.instance.updateProduct(product);
-
-          if (selectedCategories.isNotEmpty) {
-            categoriesRelationshipUploader.value = true;
-            List<String> existingCategoryIds = alreadyAddedCategories.map((
-                category) => category.id).toList();
-
-            for (var category in selectedCategories) {
-              if (!existingCategoryIds.contains(category.id)) {
-                final productCategory = ProductCategoryModel(
-                    productId: product.id, categoryId: category.id);
-                await ProductRepository.instance.createProductCategory(productCategory);
-              }
-            }
-
-            for (var existingCategoryId in existingCategoryIds) {
-              if (!selectedCategories.any((category) =>
-              category.id == existingCategoryId)) {
-                await ProductRepository.instance.removeProductCategory(
-                    product.id, existingCategoryId);
-              }
-            }
+        for (var existingCategoryId in existingCategoryIds) {
+          if (!selectedCategories.any((category) => category.id == existingCategoryId)) {
+            await ProductRepository.instance.removeProductCategory(product.id, existingCategoryId);
           }
-        ProductController.instance.updateItemFromLists(product);
+        }
+      }
 
-        PFullScreenLoader.stopLoading();
+      ProductController.instance.updateItemFromLists(product);
 
-        showCompletionDialog();
+      PFullScreenLoader.stopLoading();
+
+      showCompletionDialog();
 
     } catch (e) {
       PFullScreenLoader.stopLoading();

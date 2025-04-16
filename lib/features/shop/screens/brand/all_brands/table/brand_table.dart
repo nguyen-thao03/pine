@@ -34,6 +34,7 @@ class BrandTable extends StatelessWidget {
               ),
               const DataColumn2(label: Text('Danh mục')),
               DataColumn2(label: Text('Nổi bật'), fixedWidth: PDeviceUtils.isMobileScreen(Get.context!) ? null : 100),
+              DataColumn2(label: Text('Sản phẩm'), fixedWidth: PDeviceUtils.isMobileScreen(Get.context!) ? null : 100),
               DataColumn2(label: Text('Ngày'), fixedWidth: PDeviceUtils.isMobileScreen(Get.context!) ? null : 200),
               DataColumn2(label: Text('Hành động'), fixedWidth: PDeviceUtils.isMobileScreen(Get.context!) ? null : 100),
             ],

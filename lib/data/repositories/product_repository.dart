@@ -14,9 +14,22 @@ class ProductRepository extends GetxController {
   final _db = FirebaseFirestore.instance;
 
   Future<String> createProduct(ProductModel product) async {
-    try{
-      final result = await _db.collection('Products').add(product.toJson());
-      return result.id;
+    try {
+      return await _db.runTransaction((transaction) async {
+        // 1. Tạo product mới
+        final newDocRef = _db.collection('Products').doc();
+        transaction.set(newDocRef, product.toJson());
+
+        // 2. Cập nhật productCount trong Brand nếu có
+        if (product.brand != null && product.brand!.id.isNotEmpty) {
+          final brandRef = _db.collection("Brands").doc(product.brand!.id);
+          transaction.update(brandRef, {
+            'ProductsCount': FieldValue.increment(1),
+          });
+        }
+
+        return newDocRef.id;
+      });
     } on FirebaseException catch (e) {
       throw PFirebaseException(e.code).message;
     } on FormatException catch (_) {
@@ -27,6 +40,7 @@ class ProductRepository extends GetxController {
       throw 'Có lỗi xảy ra. Vui lòng thử lại';
     }
   }
+
 
   Future<String> createProductCategory(ProductCategoryModel productCategory) async {
     try{
@@ -44,8 +58,37 @@ class ProductRepository extends GetxController {
   }
 
   Future<void> updateProduct(ProductModel product) async {
-    try{
-      await _db.collection("Products").doc(product.id).update(product.toJson());
+    try {
+      return await _db.runTransaction((transaction) async {
+        final productRef = _db.collection("Products").doc(product.id);
+        final snapshot = await transaction.get(productRef);
+
+        if (!snapshot.exists) throw Exception("Không tìm thấy sản phẩm");
+
+        final oldProduct = ProductModel.fromSnapshot(snapshot);
+
+        // So sánh brand cũ và mới
+        final oldBrandId = oldProduct.brand?.id;
+        final newBrandId = product.brand?.id;
+
+        // Nếu brand đổi thì cập nhật ProductsCount
+        if (oldBrandId != null && oldBrandId != newBrandId) {
+          final oldBrandRef = _db.collection("Brands").doc(oldBrandId);
+          transaction.update(oldBrandRef, {
+            'ProductsCount': FieldValue.increment(-1),
+          });
+        }
+
+        if (newBrandId != null && oldBrandId != newBrandId) {
+          final newBrandRef = _db.collection("Brands").doc(newBrandId);
+          transaction.update(newBrandRef, {
+            'ProductsCount': FieldValue.increment(1),
+          });
+        }
+
+        // Cập nhật product
+        transaction.update(productRef, product.toJson());
+      });
     } on FirebaseException catch (e) {
       throw PFirebaseException(e.code).message;
     } on FormatException catch (_) {
@@ -56,6 +99,7 @@ class ProductRepository extends GetxController {
       throw 'Có lỗi xảy ra. Vui lòng thử lại';
     }
   }
+
 
   Future<void> updateProductSpecificValue(id, Map<String, dynamic> data) async {
     try{
@@ -98,7 +142,7 @@ class ProductRepository extends GetxController {
   }
 
   Future<void> deleteProduct(ProductModel product) async {
-    try{
+    try {
       await _db.runTransaction((transaction) async {
         final productRef = _db.collection("Products").doc(product.id);
         final productSnap = await transaction.get(productRef);
@@ -107,15 +151,28 @@ class ProductRepository extends GetxController {
           throw Exception("Không tìm thấy sản phẩm");
         }
 
-        final productCategoriesSnapshot = await _db.collection('ProductCategory').where('productId', isEqualTo: product.id).get();
-        final productCategories = productCategoriesSnapshot.docs.map((e) => ProductCategoryModel.fromSnapshot(e));
+        // 1. Xoá các mối quan hệ category trước
+        final productCategoriesSnapshot = await _db
+            .collection('ProductCategory')
+            .where('productId', isEqualTo: product.id)
+            .get();
 
-        if (productCategories.isNotEmpty) {
-          for (var productCategory in productCategories) {
-            transaction.delete(_db.collection('ProductCategory').doc(productCategory.id));
-          }
+        final productCategories =
+        productCategoriesSnapshot.docs.map((e) => ProductCategoryModel.fromSnapshot(e));
+
+        for (var productCategory in productCategories) {
+          transaction.delete(_db.collection('ProductCategory').doc(productCategory.id));
         }
 
+        // 2. Trừ productCount trong brand nếu có
+        if (product.brand != null && product.brand!.id.isNotEmpty) {
+          final brandRef = _db.collection("Brands").doc(product.brand!.id);
+          transaction.update(brandRef, {
+            'ProductsCount': FieldValue.increment(-1),
+          });
+        }
+
+        // 3. Xoá sản phẩm
         transaction.delete(productRef);
       });
     } on FirebaseException catch (e) {
@@ -128,6 +185,7 @@ class ProductRepository extends GetxController {
       throw 'Có lỗi xảy ra. Vui lòng thử lại';
     }
   }
+
 
   Future<void> removeProductCategory(String productId, String categoryId) async {
     try{
