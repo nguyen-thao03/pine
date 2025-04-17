@@ -11,6 +11,10 @@ class CouponController extends PBaseController<CouponModel> {
 
   final _couponRepository = Get.put(CouponRepository());
 
+  /// Loại mã giảm giá
+  var couponTypes = ['Tất cả', 'Phần trăm', 'Cố định'].obs;
+  var selectedType = 'Tất cả'.obs;
+
   @override
   bool containsSearchQuery(CouponModel item, String query) {
     return item.couponCode.toLowerCase().contains(query.toLowerCase());
@@ -23,7 +27,7 @@ class CouponController extends PBaseController<CouponModel> {
 
   @override
   Future<List<CouponModel>> fetchItems() async {
-    await fetchCouponsWithUsedCount(); // ✅ có usedCount
+    await fetchCouponsWithUsedCount();
     return filteredItems;
   }
 
@@ -41,16 +45,55 @@ class CouponController extends PBaseController<CouponModel> {
       CouponModel coupon = CouponModel.fromSnapshot(doc);
       final usedCount = await _couponRepository.getUsedCount(coupon.id);
 
-      // Nếu đã hết hạn và vẫn đang bật thì tắt đi và cập nhật Firestore
       if (coupon.endDate != null && coupon.endDate!.isBefore(now) && coupon.status) {
         coupon = coupon.copyWith(status: false);
-        await _couponRepository.updateCoupon(coupon); // cập nhật Firestore
+        await _couponRepository.updateCoupon(coupon);
       }
 
-      return coupon.copyWith(usedCount: usedCount); // thêm usedCount để hiển thị
+      return coupon.copyWith(usedCount: usedCount);
     }).toList());
 
-    filteredItems.value = coupons;
+    allItems.value = coupons;
+    applyFilters();
+  }
+
+  /// Gọi khi người dùng chọn loại
+  void filterByType(String type) {
+    selectedType.value = type;
+    applyFilters();
+  }
+
+  /// Gọi khi người dùng search
+  @override
+  void searchQuery(String query) {
+    super.searchQuery(query); // Gọi hàm gốc để cập nhật searchText
+    applyFilters();
+  }
+
+  /// Áp dụng cả lọc + tìm kiếm
+  void applyFilters() {
+    final type = selectedType.value;
+    final query = searchTextController.text.trim().toLowerCase();
+
+    filteredItems.value = allItems.where((coupon) {
+      final matchType = (type == 'Tất cả') || (coupon.type == type);
+      final matchSearch = containsSearchQuery(coupon, query);
+      return matchType && matchSearch;
+    }).toList();
+  }
+
+  /// Sắp xếp theo ngày hết hạn
+  void sortByEndDate(int sortColumnIndex, bool ascending) {
+    sortByProperty(sortColumnIndex, ascending, (CouponModel coupon) {
+      return coupon.endDate?.millisecondsSinceEpoch ?? 0;
+    });
+  }
+
+  /// Sắp xếp theo số lần đã sử dụng
+  void sortByUsedCount(int sortColumnIndex, bool ascending) {
+    sortByProperty(sortColumnIndex, ascending, (CouponModel coupon) {
+      return coupon.usedCount ?? 0;
+    });
   }
 
 }

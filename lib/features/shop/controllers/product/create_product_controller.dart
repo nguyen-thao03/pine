@@ -47,6 +47,8 @@ class CreateProductController extends GetxController {
   RxBool categoriesRelationshipUploader = false.obs;
 
   Future<void> createProduct() async {
+    if (isLoading.value) return;
+    isLoading.value = true;
     try {
       showProgressDialog();
 
@@ -117,18 +119,6 @@ class CreateProductController extends GetxController {
 
       productDataUploader.value = true;
       newRecord.id = await ProductRepository.instance.createProduct(newRecord);
-      if (selectedBrand.value != null) {
-        final brandRef = FirebaseFirestore.instance.collection('Brands').doc(selectedBrand.value!.id);
-        final brandDoc = await brandRef.get();
-        int currentProductsCount = brandDoc['ProductsCount'] ?? 0;
-
-        // Chỉ tăng khi ProductsCount > 0, tránh số âm
-        if (currentProductsCount >= 0) {
-          await brandRef.update({
-            'ProductsCount': FieldValue.increment(1),
-          });
-        }
-      }
 
       if (selectedCategories.isNotEmpty) {
         if (newRecord.id.isEmpty) throw 'Lỗi lưu dữ liệu. Vui lòng thử lại';

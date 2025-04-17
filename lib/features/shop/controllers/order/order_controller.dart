@@ -10,8 +10,14 @@ class OrderController extends PBaseController<OrderModel> {
   static OrderController get instance => Get.find();
 
   RxBool statusLoader = false.obs;
-  var orderStatus = OrderStatus.delivered.obs;
   final _orderRepository = Get.put(OrderRepository());
+
+  // Trạng thái đơn hàng được chọn để lọc
+  final orderStatuses = ['Tất cả', 'Đang xử lý', 'Đang chuẩn bị', 'Đang giao', 'Giao hàng thành công', 'Đã hủy'];
+  var selectedStatus = 'Tất cả'.obs;
+
+  // Mặc định trạng thái đơn hàng hiện tại (dùng trong cập nhật trạng thái)
+  var orderStatus = OrderStatus.delivered.obs;
 
   @override
   Future<List<OrderModel>> fetchItems() async {
@@ -31,16 +37,31 @@ class OrderController extends PBaseController<OrderModel> {
 
     await _orderRepository.deleteOrder(userId, orderId);
     await fetchItems();
-
     update();
   }
 
   void sortById(int sortColumnIndex, bool ascending) {
-    sortByProperty(sortColumnIndex, ascending, (OrderModel o) => o.totalAmount.toString().toLowerCase());
+    sortByProperty(
+      sortColumnIndex,
+      ascending,
+          (OrderModel o) => o.totalAmount.toString().toLowerCase(),
+    );
   }
 
   void sortByDate(int sortColumnIndex, bool ascending) {
-    sortByProperty(sortColumnIndex, ascending, (OrderModel o) => o.orderDate.toString().toLowerCase());
+    sortByProperty(
+      sortColumnIndex,
+      ascending,
+          (OrderModel o) => o.orderDate.toString().toLowerCase(),
+    );
+  }
+
+  void sortByItemCount(int sortColumnIndex, bool ascending) {
+    sortByProperty(
+      sortColumnIndex,
+      ascending,
+          (OrderModel order) => order.items.length,
+    );
   }
 
   Future<void> updateOrderStatus(OrderModel order, OrderStatus newStatus) async {
@@ -55,11 +76,7 @@ class OrderController extends PBaseController<OrderModel> {
         updateData['deliveryDate'] = DateTime.now();
       }
 
-      await _orderRepository.updateOrderSpecificValue(
-        order.userId,
-        order.docId,
-        updateData,
-      );
+      await _orderRepository.updateOrderSpecificValue(order.userId, order.docId, updateData);
 
       final updatedOrderDoc = await FirebaseFirestore.instance
           .collection('Users')
@@ -91,4 +108,38 @@ class OrderController extends PBaseController<OrderModel> {
     }
   }
 
+  /// Lọc theo trạng thái (gọi từ DropdownButton)
+  void filterByStatus(String status) {
+    selectedStatus.value = status;
+
+    if (status == 'Tất cả') {
+      filteredItems.assignAll(allItems);
+    } else {
+      filteredItems.assignAll(
+        allItems.where((order) =>
+        _getStatusString(order.status).toLowerCase() == status.toLowerCase()),
+      );
+    }
+
+    filteredItems.refresh();
+    update();
+  }
+
+  /// Chuyển enum OrderStatus sang chuỗi hiển thị
+  String _getStatusString(OrderStatus status) {
+    switch (status) {
+      case OrderStatus.pending:
+        return 'Đang xử lý';
+      case OrderStatus.processing:
+        return 'Đang chuẩn bị';
+      case OrderStatus.shipped:
+        return 'Đang giao';
+      case OrderStatus.delivered:
+        return 'Giao hàng thành công';
+      case OrderStatus.cancelled:
+        return 'Đã hủy';
+      default:
+        return 'Không rõ';
+    }
+  }
 }

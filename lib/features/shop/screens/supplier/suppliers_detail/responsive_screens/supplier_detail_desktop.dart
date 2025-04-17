@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:pdf/pdf.dart';
 import 'package:pine_admin_panel/common/widgets/breadcrumbs/breadcrumb_with_heading.dart';
 import 'package:pine_admin_panel/features/personalization/models/user_model.dart';
 import 'package:pine_admin_panel/features/shop/controllers/supplier/supplier_detail_controller.dart';
 import 'package:pine_admin_panel/features/shop/models/supplier_model.dart';
+import 'package:pine_admin_panel/utils/constants/colors.dart';
 import 'package:pine_admin_panel/utils/constants/sizes.dart';
+import 'package:printing/printing.dart';
 
 import '../../../../../../../routes/routes.dart';
+import '../../../../../../utils/helpers/pdf_invoice_generator.dart';
 import '../../../../controllers/supplier/supplier_detail_controller.dart';
 import '../widgets/supplier_info.dart';
 import '../widgets/supplier_orders.dart';
@@ -40,15 +44,40 @@ class _SupplierDetailDesktopScreenState
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Breadcrumbs
-              PBreadcrumbsWithHeading(
-                returnToPreviousScreen: true,
-                heading: widget.supplier.name,
-                breadcrumbItems: [
-                  {'label': 'Danh sách đơn nhập hàng', 'path': PRoutes.suppliers},
-                  'Chi tiết'
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Expanded(
+                    child: PBreadcrumbsWithHeading(
+                      returnToPreviousScreen: true,
+                      heading: widget.supplier.name,
+                      breadcrumbItems: [
+                        {'label': 'Danh sách đơn nhập hàng', 'path': PRoutes.suppliers},
+                        'Chi tiết'
+                      ],
+                    ),
+                  ),
+                  ElevatedButton.icon(
+                    onPressed: ()
+                      async {
+                        final pdfData = await PDFInvoiceGenerator.generateSupplierInvoice(widget.supplier);
+
+                        // Hiển thị xem trước & in PDF (hoặc lưu tùy bạn muốn)
+                        await Printing.layoutPdf(
+                          onLayout: (PdfPageFormat format) async => pdfData,
+                        );
+                      },
+
+                    icon: const Icon(Icons.picture_as_pdf, color: Colors.white),
+                    label: const Text('Xuất hóa đơn'),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: PColors.primary,
+                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                    ),
+                  ),
                 ],
               ),
+
               const SizedBox(height: PSizes.spaceBtwSections),
 
               // Body

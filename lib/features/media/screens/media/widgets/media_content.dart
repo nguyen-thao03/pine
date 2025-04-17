@@ -131,7 +131,7 @@ class MediaContent extends StatelessWidget {
                           child: ElevatedButton.icon(
                             onPressed: () => controller.loadMoreMediaImages(),
                             label: const Text('Tải thêm'),
-                            icon: const Icon(Iconsax.arrow_down),
+                            icon: const Icon(Iconsax.arrow_down, color: Colors.white),
                           ),
                         )
                       ],
@@ -246,7 +246,7 @@ class MediaContent extends StatelessWidget {
           child: ElevatedButton.icon(
             onPressed: () => Get.back(result: selectedImages),
             label: const Text('Thêm'),
-            icon: const Icon(Iconsax.image),
+            icon: const Icon(Iconsax.image, color: Colors.white),
           ),
         )
       ],

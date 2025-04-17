@@ -34,4 +34,11 @@ class SupplierController extends PBaseController<SupplierModel> {
   void sortByDate(int sortColumnIndex, bool ascending) {
     sortByProperty(sortColumnIndex, ascending, (SupplierModel o) => o.createdAt.toString().toLowerCase());
   }
+
+  void sortByName(int sortColumnIndex, bool ascending) {
+    sortByProperty(sortColumnIndex, ascending, (SupplierModel supplier) {
+      return supplier.name.toLowerCase();
+    });
+  }
+
 }

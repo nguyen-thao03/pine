@@ -85,4 +85,11 @@ class ReviewController extends PBaseController<ReviewModel> {
   void sortByDate(int sortColumnIndex, bool ascending) {
     sortByProperty(sortColumnIndex, ascending, (ReviewModel o) => o.datetime.toString().toLowerCase());
   }
+
+  void sortByUsername(int sortColumnIndex, bool ascending) {
+    sortByProperty(sortColumnIndex, ascending, (ReviewModel review) {
+      return review.username.toLowerCase();
+    });
+  }
+
 }
