@@ -9,7 +9,12 @@ class ProductController extends PBaseController<ProductModel> {
   static ProductController get instance => Get.find();
 
   final _productRepository = Get.put(ProductRepository());
-  final _orderController = Get.put(OrderController()); // Lấy danh sách đơn hàng
+  final _orderController = Get.put(OrderController());
+  Rx<int> stock = 0.obs;  // Make stock observable
+
+  void updateProductStock(ProductModel product) {
+    stock.value = product.stock;  // Update the stock value
+  }
 
   @override
   bool containsSearchQuery(ProductModel item, String query) {
@@ -38,11 +43,11 @@ class ProductController extends PBaseController<ProductModel> {
   }
 
   void sortByStock(int sortColumnIndex, bool ascending) {
-    sortByProperty(sortColumnIndex, ascending, (ProductModel product) => getUpdatedStock(product));
+    sortByProperty(sortColumnIndex, ascending, (ProductModel product) => getProductStockTotal(product));
   }
 
   void sortBySoldItems(int sortColumnIndex, bool ascending) {
-    sortByProperty(sortColumnIndex, ascending, (ProductModel product) => getProductSoldQuantity(product));
+    sortByProperty(sortColumnIndex, ascending, (ProductModel product) => product.soldQuantity ?? 0);
   }
 
   /// **Lấy giá sản phẩm**
@@ -82,10 +87,15 @@ class ProductController extends PBaseController<ProductModel> {
 
   /// **Cập nhật tổng số lượng sản phẩm trong kho**
   String getProductStockTotal(ProductModel product) {
-    return getUpdatedStock(product).toString();
+    return product.stock.toString(); // Trả về stock trực tiếp từ Firestore
   }
 
-  /// **Tính toán số lượng đã bán**
+  /// **Lấy trạng thái tồn kho của sản phẩm**
+  String getProductStockStatus(ProductModel product) {
+    return product.stock > 0 ? 'Còn hàng' : 'Hết hàng';
+  }
+
+  // In ProductController
   int getProductSoldQuantity(ProductModel product) {
     int soldQuantity = 0;
 
@@ -100,14 +110,4 @@ class ProductController extends PBaseController<ProductModel> {
     return soldQuantity;
   }
 
-  /// **Cập nhật số lượng tồn kho sau khi trừ đi số lượng đã bán**
-  int getUpdatedStock(ProductModel product) {
-    int updatedStock = product.stock - getProductSoldQuantity(product);
-    return updatedStock > 0 ? updatedStock : 0;
-  }
-
-  /// **Lấy trạng thái tồn kho của sản phẩm**
-  String getProductStockStatus(ProductModel product) {
-    return getUpdatedStock(product) > 0 ? 'Còn hàng' : 'Hết hàng';
-  }
 }

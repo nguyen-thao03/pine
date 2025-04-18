@@ -6,6 +6,8 @@ import 'package:pine_admin_panel/features/shop/models/order_model.dart';
 import 'package:pine_admin_panel/utils/constants/enums.dart';
 import 'package:pine_admin_panel/utils/popups/loaders.dart';
 
+import '../../../../data/repositories/product_repository.dart';
+
 class OrderController extends PBaseController<OrderModel> {
   static OrderController get instance => Get.find();
 
@@ -77,6 +79,15 @@ class OrderController extends PBaseController<OrderModel> {
       }
 
       await _orderRepository.updateOrderSpecificValue(order.userId, order.docId, updateData);
+      if (newStatus == OrderStatus.delivered) {
+        updateData['deliveryDate'] = DateTime.now();
+        for (var item in order.items) {
+          await ProductRepository.instance.deductStockAndIncreaseSold(
+            item.productId,
+            item.quantity,
+          );
+        }
+      }
 
       final updatedOrderDoc = await FirebaseFirestore.instance
           .collection('Users')

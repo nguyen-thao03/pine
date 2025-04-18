@@ -10,18 +10,19 @@ import 'package:pine_admin_panel/utils/constants/colors.dart';
 import 'package:pine_admin_panel/utils/constants/enums.dart';
 import 'package:pine_admin_panel/utils/constants/sizes.dart';
 
-
 class ProductsRows extends DataTableSource {
   final controller = ProductController.instance;
 
   @override
   DataRow? getRow(int index) {
     final product = controller.filteredItems[index];
+    controller.updateProductStock(product);
     return DataRow2(
       onTap: () {
         Get.toNamed(PRoutes.editProduct, arguments: product);
       },
       cells: [
+        // Image and Title Cell
         DataCell(Row(
           children: [
             PRoundedImage(
@@ -35,28 +36,50 @@ class ProductsRows extends DataTableSource {
             ),
             const SizedBox(width: PSizes.spaceBtwItems),
             Flexible(
-                child: Text(product.title,
-                    style: Theme.of(Get.context!)
-                        .textTheme
-                        .bodyLarge!
-                        .apply(color: PColors.primary))),
+              child: Text(product.title,
+                  style: Theme.of(Get.context!)
+                      .textTheme
+                      .bodyLarge!
+                      .apply(color: PColors.primary)),
+            ),
           ],
         )),
+
+        // Stock Cell
+        DataCell(Text(
+          '${product.stock ?? 0}',
+          style: Theme.of(Get.context!).textTheme.bodyMedium,
+        )),
+
+        // Sold Quantity Cell
+        DataCell(Text(
+          '${product.soldQuantity ?? 0}',
+          style: Theme.of(Get.context!).textTheme.bodyMedium,
+        )),
+
+        // Brand Name Cell
+        DataCell(Text(
+          product.brand != null ? product.brand!.name : '',
+          style: Theme.of(Get.context!)
+              .textTheme
+              .bodyLarge!
+              .apply(color: PColors.primary),
+        )),
+
+        // Price Cell
+        DataCell(Text(product.formattedCurrency)),
+
+        // Featured Icon Cell
         DataCell(
-            Obx(() => Text(controller.getUpdatedStock(product).toString()))
-        ),
-        DataCell(
-            Obx(() => Text(controller.getProductSoldQuantity(product).toString()))
+          product.isFeatured
+              ? const Icon(Iconsax.eye, color: PColors.primary)
+              : const Icon(Iconsax.eye_slash),
         ),
 
-        DataCell(Text(product.brand != null ? product.brand!.name : '',
-            style: Theme.of(Get.context!)
-                .textTheme
-                .bodyLarge!
-                .apply(color: PColors.primary))),
-        DataCell(Text(product.formattedCurrency)),
-        DataCell(product.isFeatured ? const Icon(Iconsax.eye, color: PColors.primary) : const Icon(Iconsax.eye_slash)),
+        // Date Cell
         DataCell(Text(product.date == null ? '' : product.formattedDate)),
+
+        // Action Buttons (Edit & Delete)
         DataCell(PTableActionButtons(
           onEditPressed: () =>
               Get.toNamed(PRoutes.editProduct, arguments: product),

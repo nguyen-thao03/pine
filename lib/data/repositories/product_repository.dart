@@ -203,4 +203,37 @@ class ProductRepository extends GetxController {
       throw 'Có lỗi xảy ra. Vui lòng thử lại';
     }
   }
+
+  Future<void> deductStockAndIncreaseSold(String productId, int quantitySold) async {
+    try {
+      await _db.runTransaction((transaction) async {
+        final productRef = _db.collection('Products').doc(productId);
+        final productSnapshot = await transaction.get(productRef);
+
+        if (!productSnapshot.exists) throw Exception("Không tìm thấy sản phẩm");
+
+        // Lấy thông tin sản phẩm từ snapshot
+        final product = ProductModel.fromSnapshot(productSnapshot);
+
+        // Kiểm tra xem stock có đủ để bán không
+        if (product.stock < quantitySold) {
+          throw Exception("Không đủ hàng trong kho để bán");
+        }
+
+        // Cập nhật stock và soldQuantity
+        transaction.update(productRef, {
+          'Stock': product.stock - quantitySold, // Trừ stock
+          'SoldQuantity': FieldValue.increment(quantitySold), // Tăng soldQuantity
+        });
+      });
+    } on FirebaseException catch (e) {
+      throw PFirebaseException(e.code).message;
+    } on FormatException catch (_) {
+      throw const PFormatException();
+    } on PlatformException catch (e) {
+      throw PPlatformException(e.code).message;
+    } catch (e) {
+      throw 'Có lỗi xảy ra. Vui lòng thử lại';
+    }
+  }
 }

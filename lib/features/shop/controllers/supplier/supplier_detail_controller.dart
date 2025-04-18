@@ -6,6 +6,7 @@ import 'package:pine_admin_panel/utils/popups/loaders.dart';
 import '../../../../data/repositories/supplier_repository.dart';
 import '../../models/supplier_product_model.dart';
 import '../../models/supplier_model.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class SupplierDetailController extends GetxController {
   static SupplierDetailController get instance => Get.find();
@@ -36,11 +37,29 @@ class SupplierDetailController extends GetxController {
     update();
   }
 
+  /// 🔁 Tải lại dữ liệu supplier từ Firestore
+  Future<void> reloadSupplierFromFirestore(String supplierId) async {
+    try {
+      final snapshot = await FirebaseFirestore.instance
+          .collection('suppliers')
+          .doc(supplierId)
+          .get();
+
+      if (snapshot.exists) {
+        final updatedSupplier = SupplierModel.fromSnapshot(snapshot);
+        setSupplier(updatedSupplier);
+      }
+    } catch (e) {
+      PLoaders.errorSnackBar(title: 'Lỗi khi load lại', message: e.toString());
+    }
+  }
+
   /// Tìm kiếm sản phẩm theo tên hoặc ID
   void searchProductQuery(String query) {
     if (supplier.value == null) return;
 
-    final matched = allSupplierProducts.where((e) => e.product.title.toLowerCase().contains(query.toLowerCase())).toList();
+    final matched = allSupplierProducts.where((e) =>
+        e.product.title.toLowerCase().contains(query.toLowerCase())).toList();
 
     filteredSupplierProducts.assignAll(matched);
     update();

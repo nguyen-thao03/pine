@@ -2,16 +2,13 @@ import 'package:data_table_2/data_table_2.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:pine_admin_panel/common/widgets/containers/rounded_container.dart';
 import 'package:pine_admin_panel/features/shop/controllers/dashboard/dashboard_controller.dart';
 import 'package:pine_admin_panel/routes/routes.dart';
 import 'package:pine_admin_panel/utils/constants/colors.dart';
-import 'package:pine_admin_panel/utils/helpers/helper_functions.dart';
 
 import '../../../../../../utils/constants/sizes.dart';
 import '../../../../../common/widgets/images/p_rounded_image.dart';
 import '../../../../../utils/constants/enums.dart';
-import '../../../controllers/product/product_controller.dart';
 
 class BestSellerRows extends DataTableSource {
   final controller = DashboardController.instance;
@@ -24,7 +21,6 @@ class BestSellerRows extends DataTableSource {
     return DataRow2(
       onTap: () => Get.toNamed(PRoutes.editProduct, arguments: product),
       cells: [
-        // 1. Hình + Tên sản phẩm
         DataCell(Row(
           children: [
             PRoundedImage(
@@ -47,28 +43,23 @@ class BestSellerRows extends DataTableSource {
           ],
         )),
 
-        // 2. Thương hiệu
         DataCell(
           Text(
-            product.brand?.name ?? 'Không rõ',  // Thay `name` bằng thuộc tính tên trong BrandModel nếu cần
+            product.brand?.name ?? 'Không rõ',
             style: Theme.of(Get.context!).textTheme.bodyMedium,
           ),
         ),
 
-
-        // 3. Giá
         DataCell(Text(
           currencyFormatter.format(product.price),
           style: Theme.of(Get.context!).textTheme.bodyMedium,
         )),
 
-        // 4. Tồn kho
         DataCell(Text(
           '${product.stock ?? 0}',
           style: Theme.of(Get.context!).textTheme.bodyMedium,
         )),
 
-        // 5. Đã bán
         DataCell(Text(
           '${product.soldQuantity ?? 0}',
           style: Theme.of(Get.context!).textTheme.bodyMedium,

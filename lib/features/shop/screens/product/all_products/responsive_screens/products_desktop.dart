@@ -19,36 +19,40 @@ class ProductsDesktopScreen extends StatelessWidget {
     return Scaffold(
       body: SingleChildScrollView(
         child: Padding(
-            padding: const EdgeInsets.all(PSizes.defaultSpace),
+          padding: const EdgeInsets.all(PSizes.defaultSpace),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // Breadcrumbs
-              const PBreadcrumbsWithHeading(heading: 'Sản phẩm', breadcrumbItems: ['Sản phẩm']),
+              const PBreadcrumbsWithHeading(
+                  heading: 'Sản phẩm', breadcrumbItems: ['Sản phẩm']),
               const SizedBox(height: PSizes.spaceBtwSections),
-        
+
               // Table Body
               Obx(
-                () {
-                  if (controller.isLoading.value) return const PLoaderAnimation();
-
-                    return PRoundedContainer(
-                      child: Column(
-                        children: [
-                          // Table Header
-                          PTableHeader(
-                              buttonText: 'Thêm sản phẩm',
-                              onPressed: () => Get.toNamed(PRoutes.createProduct),
-                            searchOnChanged: (query) => controller.searchQuery(query),
-                          ),
-                          const SizedBox(height: PSizes.spaceBtwItems),
-
-                          // Table
-                          const ProductsTable(),
-                        ],
-                      ),
-                    );
+                    () {
+                  if (controller.isLoading.value) {
+                    return const PLoaderAnimation();
                   }
+
+                  return PRoundedContainer(
+                    child: Column(
+                      children: [
+                        // Table Header
+                        PTableHeader(
+                          buttonText: 'Thêm sản phẩm',
+                          onPressed: () => Get.toNamed(PRoutes.createProduct),
+                          searchOnChanged: (query) =>
+                              controller.searchQuery(query),
+                        ),
+                        const SizedBox(height: PSizes.spaceBtwItems),
+
+                        // Table
+                        const ProductsTable(),
+                      ],
+                    ),
+                  );
+                },
               ),
             ],
           ),
@@ -57,3 +61,4 @@ class ProductsDesktopScreen extends StatelessWidget {
     );
   }
 }
+
