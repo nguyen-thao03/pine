@@ -16,6 +16,7 @@ class ProductsDesktopScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = Get.put(ProductController());
+
     return Scaffold(
       body: SingleChildScrollView(
         child: Padding(
@@ -25,35 +26,59 @@ class ProductsDesktopScreen extends StatelessWidget {
             children: [
               // Breadcrumbs
               const PBreadcrumbsWithHeading(
-                  heading: 'Sản phẩm', breadcrumbItems: ['Sản phẩm']),
+                heading: 'Sản phẩm',
+                breadcrumbItems: ['Sản phẩm'],
+              ),
               const SizedBox(height: PSizes.spaceBtwSections),
 
               // Table Body
-              Obx(
-                    () {
-                  if (controller.isLoading.value) {
-                    return const PLoaderAnimation();
-                  }
+              Obx(() {
+                if (controller.isLoading.value) {
+                  return const PLoaderAnimation();
+                }
 
-                  return PRoundedContainer(
-                    child: Column(
-                      children: [
-                        // Table Header
-                        PTableHeader(
-                          buttonText: 'Thêm sản phẩm',
-                          onPressed: () => Get.toNamed(PRoutes.createProduct),
-                          searchOnChanged: (query) =>
-                              controller.searchQuery(query),
-                        ),
-                        const SizedBox(height: PSizes.spaceBtwItems),
+                return PRoundedContainer(
+                  child: Column(
+                    children: [
+                      Row(
+                        children: [
+                          // Dropdown filter
+                          Obx(() => DropdownButton<String>(
+                            value: controller.selectedStockFilter.value,
+                            onChanged: (value) {
+                              if (value != null) {
+                                controller.selectedStockFilter.value = value;
+                                controller.filterByStock(value);
+                              }
+                            },
+                            items: controller.stockFilterOptions.map((type) {
+                              return DropdownMenuItem<String>(
+                                value: type,
+                                child: Text(type),
+                              );
+                            }).toList(),
+                          )),
+                          const SizedBox(width: PSizes.spaceBtwItems),
 
-                        // Table
-                        const ProductsTable(),
-                      ],
-                    ),
-                  );
-                },
-              ),
+                          // Table Header with search
+                          Expanded(
+                            child: PTableHeader(
+                              buttonText: 'Thêm sản phẩm',
+                              onPressed: () => Get.toNamed(PRoutes.createProduct),
+                              searchOnChanged: (query) =>
+                                  controller.searchQuery(query),
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: PSizes.spaceBtwItems),
+
+                      // Table
+                      const ProductsTable(),
+                    ],
+                  ),
+                );
+              }),
             ],
           ),
         ),
@@ -61,4 +86,3 @@ class ProductsDesktopScreen extends StatelessWidget {
     );
   }
 }
-

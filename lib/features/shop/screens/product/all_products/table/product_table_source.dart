@@ -17,6 +17,15 @@ class ProductsRows extends DataTableSource {
   DataRow? getRow(int index) {
     final product = controller.filteredItems[index];
     controller.updateProductStock(product);
+    Color stockColor;
+    if (product.stock == 0) {
+      stockColor = Colors.red; // Màu đỏ cho hết hàng
+    } else if (product.stock <= 5) {
+      stockColor = Colors.orange; // Màu cam cho sản phẩm gần hết hàng
+    } else {
+      stockColor = Colors.black; // Màu đen cho sản phẩm còn nhiều
+    }
+
     return DataRow2(
       onTap: () {
         Get.toNamed(PRoutes.editProduct, arguments: product);
@@ -46,10 +55,15 @@ class ProductsRows extends DataTableSource {
         )),
 
         // Stock Cell
-        DataCell(Text(
-          '${product.stock ?? 0}',
-          style: Theme.of(Get.context!).textTheme.bodyMedium,
-        )),
+        DataCell(
+          Text(
+            '${product.stock ?? 0}',
+            style: Theme.of(Get.context!)
+                .textTheme
+                .bodyMedium!
+                .apply(color: stockColor), // Áp dụng màu sắc cho Stock
+          ),
+        ),
 
         // Sold Quantity Cell
         DataCell(Text(
@@ -69,7 +83,7 @@ class ProductsRows extends DataTableSource {
         // Price Cell
         DataCell(Text(product.formattedCurrency)),
 
-        // Featured Icon Cell
+        // Featured Icon Cell (tắt nếu hết hàng)
         DataCell(
           product.isFeatured
               ? const Icon(Iconsax.eye, color: PColors.primary)

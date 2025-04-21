@@ -53,12 +53,12 @@ class CouponRows extends DataTableSource {
               final isExpired = coupon.endDate != null && coupon.endDate!.isBefore(DateTime.now());
 
               if (isExpired) {
-                return const Icon(Icons.star_border_rounded, color: Colors.redAccent); // Hết hạn
+                return const Icon(Icons.star_border_rounded, color: Colors.redAccent);
               }
 
               return coupon.status
-                  ? const Icon(Icons.star_rounded, color: PColors.primary) // Đang bật
-                  : const Icon(Icons.star_border_rounded); // Đang tắt
+                  ? const Icon(Icons.star_rounded, color: PColors.primary)
+                  : const Icon(Icons.star_border_rounded);
             },
           ),
         ),

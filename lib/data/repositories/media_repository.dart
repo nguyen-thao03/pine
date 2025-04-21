@@ -12,10 +12,8 @@ import '../../features/media/models/image_model.dart';
 class MediaRepository extends GetxController {
   static MediaRepository get instance => Get.find();
 
-  /// Firebase Storage instance
   final FirebaseStorage _storage = FirebaseStorage.instance;
 
-  /// Upload any Image using File
   Future<ImageModel> uploadImageFileInStorage({
     required Uint8List fileData,
     required String mimeType,
@@ -41,12 +39,11 @@ class MediaRepository extends GetxController {
     }
   }
 
-  /// Upload Image data in Firestore
   Future<String> uploadImageFileInDatabase(ImageModel image) async {
     try {
       final data = await FirebaseFirestore.instance
           .collection("Images")
-          .add(image.toJson(isNew: true)); // ✅ Use serverTimestamp
+          .add(image.toJson(isNew: true));
       return data.id;
     } on FirebaseException catch (e) {
       throw e.message!;
@@ -59,7 +56,6 @@ class MediaRepository extends GetxController {
     }
   }
 
-  /// Fetch images from Firestore based on media category and load count
   Future<List<ImageModel>> fetchImagesFromDatabase(MediaCategory mediaCategory, int loadCount) async {
     try {
       final querySnapshot = await FirebaseFirestore.instance
@@ -81,7 +77,6 @@ class MediaRepository extends GetxController {
     }
   }
 
-  /// Load more images from Firestore with pagination
   Future<List<ImageModel>> loadMoreImagesFromDatabase(
       MediaCategory mediaCategory,
       int loadCount,
@@ -92,7 +87,7 @@ class MediaRepository extends GetxController {
           .collection('Images')
           .where('mediaCategory', isEqualTo: mediaCategory.name.toString())
           .orderBy('createdAt', descending: true)
-          .startAfter([Timestamp.fromDate(lastFetchedDate)]) // ✅ Convert DateTime to Timestamp
+          .startAfter([Timestamp.fromDate(lastFetchedDate)])
           .limit(loadCount)
           .get();
 
@@ -108,7 +103,6 @@ class MediaRepository extends GetxController {
     }
   }
 
-  /// Delete image from Firebase Storage and Firestore
   Future<void> deleteFileFromStorage(ImageModel image) async {
     try {
       await FirebaseStorage.instance.ref(image.fullPath).delete();

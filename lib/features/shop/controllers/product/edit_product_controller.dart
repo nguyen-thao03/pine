@@ -86,14 +86,12 @@ class EditProductController extends GetxController {
     }
   }
 
-  // Chọn nhiều ảnh bổ sung
   void selectAdditionalImages(List<String> images) {
     final imagesController = ProductImagesController.instance;
     imagesController.additionalProductImagesUrls.addAll(images);
     update();
   }
 
-// Xoá ảnh bổ sung theo index
   void removeAdditionalImage(int index) {
     final imagesController = ProductImagesController.instance;
     if (index >= 0 && index < imagesController.additionalProductImagesUrls.length) {
@@ -111,7 +109,7 @@ class EditProductController extends GetxController {
     ];
 
     imagesController.additionalProductImagesUrls.addAll(newImages);
-    update(); // để UI cập nhật
+    update();
   }
 
   Future<List<CategoryModel>> loadSelectedCategories(String productId) async {

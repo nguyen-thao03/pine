@@ -16,11 +16,9 @@ class ProductRepository extends GetxController {
   Future<String> createProduct(ProductModel product) async {
     try {
       return await _db.runTransaction((transaction) async {
-        // 1. Tạo product mới
         final newDocRef = _db.collection('Products').doc();
         transaction.set(newDocRef, product.toJson());
 
-        // 2. Cập nhật productCount trong Brand nếu có
         if (product.brand != null && product.brand!.id.isNotEmpty) {
           final brandRef = _db.collection("Brands").doc(product.brand!.id);
           transaction.update(brandRef, {
@@ -67,11 +65,9 @@ class ProductRepository extends GetxController {
 
         final oldProduct = ProductModel.fromSnapshot(snapshot);
 
-        // So sánh brand cũ và mới
         final oldBrandId = oldProduct.brand?.id;
         final newBrandId = product.brand?.id;
 
-        // Nếu brand đổi thì cập nhật ProductsCount
         if (oldBrandId != null && oldBrandId != newBrandId) {
           final oldBrandRef = _db.collection("Brands").doc(oldBrandId);
           transaction.update(oldBrandRef, {
@@ -86,7 +82,6 @@ class ProductRepository extends GetxController {
           });
         }
 
-        // Cập nhật product
         transaction.update(productRef, product.toJson());
       });
     } on FirebaseException catch (e) {
@@ -151,7 +146,6 @@ class ProductRepository extends GetxController {
           throw Exception("Không tìm thấy sản phẩm");
         }
 
-        // 1. Xoá các mối quan hệ category trước
         final productCategoriesSnapshot = await _db
             .collection('ProductCategory')
             .where('productId', isEqualTo: product.id)
@@ -172,7 +166,6 @@ class ProductRepository extends GetxController {
           });
         }
 
-        // 3. Xoá sản phẩm
         transaction.delete(productRef);
       });
     } on FirebaseException catch (e) {
@@ -211,19 +204,15 @@ class ProductRepository extends GetxController {
         final productSnapshot = await transaction.get(productRef);
 
         if (!productSnapshot.exists) throw Exception("Không tìm thấy sản phẩm");
-
-        // Lấy thông tin sản phẩm từ snapshot
         final product = ProductModel.fromSnapshot(productSnapshot);
 
-        // Kiểm tra xem stock có đủ để bán không
         if (product.stock < quantitySold) {
           throw Exception("Không đủ hàng trong kho để bán");
         }
 
-        // Cập nhật stock và soldQuantity
         transaction.update(productRef, {
-          'Stock': product.stock - quantitySold, // Trừ stock
-          'SoldQuantity': FieldValue.increment(quantitySold), // Tăng soldQuantity
+          'Stock': product.stock - quantitySold,
+          'SoldQuantity': FieldValue.increment(quantitySold),
         });
       });
     } on FirebaseException catch (e) {

@@ -35,10 +35,8 @@ class CouponsDesktopScreen extends StatelessWidget {
               PRoundedContainer(
                 child: Column(
                   children: [
-                    // Table Header có Dropdown + Search + Button
                     Row(
                       children: [
-                        // Dropdown lọc theo loại mã
                         Obx(() => DropdownButton<String>(
                           value: controller.selectedType.value,
                           onChanged: (value) {
@@ -56,7 +54,6 @@ class CouponsDesktopScreen extends StatelessWidget {
                         )),
                         const SizedBox(width: PSizes.spaceBtwItems),
 
-                        // Search + Button
                         Expanded(
                           child: PTableHeader(
                             buttonText: 'Tạo mã giảm giá',

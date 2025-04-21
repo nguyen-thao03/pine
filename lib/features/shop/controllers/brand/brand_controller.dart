@@ -53,7 +53,7 @@ class BrandController extends PBaseController<BrandModel> {
 
   void sortByProductCount(int sortColumnIndex, bool ascending) {
     sortByProperty(sortColumnIndex, ascending, (BrandModel brand) {
-      return brand.productsCount ?? 0; // hoặc brand.products.length nếu bạn có danh sách sản phẩm
+      return brand.productsCount ?? 0;
     });
   }
 

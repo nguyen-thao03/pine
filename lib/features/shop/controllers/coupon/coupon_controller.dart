@@ -11,7 +11,6 @@ class CouponController extends PBaseController<CouponModel> {
 
   final _couponRepository = Get.put(CouponRepository());
 
-  /// Loại mã giảm giá
   var couponTypes = ['Tất cả', 'Phần trăm', 'Cố định'].obs;
   var selectedType = 'Tất cả'.obs;
 
@@ -57,20 +56,17 @@ class CouponController extends PBaseController<CouponModel> {
     applyFilters();
   }
 
-  /// Gọi khi người dùng chọn loại
   void filterByType(String type) {
     selectedType.value = type;
     applyFilters();
   }
 
-  /// Gọi khi người dùng search
   @override
   void searchQuery(String query) {
-    super.searchQuery(query); // Gọi hàm gốc để cập nhật searchText
+    super.searchQuery(query);
     applyFilters();
   }
 
-  /// Áp dụng cả lọc + tìm kiếm
   void applyFilters() {
     final type = selectedType.value;
     final query = searchTextController.text.trim().toLowerCase();
@@ -82,14 +78,12 @@ class CouponController extends PBaseController<CouponModel> {
     }).toList();
   }
 
-  /// Sắp xếp theo ngày hết hạn
   void sortByEndDate(int sortColumnIndex, bool ascending) {
     sortByProperty(sortColumnIndex, ascending, (CouponModel coupon) {
       return coupon.endDate?.millisecondsSinceEpoch ?? 0;
     });
   }
 
-  /// Sắp xếp theo số lần đã sử dụng
   void sortByUsedCount(int sortColumnIndex, bool ascending) {
     sortByProperty(sortColumnIndex, ascending, (CouponModel coupon) {
       return coupon.usedCount ?? 0;

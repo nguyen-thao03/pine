@@ -2,18 +2,38 @@ import 'package:get/get.dart';
 import 'package:pine_admin_panel/data/abstract/base_data_table_controller.dart';
 import 'package:pine_admin_panel/data/repositories/product_repository.dart';
 import 'package:pine_admin_panel/features/shop/models/product_model.dart';
-import 'package:pine_admin_panel/features/shop/controllers/order/order_controller.dart'; // Import OrderController
-import 'package:pine_admin_panel/utils/constants/enums.dart';
+import 'package:pine_admin_panel/features/shop/controllers/order/order_controller.dart';
+
+import '../../../../utils/constants/enums.dart';
 
 class ProductController extends PBaseController<ProductModel> {
   static ProductController get instance => Get.find();
 
   final _productRepository = Get.put(ProductRepository());
   final _orderController = Get.put(OrderController());
-  Rx<int> stock = 0.obs;  // Make stock observable
+  Rx<int> stock = 0.obs;
+  var selectedStockFilter = 'Tất cả'.obs;
+
+  List<String> stockFilterOptions = ['Tất cả', 'Còn hàng', 'Gần hết hàng', 'Hết hàng'];
 
   void updateProductStock(ProductModel product) {
     stock.value = product.stock;  // Update the stock value
+  }
+
+  void filterByStock(String filter) {
+    switch (filter) {
+      case 'Còn hàng':
+        filteredItems.assignAll(allItems.where((item) => item.stock > 10));
+        break;
+      case 'Gần hết hàng':
+        filteredItems.assignAll(allItems.where((item) => item.stock > 0 && item.stock <= 10));
+        break;
+      case 'Hết hàng':
+        filteredItems.assignAll(allItems.where((item) => item.stock == 0));
+        break;
+      default:
+        filteredItems.assignAll(allItems); // 'Tất cả'
+    }
   }
 
   @override
@@ -50,7 +70,6 @@ class ProductController extends PBaseController<ProductModel> {
     sortByProperty(sortColumnIndex, ascending, (ProductModel product) => product.soldQuantity ?? 0);
   }
 
-  /// **Lấy giá sản phẩm**
   String getProductPrice(ProductModel product) {
     if (product.productType == ProductType.single.toString() || product.productVariations == null || product.productVariations!.isEmpty) {
       return (product.salePrice > 0 ? product.salePrice : product.price).toString();
@@ -78,24 +97,20 @@ class ProductController extends PBaseController<ProductModel> {
     }
   }
 
-  /// **Tính phần trăm giảm giá**
   String? calculateSalePercentage(double originalPrice, double? salePrice) {
     if (salePrice == null || salePrice <= 0 || originalPrice <= 0) return null;
     double percentage = ((originalPrice - salePrice) / originalPrice) * 100;
     return percentage.toStringAsFixed(0);
   }
 
-  /// **Cập nhật tổng số lượng sản phẩm trong kho**
   String getProductStockTotal(ProductModel product) {
-    return product.stock.toString(); // Trả về stock trực tiếp từ Firestore
+    return product.stock.toString();
   }
 
-  /// **Lấy trạng thái tồn kho của sản phẩm**
   String getProductStockStatus(ProductModel product) {
     return product.stock > 0 ? 'Còn hàng' : 'Hết hàng';
   }
 
-  // In ProductController
   int getProductSoldQuantity(ProductModel product) {
     int soldQuantity = 0;
 
@@ -109,5 +124,4 @@ class ProductController extends PBaseController<ProductModel> {
 
     return soldQuantity;
   }
-
 }

@@ -19,10 +19,9 @@ class CouponRepository extends GetxController {
       final coupons = await Future.wait(snapshot.docs.map((doc) async {
         var coupon = CouponModel.fromSnapshot(doc);
 
-        // Nếu coupon đã hết hạn và vẫn đang bật, cập nhật status = false
         if (coupon.endDate != null && coupon.endDate!.isBefore(now) && coupon.status) {
           coupon = coupon.copyWith(status: false);
-          await updateCoupon(coupon); // update vào Firestore
+          await updateCoupon(coupon);
         }
 
         return coupon;

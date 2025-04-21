@@ -29,7 +29,6 @@ class SupplierDetailController extends GetxController {
     }
   }
 
-  /// Đặt supplier hiện tại
   void setSupplier(SupplierModel newSupplier) {
     supplier.value = newSupplier;
     allSupplierProducts.assignAll(newSupplier.products);
@@ -37,11 +36,10 @@ class SupplierDetailController extends GetxController {
     update();
   }
 
-  /// 🔁 Tải lại dữ liệu supplier từ Firestore
   Future<void> reloadSupplierFromFirestore(String supplierId) async {
     try {
       final snapshot = await FirebaseFirestore.instance
-          .collection('suppliers')
+          .collection('Suppliers')
           .doc(supplierId)
           .get();
 
@@ -54,7 +52,6 @@ class SupplierDetailController extends GetxController {
     }
   }
 
-  /// Tìm kiếm sản phẩm theo tên hoặc ID
   void searchProductQuery(String query) {
     if (supplier.value == null) return;
 
@@ -65,7 +62,6 @@ class SupplierDetailController extends GetxController {
     update();
   }
 
-  /// Sắp xếp theo tên sản phẩm
   void sortByName(int columnIndex, bool ascending) {
     sortAscending.value = ascending;
     filteredSupplierProducts.sort((a, b) {
@@ -78,7 +74,6 @@ class SupplierDetailController extends GetxController {
     update();
   }
 
-  /// Sắp xếp theo số lượng
   void sortByQuantity(int columnIndex, bool ascending) {
     sortAscending.value = ascending;
     filteredSupplierProducts.sort((a, b) =>
@@ -88,13 +83,11 @@ class SupplierDetailController extends GetxController {
     update();
   }
 
-  /// Định dạng ngày tạo
   String get formattedDate {
     if (supplier.value == null) return '';
     return PFormatter.formatDate(supplier.value!.createdAt);
   }
 
-  /// Tổng giá trị hàng nhập (giá nhập * số lượng)
   String get formattedTotalAmount {
     if (supplier.value == null) return '';
 
@@ -106,7 +99,6 @@ class SupplierDetailController extends GetxController {
     return PFormatter.formatCurrencyRange(totalAmount.toStringAsFixed(0));
   }
 
-  /// Nếu muốn load lại danh sách sản phẩm từ API
   Future<void> getSupplierProducts(String supplierId) async {
     try {
       productsLoading.value = true;

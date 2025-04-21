@@ -21,7 +21,6 @@ class UsedCouponModel {
     this.type,
   });
 
-  /// Convert từ model sang Map để lưu vào Firestore
   Map<String, dynamic> toJson() {
     return {
       'UserId': userId,
@@ -34,7 +33,6 @@ class UsedCouponModel {
     };
   }
 
-  /// Tạo model từ DocumentSnapshot
   factory UsedCouponModel.fromSnapshot(DocumentSnapshot snapshot) {
     final data = snapshot.data() as Map<String, dynamic>;
 
@@ -54,7 +52,6 @@ class UsedCouponModel {
     );
   }
 
-  /// Tạo model từ Map
   factory UsedCouponModel.fromMap(Map<String, dynamic> data) {
     return UsedCouponModel(
       id: data['id'] as String? ?? '',
@@ -72,7 +69,6 @@ class UsedCouponModel {
     );
   }
 
-  /// Tạo một bản sao với các thuộc tính mới
   UsedCouponModel copyWith({
     String? id,
     String? userId,

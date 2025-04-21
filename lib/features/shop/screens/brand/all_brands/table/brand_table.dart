@@ -7,8 +7,6 @@ import 'package:pine_admin_panel/utils/device/device_utility.dart';
 
 import '../../../../controllers/brand/brand_controller.dart';
 
-
-
 class BrandTable extends StatelessWidget {
   const BrandTable({super.key});
 

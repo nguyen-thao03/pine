@@ -64,9 +64,9 @@ class DashboardController extends PBaseController<OrderModel> {
         .where((product) => product.soldQuantity > 0)
         .toList();
 
-    sortedProducts.sort((a, b) => b.soldQuantity.compareTo(a.soldQuantity)); // Sắp xếp theo số lượng đã bán
+    sortedProducts.sort((a, b) => b.soldQuantity.compareTo(a.soldQuantity));
 
-    bestSellers.assignAll(sortedProducts.take(10).toList()); // Lấy top 10 sản phẩm bán chạy
+    bestSellers.assignAll(sortedProducts.take(10).toList());
   }
 
 

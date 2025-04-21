@@ -13,12 +13,9 @@ class OrderController extends PBaseController<OrderModel> {
 
   RxBool statusLoader = false.obs;
   final _orderRepository = Get.put(OrderRepository());
-
-  // Trạng thái đơn hàng được chọn để lọc
   final orderStatuses = ['Tất cả', 'Đang xử lý', 'Đang chuẩn bị', 'Đang giao', 'Giao hàng thành công', 'Đã hủy'];
   var selectedStatus = 'Tất cả'.obs;
 
-  // Mặc định trạng thái đơn hàng hiện tại (dùng trong cập nhật trạng thái)
   var orderStatus = OrderStatus.delivered.obs;
 
   @override
@@ -119,7 +116,6 @@ class OrderController extends PBaseController<OrderModel> {
     }
   }
 
-  /// Lọc theo trạng thái (gọi từ DropdownButton)
   void filterByStatus(String status) {
     selectedStatus.value = status;
 
@@ -136,7 +132,6 @@ class OrderController extends PBaseController<OrderModel> {
     update();
   }
 
-  /// Chuyển enum OrderStatus sang chuỗi hiển thị
   String _getStatusString(OrderStatus status) {
     switch (status) {
       case OrderStatus.pending:
