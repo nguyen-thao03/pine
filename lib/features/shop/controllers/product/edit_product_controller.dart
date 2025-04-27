@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:pine_admin_panel/data/repositories/product_repository.dart';
 import 'package:pine_admin_panel/features/shop/controllers/category/category_controller.dart';
 import 'package:pine_admin_panel/features/shop/controllers/product/product_attributes_controller.dart';
@@ -20,6 +21,8 @@ import 'package:pine_admin_panel/utils/popups/full_screen_loader.dart';
 import 'package:pine_admin_panel/utils/popups/loaders.dart';
 
 import '../../../../utils/constants/sizes.dart';
+import '../../../media/controllers/media_controller.dart';
+import '../../../media/models/image_model.dart';
 
 class EditProductController extends GetxController {
   static EditProductController get instance => Get.find();
@@ -64,6 +67,15 @@ class EditProductController extends GetxController {
         stock.text = product.stock.toString();
         price.text = product.price.toString();
         salePrice.text = product.salePrice.toString();
+      } else {
+        double minPrice = product.productVariations?.map((e) => e.price).reduce((a, b) => a < b ? a : b) ?? 0.0;
+        double maxPrice = product.productVariations?.map((e) => e.price).reduce((a, b) => a > b ? a : b) ?? 0.0;
+
+        price.text = "${minPrice.toInt()} - ${maxPrice.toInt()}";
+        salePrice.text = product.salePrice > 0 ? product.salePrice.toString() : '';
+
+        int totalStock = product.productVariations?.map((e) => e.stock).reduce((a, b) => a + b) ?? 0;
+        stock.text = totalStock.toString();
       }
 
       selectedBrand.value = product.brand;
@@ -86,10 +98,13 @@ class EditProductController extends GetxController {
     }
   }
 
-  void selectAdditionalImages(List<String> images) {
-    final imagesController = ProductImagesController.instance;
-    imagesController.additionalProductImagesUrls.addAll(images);
-    update();
+  void selectMultipleProductImages() async {
+    final controller = Get.put(MediaController());
+    List<ImageModel>? selectedImages = await controller.selectImagesFromMedia(multipleSelection: true, selectedUrls: ProductImagesController.instance.additionalProductImagesUrls);
+
+    if (selectedImages != null && selectedImages.isNotEmpty) {
+      ProductImagesController.instance.additionalProductImagesUrls.assignAll(selectedImages.map((e) => e.url));
+    }
   }
 
   void removeAdditionalImage(int index) {
@@ -100,17 +115,7 @@ class EditProductController extends GetxController {
     }
   }
 
-  Future<void> pickAdditionalImages() async {
-    final imagesController = ProductImagesController.instance;
 
-    List<String> newImages = [
-      'https://via.placeholder.com/150',
-      'https://via.placeholder.com/200'
-    ];
-
-    imagesController.additionalProductImagesUrls.addAll(newImages);
-    update();
-  }
 
   Future<List<CategoryModel>> loadSelectedCategories(String productId) async {
     selectedCategoriesLoader.value = true;
@@ -141,9 +146,19 @@ class EditProductController extends GetxController {
         return;
       }
 
-      if (productType.value == ProductType.single && !stockPriceFormKey.currentState!.validate()) {
-        PFullScreenLoader.stopLoading();
-        return;
+      // Kiểm tra với sản phẩm không có biến thể
+      if (productType.value == ProductType.single) {
+        if (!stockPriceFormKey.currentState!.validate()) {
+          PFullScreenLoader.stopLoading();
+          return;
+        }
+
+        // Kiểm tra số lượng và giá trị hợp lệ
+        if (int.tryParse(stock.text.trim()) == null || double.tryParse(price.text.trim()) == null) {
+          PFullScreenLoader.stopLoading();
+          PLoaders.errorSnackBar(title: 'Lỗi', message: 'Giá và số lượng không hợp lệ.');
+          return;
+        }
       }
 
       if (selectedBrand.value == null) throw 'Chọn thương hiệu cho sản phẩm';
@@ -152,18 +167,17 @@ class EditProductController extends GetxController {
         throw 'Không có thể loại nào cho Thể Loại Sản phẩm. Tạo một số thể loại hoặc thay đổi Loại Sản phẩm.';
       }
 
+      // Kiểm tra thể loại sản phẩm
       if (productType.value == ProductType.variable) {
         final variationCheckFailed = ProductVariationController.instance.productVariations.any((element) =>
-        element.price.isNaN ||
-            element.price < 0 ||
-            element.salePrice.isNaN ||
-            element.salePrice < 0 ||
-            element.stock.isNaN ||
-            element.stock < 0
+        element.price.isNaN || element.price < 0 ||
+            element.salePrice.isNaN || element.salePrice < 0 ||
+            element.stock.isNaN || element.stock < 0
         );
         if (variationCheckFailed) throw 'Dữ liệu thể loại không chính xác. Vui lòng kiểm tra lại các thể loại';
       }
 
+      // Kiểm tra ảnh sản phẩm
       final imagesController = ProductImagesController.instance;
       if (imagesController.selectedThumbnailImageUrl.value == null || imagesController.selectedThumbnailImageUrl.value!.isEmpty) {
         throw 'Chọn ảnh đại diện sản phẩm';
@@ -175,6 +189,7 @@ class EditProductController extends GetxController {
         variations.value = [];
       }
 
+      // Cập nhật thông tin sản phẩm
       product.sku = '';
       product.isFeatured = isFeatured.value;
       product.title = title.text.trim();
@@ -182,8 +197,21 @@ class EditProductController extends GetxController {
       product.productVariations = variations;
       product.description = description.text.trim();
       product.productType = productType.value.toString();
-      product.stock = int.tryParse(stock.text.trim()) ?? 0;
-      product.price = double.tryParse(price.text.trim()) ?? 0;
+      if (productType.value == ProductType.single) {
+        product.stock = int.tryParse(stock.text.trim()) ?? 0;
+      } else {
+        int totalStock = ProductVariationController.instance.productVariations.map((e) => e.stock).reduce((a, b) => a + b);
+        product.stock = totalStock;
+      }
+
+      // Cập nhật giá cho sản phẩm
+      if (productType.value == ProductType.single) {
+        product.price = double.tryParse(price.text.trim()) ?? 0;
+      } else {
+        List<double> prices = ProductVariationController.instance.productVariations.map((e) => e.price).toList();
+        product.price = prices.isNotEmpty ? prices.reduce((a, b) => a < b ? a : b) : 0;
+      }
+
       product.images = imagesController.additionalProductImagesUrls;
       product.salePrice = double.tryParse(salePrice.text.trim()) ?? 0;
       product.thumbnail = imagesController.selectedThumbnailImageUrl.value ?? '';
@@ -192,6 +220,7 @@ class EditProductController extends GetxController {
       productDataUploader.value = true;
       await ProductRepository.instance.updateProduct(product);
 
+      // Cập nhật danh mục sản phẩm
       if (selectedCategories.isNotEmpty) {
         categoriesRelationshipUploader.value = true;
         List<String> existingCategoryIds = alreadyAddedCategories.map((category) => category.id).toList();
@@ -211,9 +240,7 @@ class EditProductController extends GetxController {
       }
 
       ProductController.instance.updateItemFromLists(product);
-
       PFullScreenLoader.stopLoading();
-
       showCompletionDialog();
 
     } catch (e) {
@@ -221,6 +248,7 @@ class EditProductController extends GetxController {
       PLoaders.errorSnackBar(title: 'Ôi không', message: e.toString());
     }
   }
+
 
   void resetValues() {
     isLoading.value = false;

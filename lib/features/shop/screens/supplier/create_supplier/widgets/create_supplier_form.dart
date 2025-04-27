@@ -185,7 +185,7 @@ class CreateSupplierForm extends StatelessWidget {
                 Expanded(
                   child: ElevatedButton.icon(
                     onPressed: () => createController.exportInvoice(),
-                    icon: const Icon(Iconsax.export), // optional icon
+                    icon: const Icon(Iconsax.export),
                     label: const Text('Xuất hóa đơn'),
                     style: ElevatedButton.styleFrom(padding: const EdgeInsets.symmetric(vertical: 15)),
                   ),

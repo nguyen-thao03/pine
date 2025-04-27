@@ -8,8 +8,6 @@ import 'package:pine_admin_panel/utils/helpers/network_manager.dart';
 import 'package:pine_admin_panel/utils/popups/full_screen_loader.dart';
 import 'package:pine_admin_panel/utils/popups/loaders.dart';
 import 'package:pine_admin_panel/utils/helpers/pdf_invoice_generator.dart';
-import 'package:open_file/open_file.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:printing/printing.dart';
 
 import '../../../../data/repositories/supplier_repository.dart';
@@ -53,7 +51,6 @@ class CreateSupplierController extends GetxController {
     totalQuantity.value = qty;
   }
 
-  /// ✅ Trả về SupplierModel hiện tại từ form
   SupplierModel getSupplierModel() {
     return SupplierModel(
       id: '',
@@ -67,7 +64,6 @@ class CreateSupplierController extends GetxController {
     );
   }
 
-  /// ✅ Tạo đơn nhập hàng (lưu DB)
   Future<void> createPurchaseOrder() async {
     try {
       PFullScreenLoader.popUpCircular();

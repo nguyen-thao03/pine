@@ -32,17 +32,20 @@ class ProductController extends PBaseController<ProductModel> {
         filteredItems.assignAll(allItems.where((item) => item.stock == 0));
         break;
       default:
-        filteredItems.assignAll(allItems); // 'Tất cả'
+        filteredItems.assignAll(allItems);
     }
   }
 
   @override
   bool containsSearchQuery(ProductModel item, String query) {
-    return item.title.toLowerCase().contains(query.toLowerCase()) ||
-        (item.brand?.name ?? '').toLowerCase().contains(query.toLowerCase()) ||
-        item.stock.toString().contains(query) ||
-        item.price.toString().contains(query);
+    String lowerCaseQuery = query.trim().toLowerCase();
+
+    return item.title.toLowerCase().contains(lowerCaseQuery) ||
+        (item.brand?.name ?? '').toLowerCase().contains(lowerCaseQuery) ||
+        item.stock.toString().contains(lowerCaseQuery) ||
+        item.price.toString().contains(lowerCaseQuery);
   }
+
 
   @override
   Future<void> deleteItem(ProductModel item) async {
@@ -104,8 +107,17 @@ class ProductController extends PBaseController<ProductModel> {
   }
 
   String getProductStockTotal(ProductModel product) {
-    return product.stock.toString();
+    if (product.productVariations != null && product.productVariations!.isNotEmpty) {
+      int totalStock = 0;
+      for (var variation in product.productVariations!) {
+        totalStock += variation.stock ?? 0;
+      }
+      return totalStock.toString();
+    } else {
+      return product.stock.toString();
+    }
   }
+
 
   String getProductStockStatus(ProductModel product) {
     return product.stock > 0 ? 'Còn hàng' : 'Hết hàng';

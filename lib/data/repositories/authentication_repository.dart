@@ -54,7 +54,6 @@ class AuthenticationRepository extends GetxController {
           final userData = userDoc.data();
           if (userData != null) {
             String role = userData['Role'] ?? 'user';
-            print("User role: $role");
             GetStorage().write('Role', role);
           }
         }
@@ -126,7 +125,6 @@ class AuthenticationRepository extends GetxController {
     try {
       await FirebaseAuth.instance.signOut();
 
-      // Xoá hết thông tin cũ
       final box = GetStorage();
       box.remove('Role');
       box.remove('activeItem');
