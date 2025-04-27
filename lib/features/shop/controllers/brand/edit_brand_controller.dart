@@ -73,14 +73,21 @@ class EditBrandController extends GetxController {
           ..updatedAt = DateTime.now();
 
         await repository.updateBrand(brand);
+
         isUpdated = true;
       }
 
       await _updateBrandCategories(brand);
 
-      BrandController.instance.updateItemFromLists(brand);
+      final index = BrandController.instance.allItems.indexWhere((item) => item.id == brand.id);
+      if (index != -1) {
+      BrandController.instance.allItems[index] = brand;
+      BrandController.instance.update();
+    }
+      final updatedBrands = await BrandController.instance.fetchItems();
+      BrandController.instance.updateFilteredItems(updatedBrands);
 
-      PFullScreenLoader.stopLoading();
+    PFullScreenLoader.stopLoading();
       PLoaders.successSnackBar(title: 'Thành công', message: 'Đã cập nhật thương hiệu thành công');
       update();
     } catch (e) {
@@ -89,21 +96,27 @@ class EditBrandController extends GetxController {
     }
   }
 
+
   Future<void> _updateBrandCategories(BrandModel brand) async {
     final existing = await repository.getCategoriesOfSpecificBrand(brand.id);
     final selectedIds = selectedCategories.map((e) => e.id).toSet();
 
-    for (var c in existing.where((e) => !selectedIds.contains(e.categoryId))) {
-      await repository.deleteBrandCategory(c.id ?? '');
+    if (existing.isNotEmpty) {
+      for (var c in existing.where((e) => !selectedIds.contains(e.categoryId))) {
+        await repository.deleteBrandCategory(c.id ?? '');
+      }
     }
 
-    for (var newCat in selectedCategories.where((e) => !existing.any((ex) => ex.categoryId == e.id))) {
-      final newEntry = BrandCategoryModel(brandId: brand.id, categoryId: newCat.id);
-      newEntry.id = await repository.createBrandCategory(newEntry);
+    if (selectedCategories.isNotEmpty) {
+      for (var newCat in selectedCategories.where((e) => !existing.any((ex) => ex.categoryId == e.id))) {
+        final newEntry = BrandCategoryModel(brandId: brand.id, categoryId: newCat.id);
+        newEntry.id = await repository.createBrandCategory(newEntry);
+      }
     }
 
     brand.brandCategories = [...selectedCategories];
   }
+
 
   void resetFields() {
     loading.value = false;

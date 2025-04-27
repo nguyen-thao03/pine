@@ -146,14 +146,12 @@ class EditProductController extends GetxController {
         return;
       }
 
-      // Kiểm tra với sản phẩm không có biến thể
       if (productType.value == ProductType.single) {
         if (!stockPriceFormKey.currentState!.validate()) {
           PFullScreenLoader.stopLoading();
           return;
         }
 
-        // Kiểm tra số lượng và giá trị hợp lệ
         if (int.tryParse(stock.text.trim()) == null || double.tryParse(price.text.trim()) == null) {
           PFullScreenLoader.stopLoading();
           PLoaders.errorSnackBar(title: 'Lỗi', message: 'Giá và số lượng không hợp lệ.');
@@ -167,7 +165,6 @@ class EditProductController extends GetxController {
         throw 'Không có thể loại nào cho Thể Loại Sản phẩm. Tạo một số thể loại hoặc thay đổi Loại Sản phẩm.';
       }
 
-      // Kiểm tra thể loại sản phẩm
       if (productType.value == ProductType.variable) {
         final variationCheckFailed = ProductVariationController.instance.productVariations.any((element) =>
         element.price.isNaN || element.price < 0 ||
@@ -177,7 +174,6 @@ class EditProductController extends GetxController {
         if (variationCheckFailed) throw 'Dữ liệu thể loại không chính xác. Vui lòng kiểm tra lại các thể loại';
       }
 
-      // Kiểm tra ảnh sản phẩm
       final imagesController = ProductImagesController.instance;
       if (imagesController.selectedThumbnailImageUrl.value == null || imagesController.selectedThumbnailImageUrl.value!.isEmpty) {
         throw 'Chọn ảnh đại diện sản phẩm';
@@ -189,7 +185,6 @@ class EditProductController extends GetxController {
         variations.value = [];
       }
 
-      // Cập nhật thông tin sản phẩm
       product.sku = '';
       product.isFeatured = isFeatured.value;
       product.title = title.text.trim();
@@ -204,7 +199,6 @@ class EditProductController extends GetxController {
         product.stock = totalStock;
       }
 
-      // Cập nhật giá cho sản phẩm
       if (productType.value == ProductType.single) {
         product.price = double.tryParse(price.text.trim()) ?? 0;
       } else {
@@ -220,20 +214,21 @@ class EditProductController extends GetxController {
       productDataUploader.value = true;
       await ProductRepository.instance.updateProduct(product);
 
-      // Cập nhật danh mục sản phẩm
       if (selectedCategories.isNotEmpty) {
         categoriesRelationshipUploader.value = true;
-        List<String> existingCategoryIds = alreadyAddedCategories.map((category) => category.id).toList();
 
-        for (var category in selectedCategories) {
-          if (!existingCategoryIds.contains(category.id)) {
-            final productCategory = ProductCategoryModel(productId: product.id, categoryId: category.id);
+        List<String> existingCategoryIdsCopy = List.from(alreadyAddedCategories.map((category) => category.id));
+        List<String> selectedCategoryIdsCopy = List.from(selectedCategories.map((category) => category.id));
+
+        for (var selectedCategoryId in selectedCategoryIdsCopy) {
+          if (!existingCategoryIdsCopy.contains(selectedCategoryId)) {
+            final productCategory = ProductCategoryModel(productId: product.id, categoryId: selectedCategoryId);
             await ProductRepository.instance.createProductCategory(productCategory);
           }
         }
 
-        for (var existingCategoryId in existingCategoryIds) {
-          if (!selectedCategories.any((category) => category.id == existingCategoryId)) {
+        for (var existingCategoryId in existingCategoryIdsCopy) {
+          if (!selectedCategoryIdsCopy.contains(existingCategoryId)) {
             await ProductRepository.instance.removeProductCategory(product.id, existingCategoryId);
           }
         }

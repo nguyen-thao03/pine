@@ -11,13 +11,20 @@ class BrandController extends PBaseController<BrandModel> {
   final _brandRepository = Get.put(BrandRepository());
   final categoryController = Get.put(CategoryController());
 
+  RxList<BrandModel> filteredItems = <BrandModel>[].obs;
+  void updateFilteredItems(List<BrandModel> updatedItems) {
+    filteredItems.value = updatedItems;
+    update();
+  }
+
+
   @override
   Future<List<BrandModel>> fetchItems() async {
     final fetchedBrands = await _brandRepository.getAllBrands();
 
     final fetchedBrandCategories = await _brandRepository.getAllBrandCategories();
 
-    if(categoryController.allItems.isNotEmpty) await categoryController.fetchItems();
+    if(categoryController.allItems.isEmpty) await categoryController.fetchItems();
 
     for (var brand in fetchedBrands) {
       List<String> categoryIds = fetchedBrandCategories
